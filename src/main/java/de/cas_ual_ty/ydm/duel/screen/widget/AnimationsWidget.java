@@ -41,16 +41,11 @@ public class AnimationsWidget extends AbstractWidget
     }
     
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        
-        
-        if(visible)
+        for(Animation a : animations)
         {
-            for(Animation a : animations)
-            {
-                a.render(guiGraphics, mouseX, mouseY, partialTicks);
-            }
+            a.render(guiGraphics, mouseX, mouseY, partialTicks);
         }
     }
     

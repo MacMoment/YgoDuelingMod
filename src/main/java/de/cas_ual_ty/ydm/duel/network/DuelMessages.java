@@ -887,13 +887,13 @@ public class DuelMessages
         @Override
         public void encodeMessage(FriendlyByteBuf buf)
         {
-            buf.writeComponent(message);
+            net.minecraft.network.chat.ComponentSerialization.STREAM_CODEC.encode((net.minecraft.network.RegistryFriendlyByteBuf) buf, message);
         }
         
         @Override
         public void decodeMessage(FriendlyByteBuf buf)
         {
-            message = buf.readComponent();
+            message = net.minecraft.network.chat.ComponentSerialization.STREAM_CODEC.decode((net.minecraft.network.RegistryFriendlyByteBuf) buf);
         }
         
         @Override

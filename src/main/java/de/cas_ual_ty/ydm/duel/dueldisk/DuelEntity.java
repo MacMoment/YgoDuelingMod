@@ -102,6 +102,12 @@ public class DuelEntity extends Entity implements MenuProvider
     }
     
     @Override
+    public boolean hurtServer(net.minecraft.server.level.ServerLevel level, net.minecraft.world.damagesource.DamageSource source, float amount)
+    {
+        return false;
+    }
+    
+    @Override
     public AbstractContainerMenu createMenu(int id, Inventory playerInv, Player player)
     {
         return new DuelEntityContainer(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), id, playerInv, getId(), false);

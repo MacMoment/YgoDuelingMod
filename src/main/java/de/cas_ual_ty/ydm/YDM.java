@@ -37,7 +37,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
@@ -108,7 +108,7 @@ public class YDM
     {
         YDM.instance = this;
         
-        if (FMLLoader.dist() == Dist.CLIENT) {
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
         } else {
             YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();
@@ -310,18 +310,18 @@ public class YDM
         final Player original = event.getOriginal();
         final Player current = event.getEntity();
         
-        if (original.hasData(COOLDOWN_HOLDER.get()))
+        if (original.hasData(COOLDOWN_HOLDER))
         {
-            current.getData(COOLDOWN_HOLDER.get()).deserializeNBT(original.getData(COOLDOWN_HOLDER.get()).serializeNBT());
+            current.getData(COOLDOWN_HOLDER).deserializeNBT(original.getData(COOLDOWN_HOLDER).serializeNBT());
         }
     }
     
     private void playerTick(PlayerTickEvent.Post event)
     {
         Player player = event.getEntity();
-        if (player.hasData(COOLDOWN_HOLDER.get()))
+        if (player.hasData(COOLDOWN_HOLDER))
         {
-            player.getData(COOLDOWN_HOLDER.get()).tick();
+            player.getData(COOLDOWN_HOLDER).tick();
         }
     }
     

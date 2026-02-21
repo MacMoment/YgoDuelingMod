@@ -112,7 +112,7 @@ public class ZoneWidget extends Button
         
         renderZoneSelectRect(ms, zone, getX(), getY(), width, height);
         
-        hoverCard = renderCards(ms, mouseX, mouseY);
+        hoverCard = renderCards(guiGraphics, mouseX, mouseY);
         
         
         
@@ -198,8 +198,9 @@ public class ZoneWidget extends Button
     }
     
     @Nullable
-    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         if(zone.getCardsAmount() <= 0)
         {
             return null;
@@ -210,7 +211,7 @@ public class ZoneWidget extends Button
         
         if(c != null)
         {
-            if(drawCard(ms, c, getX(), getY(), width, height, mouseX, mouseY, getX(), getY(), width, height))
+            if(drawCard(guiGraphics, c, getX(), getY(), width, height, mouseX, mouseY, getX(), getY(), width, height))
             {
                 if(c.getCardPosition().isFaceUp || (isOwner && !zone.getType().getIsSecret()))
                 {
@@ -233,7 +234,7 @@ public class ZoneWidget extends Button
         return null;
     }
     
-    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY, int cardsWidth, int cardsHeight)
+    protected boolean drawCard(GuiGraphics guiGraphics, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY, int cardsWidth, int cardsHeight)
     {
         int offset = cardsHeight - cardsWidth;
         
@@ -255,11 +256,12 @@ public class ZoneWidget extends Button
             hoverHeight = cardsWidth;
         }
         
-        return drawCard(ms, duelCard, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, hoverX, hoverY, hoverWidth, hoverHeight);
+        return drawCard(guiGraphics, duelCard, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, hoverX, hoverY, hoverWidth, hoverHeight);
     }
     
-    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, float renderX, float renderY, float renderWidth, float renderHeight, int mouseX, int mouseY, float hoverX, float hoverY, float hoverWidth, float hoverHeight)
+    protected boolean drawCard(GuiGraphics guiGraphics, DuelCard duelCard, float renderX, float renderY, float renderWidth, float renderHeight, int mouseX, int mouseY, float hoverX, float hoverY, float hoverWidth, float hoverHeight)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         boolean isOwner = zone.getOwner() == context.getZoneOwner();
         boolean faceUp = zone.getType().getShowFaceDownCardsToOwner() && isOwner;
         boolean isOpponentView = zone.getOwner() != context.getView();
@@ -268,11 +270,11 @@ public class ZoneWidget extends Button
         
         if(!isOpponentView)
         {
-            CardRenderUtil.renderDuelCardCentered(ms, zone.getSleeves(), mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, faceUp);
+            CardRenderUtil.renderDuelCardCentered(guiGraphics, zone.getSleeves(), mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, faceUp);
         }
         else
         {
-            CardRenderUtil.renderDuelCardReversedCentered(ms, zone.getSleeves(), mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, faceUp);
+            CardRenderUtil.renderDuelCardReversedCentered(guiGraphics, zone.getSleeves(), mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, faceUp);
         }
         
         if(isHoveredOrFocused() && mouseX >= hoverX && mouseX < hoverX + hoverWidth && mouseY >= hoverY && mouseY < hoverY + hoverHeight)

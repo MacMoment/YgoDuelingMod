@@ -15,6 +15,8 @@ import de.cas_ual_ty.ydm.carditeminventory.CIIScreen;
 import de.cas_ual_ty.ydm.cardsupply.CardSupplyScreen;
 import de.cas_ual_ty.ydm.deckbox.DeckBoxScreen;
 import de.cas_ual_ty.ydm.duel.DuelContainer;
+import de.cas_ual_ty.ydm.duel.block.DuelBlockContainer;
+import de.cas_ual_ty.ydm.duel.dueldisk.DuelEntityContainer;
 import de.cas_ual_ty.ydm.duel.screen.DuelContainerScreen;
 import de.cas_ual_ty.ydm.duel.screen.DuelScreenBase;
 import de.cas_ual_ty.ydm.rarity.RarityLayer;
@@ -25,6 +27,7 @@ import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -311,12 +314,12 @@ public class ClientProxy implements ISidedProxy
     {
         event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
         event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
-        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
+        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (MenuScreens.ScreenConstructor<DuelBlockContainer, DuelScreenBase<DuelBlockContainer>>) DuelScreenBase::new);
+        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (MenuScreens.ScreenConstructor<DuelEntityContainer, DuelScreenBase<DuelEntityContainer>>) DuelScreenBase::new);
         event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-        event.register(YdmContainerTypes.CARD_SET.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
-        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
-        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
+        event.register(YdmContainerTypes.CARD_SET.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
+        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
+        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
     }
     
     private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)

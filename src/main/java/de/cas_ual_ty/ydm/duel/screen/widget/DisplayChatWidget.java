@@ -27,17 +27,12 @@ public class DisplayChatWidget extends AbstractWidget
     }
     
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
-    {
-        if(textSupplier != null)
-        {
-            super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        }
-    }
-    
-    @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        if(textSupplier == null)
+        {
+            return;
+        }
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
         ScreenUtil.white();

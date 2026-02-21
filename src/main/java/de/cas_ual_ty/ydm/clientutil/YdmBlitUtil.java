@@ -185,7 +185,7 @@ public class YdmBlitUtil
         MeshData meshData = bufferbuilder.buildOrThrow();
         if(texture != null)
         {
-            RenderSystem.setShaderTexture(0, texture);
+            net.minecraft.client.Minecraft.getInstance().getTextureManager().getTexture(texture).bind();
         }
         BufferUploader.drawWithShader(meshData);
     }

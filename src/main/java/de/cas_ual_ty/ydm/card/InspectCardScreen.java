@@ -33,7 +33,7 @@ public class InspectCardScreen extends Screen
     @Override
     public boolean keyPressed(KeyEvent event)
     {
-        InputConstants.Key mouseKey = InputConstants.getKey(event.key(), event.scanCode());
+        InputConstants.Key mouseKey = InputConstants.Type.KEYSYM.getOrCreate(event.key());
         
         if(minecraft.options.keyInventory.isActiveAndMatches(mouseKey))
         {

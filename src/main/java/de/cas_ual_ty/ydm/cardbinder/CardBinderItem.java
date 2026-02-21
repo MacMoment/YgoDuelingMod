@@ -134,7 +134,7 @@ public class CardBinderItem extends Item implements MenuProvider
     {
         UUID uuid;
         
-        UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER.get()) ? itemStack.getData(YDM.UUID_HOLDER.get()) : UUIDHolder.NULL_HOLDER;
+        UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER) ? itemStack.getData(YDM.UUID_HOLDER) : UUIDHolder.NULL_HOLDER;
         
         CompoundTag tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if(tag.contains(CardBinderItem.MANAGER_UUID_KEY_OLD, Tag.TAG_INT_ARRAY))
@@ -162,13 +162,13 @@ public class CardBinderItem extends Item implements MenuProvider
     
     public void setUUID(ItemStack itemStack, UUID uuid)
     {
-        itemStack.getData(YDM.UUID_HOLDER.get()).setUUID(uuid);
+        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
     }
     
     public void setUUIDAndUpdateManager(ItemStack itemStack, UUID uuid)
     {
         CardBinderCardsManager manager = getInventoryManager(itemStack);
-        itemStack.getData(YDM.UUID_HOLDER.get()).setUUID(uuid);
+        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
         MANAGER_MAP.remove(manager.getUUID());
         manager.setUUID(uuid);
         MANAGER_MAP.put(uuid, manager);

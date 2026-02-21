@@ -222,17 +222,17 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         int halfW = w / 2;
         int extraOff = halfW % 2;
         
-        addRenderableWidget(duelChatButton = new Button(x, y, halfW, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.duel_chat"), (b) -> switchChat()));
-        addRenderableWidget(worldChatButton = new Button(x + halfW - extraOff, y, halfW + extraOff, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.world_chat"), (b) -> switchChat()));
+        addRenderableWidget(duelChatButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.duel_chat"), (b) -> switchChat()).bounds(x, y, halfW, buttonHeight).build());
+        addRenderableWidget(worldChatButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.world_chat"), (b) -> switchChat()).bounds(x + halfW - extraOff, y, halfW + extraOff, buttonHeight).build());
         y += offset;
         
-        addRenderableWidget(chatUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::chatScrollButtonClicked, Button.DEFAULT_NARRATION));
+        addRenderableWidget(chatUpButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::chatScrollButtonClicked).bounds(x, y, w, buttonHeight).build());
         y += offset;
         
         addRenderableWidget(chatWidget = new DisplayChatWidget(x, y - (chatHeight % font.lineHeight) / 2, chatWidth, chatHeight, Component.empty()));
         y += chatHeight + margin;
         
-        addRenderableWidget(chatDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::chatScrollButtonClicked, Button.DEFAULT_NARRATION));
+        addRenderableWidget(chatDownButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::chatScrollButtonClicked).bounds(x, y, w, buttonHeight).build());
         y += offset;
         
         addRenderableWidget(textFieldWidget = new EditBox(font, x + 1, y + 1, w - 2, buttonHeight - 2, Component.empty()));
@@ -287,7 +287,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
             }
             else
             {
-                minecraft.player.connection.chat(text);
+                minecraft.player.connection.sendChat(text);
             }
         }
         
