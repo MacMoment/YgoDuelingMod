@@ -65,7 +65,7 @@ public class InteractionWidget extends Button
         if(isHoveredOrFocused() && active)
         {
             ScreenUtil.renderHoverRect(ms, getX(), getY(), width, height);
-            renderToolTip(guiGraphics, mouseX, mouseY);
+            // Tooltip rendering handled by the widget tooltip system
         }
         
         ms.popMatrix();
