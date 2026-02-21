@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.duel.playfield;
 
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +23,7 @@ public class ZoneType
     
     public boolean noOwner;
     
-    private ResourceLocation registryName;
+    private Identifier registryName;
     private String localKey;
     
     public ZoneType()
@@ -43,7 +43,7 @@ public class ZoneType
         localKey = null;
     }
     
-    public ResourceLocation getRegistryName()
+    public Identifier getRegistryName()
     {
         if(registryName == null)
         {
@@ -57,7 +57,7 @@ public class ZoneType
     {
         if(localKey == null)
         {
-            ResourceLocation rl = getRegistryName();
+            Identifier rl = getRegistryName();
             localKey = "zone." + rl.getNamespace() + "." + rl.getPath();
         }
         

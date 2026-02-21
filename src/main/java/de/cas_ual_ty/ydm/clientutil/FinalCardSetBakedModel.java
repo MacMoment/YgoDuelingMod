@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +30,7 @@ public class FinalCardSetBakedModel implements BakedModel
 {
     private BakedModel mainModel;
     private ItemStack activeItemStack;
-    private Function<ResourceLocation, TextureAtlasSprite> textureGetter;
+    private Function<Identifier, TextureAtlasSprite> textureGetter;
     
     private List<BakedQuad> setList = null;
     private List<BakedQuad> openedList = null;
@@ -70,7 +70,7 @@ public class FinalCardSetBakedModel implements BakedModel
             
             if(set != CardSet.DUMMY)
             {
-                ResourceLocation front = set.getItemImageResourceLocation();
+                Identifier front = set.getItemImageResourceLocation();
                 TextureAtlasSprite spriteFront = textureGetter.apply(front);
                 
                 if(!quadsMap.containsKey(set))
@@ -159,7 +159,7 @@ public class FinalCardSetBakedModel implements BakedModel
     {
         if(setList == null)
         {
-            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addSetItemTag("blanc_set"));
+            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addSetItemTag("blanc_set"));
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             setList = new ArrayList<>(0);
             setList.addAll(FinalCardBakedModel.convertTexture(Transformation.identity(), sprite, 0.5F, Direction.SOUTH, 0xFFFFFFFF, 1, rl));
@@ -173,7 +173,7 @@ public class FinalCardSetBakedModel implements BakedModel
     {
         if(openedList == null)
         {
-            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YdmItems.OPENED_SET.getId().getPath());
+            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YdmItems.OPENED_SET.getId().getPath());
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             openedList = new ArrayList<>(0);
             openedList.addAll(FinalCardBakedModel.convertTexture(Transformation.identity(), sprite, 0.5F + 2 * distance, Direction.SOUTH, 0xFFFFFFFF, 1, rl));

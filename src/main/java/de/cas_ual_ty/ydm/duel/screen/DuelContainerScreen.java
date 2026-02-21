@@ -21,10 +21,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -35,10 +35,10 @@ import java.util.function.Supplier;
 
 public abstract class DuelContainerScreen<E extends DuelContainer> extends SwitchableContainerScreen<E>
 {
-    public static final ResourceLocation DUEL_FOREGROUND_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_foreground.png");
-    public static final ResourceLocation DUEL_BACKGROUND_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_background.png");
+    public static final Identifier DUEL_FOREGROUND_GUI_TEXTURE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_foreground.png");
+    public static final Identifier DUEL_BACKGROUND_GUI_TEXTURE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_background.png");
     
-    public static final ResourceLocation DECK_BACKGROUND_GUI_TEXTURE = DeckBoxScreen.DECK_BOX_GUI_TEXTURE;
+    public static final Identifier DECK_BACKGROUND_GUI_TEXTURE = DeckBoxScreen.DECK_BOX_GUI_TEXTURE;
     
     protected DuelScreenConstructor<E>[] screensForEachState;
     
@@ -280,7 +280,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         {
             if(duelChat)
             {
-                // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
+                PacketDistributor.sendToServer(new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
             }
             else
             {

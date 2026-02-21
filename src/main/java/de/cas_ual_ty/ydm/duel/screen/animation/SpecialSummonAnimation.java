@@ -8,7 +8,7 @@ import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SpecialSummonAnimation extends Animation
 {
@@ -52,16 +52,15 @@ public class SpecialSummonAnimation extends Animation
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
         
-        RenderSystem.setShaderTexture(0, getTexture());
-        YdmBlitUtil.fullBlit(ms, -halfSize, -halfSize, size, size);
+        YdmBlitUtil.fullBlit(ms, getTexture(), -halfSize, -halfSize, size, size);
         
         RenderSystem.disableBlend();
         
         ms.popPose();
     }
     
-    public ResourceLocation getTexture()
+    public Identifier getTexture()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
     }
 }

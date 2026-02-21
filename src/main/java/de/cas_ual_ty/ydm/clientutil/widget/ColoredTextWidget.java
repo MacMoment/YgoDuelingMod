@@ -8,14 +8,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import java.util.function.Supplier;
 
 public class ColoredTextWidget extends AbstractWidget
 {
-    public static final ResourceLocation RESOURCE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
+    public static final Identifier RESOURCE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
     
     public Supplier<Component> msgGetter;
     public ITooltip tooltip;

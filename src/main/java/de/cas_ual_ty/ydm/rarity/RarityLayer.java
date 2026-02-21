@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.rarity;
 import com.google.gson.JsonObject;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.util.JsonKeys;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class RarityLayer
 {
@@ -21,14 +21,14 @@ public class RarityLayer
         this(json.get(JsonKeys.IMAGE).getAsString(), RarityLayerType.fromString(json.get(JsonKeys.TYPE).getAsString()));
     }
     
-    public ResourceLocation getMainImageResourceLocation()
+    public Identifier getMainImageResourceLocation()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityMainImage(this) + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityMainImage(this) + ".png");
     }
     
-    public ResourceLocation getInfoImageResourceLocation()
+    public Identifier getInfoImageResourceLocation()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityInfoImage(this) + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityInfoImage(this) + ".png");
     }
     
     @Override

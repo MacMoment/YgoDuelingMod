@@ -14,9 +14,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContainer>
 {
-    private static final ResourceLocation CARD_SUPPLY_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/card_supply.png");
+    private static final Identifier CARD_SUPPLY_GUI_TEXTURE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/card_supply.png");
     
     public static final int ROWS = 6;
     public static final int COLUMNS = 9;
@@ -198,7 +198,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
     {
         if(button.getCard() != null && button.getCard().getCard() != null)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
+            PacketDistributor.sendToServer(new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
         }
     }
     

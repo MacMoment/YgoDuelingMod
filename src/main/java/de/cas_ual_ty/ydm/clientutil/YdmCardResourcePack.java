@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.ResourcePackFileNotFoundException;
@@ -135,11 +135,11 @@ public class YdmCardResourcePack extends FilePackResources
     }
     
     @Override
-    public Collection<ResourceLocation> getResources(PackType type, String namespaceIn, String pathIn, Predicate<ResourceLocation> filterIn)
+    public Collection<Identifier> getResources(PackType type, String namespaceIn, String pathIn, Predicate<Identifier> filterIn)
     {
         // This is only needed for fonts and sounds afaik
         /*
-        List<ResourceLocation> list = Lists.newArrayList();
+        List<Identifier> list = Lists.newArrayList();
         
         if(type == ResourcePackType.CLIENT_RESOURCES)
         {
@@ -149,7 +149,7 @@ public class YdmCardResourcePack extends FilePackResources
             {
                 for(File f : listFiles)
                 {
-                    list.add(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, f.getName().replace(this.filter.getRequiredSuffix(), "")));
+                    list.add(Identifier.fromNamespaceAndPath(YDM.MOD_ID, f.getName().replace(this.filter.getRequiredSuffix(), "")));
                 }
             }
         }

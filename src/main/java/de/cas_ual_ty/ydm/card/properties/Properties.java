@@ -7,7 +7,7 @@ import de.cas_ual_ty.ydm.util.JsonKeys;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
@@ -198,19 +198,19 @@ public class Properties
         return YDM.proxy.addCardMainTag(getImageName(imageIndex));
     }
     
-    public ResourceLocation getInfoImageResourceLocation(byte imageIndex)
+    public Identifier getInfoImageResourceLocation(byte imageIndex)
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardInfoReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardInfoReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
     }
     
-    public ResourceLocation getItemImageResourceLocation(byte imageIndex)
+    public Identifier getItemImageResourceLocation(byte imageIndex)
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName(imageIndex));
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName(imageIndex));
     }
     
-    public ResourceLocation getMainImageResourceLocation(byte imageIndex)
+    public Identifier getMainImageResourceLocation(byte imageIndex)
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardMainReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardMainReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
     }
     
     public void addInformation(List<Component> list)

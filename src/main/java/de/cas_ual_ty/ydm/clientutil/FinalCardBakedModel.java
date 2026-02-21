@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,7 +37,7 @@ public class FinalCardBakedModel implements BakedModel
 {
     private BakedModel mainModel;
     private ItemStack activeItemStack;
-    private Function<ResourceLocation, TextureAtlasSprite> textureGetter;
+    private Function<Identifier, TextureAtlasSprite> textureGetter;
     
     private List<BakedQuad> singleBackList = null;
     private List<BakedQuad> partneredBackList = null;
@@ -73,7 +73,7 @@ public class FinalCardBakedModel implements BakedModel
                 
                 if(card.getCard() != null)
                 {
-                    ResourceLocation front = card.getItemImageResourceLocation();
+                    Identifier front = card.getItemImageResourceLocation();
                     TextureAtlasSprite spriteFront = textureGetter.apply(front);
                     
                     if(!quadsMap.containsKey(card.getCard()))
@@ -173,7 +173,7 @@ public class FinalCardBakedModel implements BakedModel
     {
         if(singleBackList == null)
         {
-            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
+            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             singleBackList = new ArrayList<>(0);
             singleBackList.addAll(convertTexture(Transformation.identity(), sprite, 0.5F, Direction.SOUTH, 0xFFFFFFFF, 1, rl));
@@ -187,7 +187,7 @@ public class FinalCardBakedModel implements BakedModel
     {
         if(partneredBackList == null)
         {
-            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
+            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             partneredBackList = convertTexture(Transformation.identity(), sprite, 0.5F, Direction.NORTH, 0xFFFFFFFF, 1, rl);
         }
@@ -199,7 +199,7 @@ public class FinalCardBakedModel implements BakedModel
     {
         if(blancList == null)
         {
-            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("blanc_card"));
+            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("blanc_card"));
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             blancList = convertTexture(Transformation.identity(), sprite, 0.5F, Direction.NORTH, 0xFFFFFFFF, 1, rl);
         }
@@ -207,7 +207,7 @@ public class FinalCardBakedModel implements BakedModel
         return blancList;
     }
     
-    public static List<BakedQuad> convertTexture(Transformation t, TextureAtlasSprite sprite, float off, Direction direction, int color, int layerIdx, ResourceLocation rl)
+    public static List<BakedQuad> convertTexture(Transformation t, TextureAtlasSprite sprite, float off, Direction direction, int color, int layerIdx, Identifier rl)
     {
         ModelState modelState = new SimpleModelState(new Transformation(Vector3f.ZERO, Quaternion.ONE, new Vector3f(1F, 1F, 1F), Quaternion.ONE));
         

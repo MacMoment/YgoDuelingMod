@@ -24,11 +24,9 @@ import de.cas_ual_ty.ydm.util.YdmIOUtil;
 import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.*;
@@ -92,7 +90,6 @@ public class ClientProxy implements ISidedProxy
     public void registerModEventListeners(IEventBus bus)
     {
         bus.addListener(this::entityRenderers);
-        bus.addListener(this::modelRegistry);
         bus.addListener(this::modelBake);
         bus.addListener(this::modConfig);
         bus.addListener(this::registerMenuScreens);
@@ -317,70 +314,64 @@ public class ClientProxy implements ISidedProxy
     {
         event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
         event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (MenuScreens.ScreenConstructor) (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
-        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (MenuScreens.ScreenConstructor) (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
+        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
+        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
         event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-        event.register(YdmContainerTypes.CARD_SET.get(), (MenuScreens.ScreenConstructor) (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
-        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (MenuScreens.ScreenConstructor) (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
-        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (MenuScreens.ScreenConstructor) (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
+        event.register(YdmContainerTypes.CARD_SET.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
+        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
+        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
     }
     
     // TextureStitchEvent removed in NeoForge 1.21 - texture stitching is no longer needed
     
-    private void modelRegistry(ModelEvent.RegisterAdditional event)
-    {
-        boolean flag = false;
-        
-        while((ClientProxy.activeCardItemImageSize == 0 || ClientProxy.activeSetItemImageSize == 0))
-        {
-            if(!flag)
-            {
-                flag = true;
-                YDM.log("Sleeping for a couple seconds to give the worker enough time to read the config...");
-            }
-            
-            // sometimes this gets done before YDM.itemsUseCardImagesActive is set to true
-            // so lets wait a bit to make sure the value is correct
-            
-            //++i;
-            
-            try
-            {
-                TimeUnit.SECONDS.sleep(1);
-            }
-            catch(InterruptedException e)
-            {
-                YDM.log("Tried sleeping to give textures enough time... It didnt work :(");
-                e.printStackTrace();
-                break;
-            }
-        }
-        
-        YDM.log("Registering models (size: " + ClientProxy.activeCardItemImageSize + ") for " + YdmItems.BLANC_CARD.getId().toString() + " and " + YdmItems.CARD_BACK.getId().toString());
-        
-        // 16 is default texture; no need to do anything special in that case
-        if(ClientProxy.activeCardItemImageSize != 16)
-        {
-            
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
-            
-            for(CardSleevesType sleeves : CardSleevesType.VALUES)
-            {
-                if(!sleeves.isCardBack())
-                {
-                    event.register(ModelResourceLocation.inventory(sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize)));
-                }
-            }
-        }
-        
-        YDM.log("Registering models (size: " + ClientProxy.activeSetItemImageSize + ") for " + YdmItems.BLANC_SET.getId().toString());
-        
-        if(ClientProxy.activeSetItemImageSize != 16)
-        {
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
-        }
-    }
+    // TODO: 1.21.11 - ModelEvent.RegisterAdditional removed; item models are now data-driven via JSON
+    // private void modelRegistry(ModelEvent.RegisterAdditional event)
+    // {
+    //     boolean flag = false;
+    //     
+    //     while((ClientProxy.activeCardItemImageSize == 0 || ClientProxy.activeSetItemImageSize == 0))
+    //     {
+    //         if(!flag)
+    //         {
+    //             flag = true;
+    //             YDM.log("Sleeping for a couple seconds to give the worker enough time to read the config...");
+    //         }
+    //         
+    //         try
+    //         {
+    //             TimeUnit.SECONDS.sleep(1);
+    //         }
+    //         catch(InterruptedException e)
+    //         {
+    //             YDM.log("Tried sleeping to give textures enough time... It didnt work :(");
+    //             e.printStackTrace();
+    //             break;
+    //         }
+    //     }
+    //     
+    //     YDM.log("Registering models (size: " + ClientProxy.activeCardItemImageSize + ") for " + YdmItems.BLANC_CARD.getId().toString() + " and " + YdmItems.CARD_BACK.getId().toString());
+    //     
+    //     if(ClientProxy.activeCardItemImageSize != 16)
+    //     {
+    //         event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+    //         event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+    //         
+    //         for(CardSleevesType sleeves : CardSleevesType.VALUES)
+    //         {
+    //             if(!sleeves.isCardBack())
+    //             {
+    //                 event.register(ModelResourceLocation.inventory(sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize)));
+    //             }
+    //         }
+    //     }
+    //     
+    //     YDM.log("Registering models (size: " + ClientProxy.activeSetItemImageSize + ") for " + YdmItems.BLANC_SET.getId().toString());
+    //     
+    //     if(ClientProxy.activeSetItemImageSize != 16)
+    //     {
+    //         event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
+    //     }
+    // }
     
     private void modelBake(ModelEvent.BakingCompleted event)
     {
@@ -389,42 +380,38 @@ public class ClientProxy implements ISidedProxy
         // 16 is default texture; no need to do anything special in that case
         if(ClientProxy.activeCardItemImageSize != 16)
         {
-            event.getModels().put(ModelResourceLocation.inventory(YdmItems.BLANC_CARD.getId()),
+            event.getModels().put(YdmItems.BLANC_CARD.getId(),
                     event.getModelManager().getModel(
-                            ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
+                            Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
             
-            event.getModels().put(ModelResourceLocation.inventory(YdmItems.CARD_BACK.getId()),
+            event.getModels().put(YdmItems.CARD_BACK.getId(),
                     event.getModelManager().getModel(
-                            ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
+                            Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
                 if(!sleeves.isCardBack())
                 {
-                    event.getModels().put(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name)),
+                    event.getModels().put(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name),
                             event.getModelManager().getModel(
-                                    ModelResourceLocation.inventory(
-                                            sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize))));
+                                    sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize)));
                 }
             }
         }
         
         if(ClientProxy.activeSetItemImageSize != 16)
         {
-            event.getModels().put(ModelResourceLocation.inventory(YdmItems.BLANC_SET.getId()),
+            event.getModels().put(YdmItems.BLANC_SET.getId(),
                     event.getModelManager().getModel(
-                            ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize))));
+                            Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
         }
         
-        ModelResourceLocation key = ModelResourceLocation.inventory(YdmItems.CARD.getId());
+        Identifier key = YdmItems.CARD.getId();
         event.getModels().put(key, new CardBakedModel(event.getModelManager().getModel(key)));
         
-        key = ModelResourceLocation.inventory(YdmItems.SET.getId());
+        key = YdmItems.SET.getId();
         event.getModels().put(key, new CardSetBakedModel(event.getModelManager().getModel(key)));
-        key = ModelResourceLocation.inventory(YdmItems.OPENED_SET.getId());
+        key = YdmItems.OPENED_SET.getId();
         event.getModels().put(key, new CardSetBakedModel(event.getModelManager().getModel(key)));
     }
     
@@ -562,8 +549,7 @@ public class ClientProxy implements ISidedProxy
         
         // card texture
         
-        RenderSystem.setShaderTexture(0, set.getInfoImageResourceLocation());
-        YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+        YdmBlitUtil.fullBlit(ms, set.getInfoImageResourceLocation(), x, margin, imageSize, imageSize);
         
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;
@@ -614,8 +600,7 @@ public class ClientProxy implements ISidedProxy
         
         // card texture
         
-        RenderSystem.setShaderTexture(0, sleeves.getMainRL(ClientProxy.activeCardInfoImageSize));
-        YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+        YdmBlitUtil.fullBlit(ms, sleeves.getMainRL(ClientProxy.activeCardInfoImageSize), x, margin, imageSize, imageSize);
         
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;

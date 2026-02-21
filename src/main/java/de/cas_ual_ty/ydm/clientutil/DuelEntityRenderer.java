@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
 public class DuelEntityRenderer extends EntityRenderer<Entity>
@@ -27,7 +27,7 @@ public class DuelEntityRenderer extends EntityRenderer<Entity>
     }
     
     @Override
-    public ResourceLocation getTextureLocation(Entity pEntity)
+    public Identifier getTextureLocation(Entity pEntity)
     {
         return null;
     }

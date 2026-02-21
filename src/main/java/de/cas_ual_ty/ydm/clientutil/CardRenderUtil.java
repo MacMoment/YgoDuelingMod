@@ -18,14 +18,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class CardRenderUtil
 {
-    public static final ResourceLocation MASK_RL = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/rarity_mask.png");
+    public static final Identifier MASK_RL = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/rarity_mask.png");
     
     private static LimitedTextureBinder infoTextureBinder;
     private static LimitedTextureBinder mainTextureBinder;
@@ -85,8 +85,7 @@ public class CardRenderUtil
         
         if(token)
         {
-            RenderSystem.setShaderTexture(0, CardRenderUtil.getInfoTokenOverlay());
-            YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+            YdmBlitUtil.fullBlit(ms, CardRenderUtil.getInfoTokenOverlay(), x, margin, imageSize, imageSize);
         }
         
         // need to multiply x2 because we are scaling the text to x0.5
@@ -126,44 +125,43 @@ public class CardRenderUtil
         CardRenderUtil.mainTextureBinder.bind(p.getMainImageResourceLocation(imageIndex));
     }
     
-    public static void bindInfoResourceLocation(ResourceLocation r)
+    public static void bindInfoResourceLocation(Identifier r)
     {
         CardRenderUtil.infoTextureBinder.bind(r);
     }
     
-    public static void bindMainResourceLocation(ResourceLocation r)
+    public static void bindMainResourceLocation(Identifier r)
     {
         CardRenderUtil.mainTextureBinder.bind(r);
     }
     
     public static void bindSleeves(CardSleevesType s)
     {
-        RenderSystem.setShaderTexture(0, s.getMainRL(ClientProxy.activeCardMainImageSize));
     }
     
-    public static ResourceLocation getInfoCardBack()
+    public static Identifier getInfoCardBack()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
-    public static ResourceLocation getMainCardBack()
+    public static Identifier getMainCardBack()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
-    public static ResourceLocation getInfoTokenOverlay()
+    public static Identifier getInfoTokenOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
-    public static ResourceLocation getMainTokenOverlay()
+    public static Identifier getMainTokenOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
     }
     
-    public static ResourceLocation getRarityOverlay()
+    public static Identifier getRarityOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
     public static void renderInfoCardWithRarity(GuiGraphics guiGraphics, int mouseX, int mouseY, float x, float y, float width, float height, CardHolder card)
@@ -187,14 +185,12 @@ public class CardRenderUtil
                 
                 Runnable mask = () ->
                 {
-                    RenderSystem.setShaderTexture(0, MASK_RL);
-                    YdmBlitUtil.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
+                    YdmBlitUtil.fullBlit(ms, MASK_RL, mouseX - width / 2, mouseY - height / 2, width, height);
                 };
                 
                 Runnable renderer = () ->
                 {
-                    RenderSystem.setShaderTexture(0, layer.getInfoImageResourceLocation());
-                    YdmBlitUtil.fullBlit(ms, x - width / 2, y - height / 2, width, height);
+                    YdmBlitUtil.fullBlit(ms, layer.getInfoImageResourceLocation(), x - width / 2, y - height / 2, width, height);
                 };
                 
                 YdmBlitUtil.advancedMaskedBlit(ms, x, y, width, height, mask, renderer, layer.type.invertedRendering);
@@ -227,15 +223,13 @@ public class CardRenderUtil
         }
         else
         {
-            RenderSystem.setShaderTexture(0, back.getMainRL(ClientProxy.activeCardMainImageSize));
         }
         
         blitMethod.fullBlit(ms, x, y, width, height);
         
         if(card.getIsToken())
         {
-            RenderSystem.setShaderTexture(0, CardRenderUtil.getMainTokenOverlay());
-            blitMethod.fullBlit(ms, x, y, width, height);
+            YdmBlitUtil.fullBlit(ms, CardRenderUtil.getMainTokenOverlay(), x, y, width, height);
         }
         
         if(position.isFaceUp && !card.getIsToken())
@@ -248,14 +242,12 @@ public class CardRenderUtil
                 {
                     Runnable mask = () ->
                     {
-                        RenderSystem.setShaderTexture(0, MASK_RL);
-                        blitMethod.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
+                        YdmBlitUtil.fullBlit(ms, MASK_RL, mouseX - width / 2, mouseY - height / 2, width, height);
                     };
                     
                     Runnable renderer = () ->
                     {
-                        RenderSystem.setShaderTexture(0, layer.getMainImageResourceLocation());
-                        blitMethod.fullBlit(ms, x, y, width, height);
+                        YdmBlitUtil.fullBlit(ms, layer.getMainImageResourceLocation(), x, y, width, height);
                     };
                     
                     YdmBlitUtil.advancedMaskedBlit(ms, x, y, width, height, mask, renderer, layer.type.invertedRendering);

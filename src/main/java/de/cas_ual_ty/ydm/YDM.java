@@ -1,6 +1,9 @@
 package de.cas_ual_ty.ydm;
 
 import de.cas_ual_ty.ydm.cardinventory.JsonCardsManager;
+import de.cas_ual_ty.ydm.cardbinder.CardBinderMessages;
+import de.cas_ual_ty.ydm.carditeminventory.CIIMessages;
+import de.cas_ual_ty.ydm.cardsupply.CardSupplyMessages;
 import de.cas_ual_ty.ydm.deckbox.DeckBoxItem;
 import de.cas_ual_ty.ydm.deckbox.DeckHolder;
 import de.cas_ual_ty.ydm.deckbox.ItemHandlerDeckHolder;
@@ -11,6 +14,7 @@ import de.cas_ual_ty.ydm.duel.action.ActionType;
 import de.cas_ual_ty.ydm.duel.action.ActionTypes;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeaderType;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeaders;
+import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneType;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneTypes;
 import de.cas_ual_ty.ydm.serverutil.YdmCommand;
@@ -22,7 +26,7 @@ import de.cas_ual_ty.ydm.util.YdmIOUtil;
 import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -40,6 +44,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -84,10 +90,10 @@ public class YDM
     public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.serializable(CooldownHolder::new).build());
     
     // Custom Registry Keys
-    public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_icons"));
-    public static final ResourceKey<Registry<ZoneType>> ZONE_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "zone_types"));
-    public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_types"));
-    public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
+    public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_icons"));
+    public static final ResourceKey<Registry<ZoneType>> ZONE_TYPE_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "zone_types"));
+    public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_types"));
+    public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
     
     public static Supplier<Registry<ActionIcon>> actionIconRegistry;
     public static Supplier<Registry<ZoneType>> zoneTypeRegistry;
@@ -117,6 +123,7 @@ public class YDM
         modBus.addListener(this::init);
         modBus.addListener(this::modConfig);
         modBus.addListener(this::newRegistry);
+        modBus.addListener(this::registerPayloads);
         YDM.proxy.registerModEventListeners(modBus);
         
         YdmBlocks.register(modBus);
@@ -144,13 +151,136 @@ public class YDM
     
     private void init(FMLCommonSetupEvent event)
     {
-        // Network registration is now done via PayloadRegistrar in NeoForge 1.21.1
-        // All messages need to implement CustomPacketPayload
-        // TODO: Port networking to NeoForge payload system
-        
         initFiles();
         YDM.proxy.init();
         WorkerManager.init();
+    }
+    
+    private void registerPayloads(RegisterPayloadHandlersEvent event)
+    {
+        PayloadRegistrar registrar = event.registrar(MOD_ID);
+        
+        // Card Supply
+        registrar.playToServer(CardSupplyMessages.RequestCard.TYPE, CardSupplyMessages.RequestCard.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardSupplyMessages.RequestCard.handle(msg, ctx.player()));
+        });
+        
+        // Card Item Inventory
+        registrar.playToClient(CIIMessages.SetPage.TYPE, CIIMessages.SetPage.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CIIMessages.SetPage.handle(msg));
+        });
+        registrar.playToServer(CIIMessages.ChangePage.TYPE, CIIMessages.ChangePage.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CIIMessages.ChangePage.handle(msg, ctx.player()));
+        });
+        
+        // Card Binder
+        registrar.playToServer(CardBinderMessages.ChangePage.TYPE, CardBinderMessages.ChangePage.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.ChangePage.handle(msg, ctx.player()));
+        });
+        registrar.playToServer(CardBinderMessages.ChangeSearch.TYPE, CardBinderMessages.ChangeSearch.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.ChangeSearch.handle(msg, ctx.player()));
+        });
+        registrar.playToClient(CardBinderMessages.UpdatePage.TYPE, CardBinderMessages.UpdatePage.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.UpdatePage.handle(msg));
+        });
+        registrar.playToClient(CardBinderMessages.UpdateList.TYPE, CardBinderMessages.UpdateList.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.UpdateList.handle(msg));
+        });
+        registrar.playToServer(CardBinderMessages.IndexClicked.TYPE, CardBinderMessages.IndexClicked.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.IndexClicked.handle(msg, ctx.player()));
+        });
+        registrar.playToServer(CardBinderMessages.IndexDropped.TYPE, CardBinderMessages.IndexDropped.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> CardBinderMessages.IndexDropped.handle(msg, ctx.player()));
+        });
+        
+        // Duel Messages - Server bound (client -> server)
+        registrar.playToServer(DuelMessages.SelectRole.TYPE, DuelMessages.SelectRole.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.RequestFullUpdate.TYPE, DuelMessages.RequestFullUpdate.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.RequestReady.TYPE, DuelMessages.RequestReady.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.RequestDeck.TYPE, DuelMessages.RequestDeck.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.ChooseDeck.TYPE, DuelMessages.ChooseDeck.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.RequestDuelAction.TYPE, DuelMessages.RequestDuelAction.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.SendMessageToServer.TYPE, DuelMessages.SendMessageToServer.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.SendAdmitDefeat.TYPE, DuelMessages.SendAdmitDefeat.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        registrar.playToServer(DuelMessages.SendOfferDraw.TYPE, DuelMessages.SendOfferDraw.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(() -> { msg.sender = ctx.player(); msg.handle(); });
+        });
+        
+        // Duel Messages - Client bound (server -> client)
+        registrar.playToClient(DuelMessages.UpdateRole.TYPE, DuelMessages.UpdateRole.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.UpdateDuelState.TYPE, DuelMessages.UpdateDuelState.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.UpdateReady.TYPE, DuelMessages.UpdateReady.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.SendAvailableDecks.TYPE, DuelMessages.SendAvailableDecks.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.SendDeck.TYPE, DuelMessages.SendDeck.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.DeckAccepted.TYPE, DuelMessages.DeckAccepted.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.DuelAction.TYPE, DuelMessages.DuelAction.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.AllDuelActions.TYPE, DuelMessages.AllDuelActions.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.SendMessageToClient.TYPE, DuelMessages.SendMessageToClient.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
+        registrar.playToClient(DuelMessages.SendAllMessagesToClient.TYPE, DuelMessages.SendAllMessagesToClient.STREAM_CODEC, (msg, ctx) ->
+        {
+            ctx.enqueueWork(msg::handle);
+        });
     }
     
     public void initFolders()

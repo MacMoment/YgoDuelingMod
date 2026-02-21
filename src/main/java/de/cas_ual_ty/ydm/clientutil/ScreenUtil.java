@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -24,33 +24,23 @@ public class ScreenUtil
     public static void drawRect(GuiGraphics guiGraphics, float x, float y, float w, float h, float r, float g, float b, float a)
     {
         PoseStack ms = guiGraphics.pose();
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuilder();
         
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         
         // Use src_color * src_alpha
         // and dest_color * (1 - src_alpha) for colors
         RenderSystem.defaultBlendFunc();
         
-        //RenderSystem.setShaderColor(r, g, b, a);
-        
         Matrix4f m = ms.last().pose();
         
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        bufferbuilder.vertex(m, x, y + h, 0F).color(r, g, b, a).endVertex(); // BL
-        bufferbuilder.vertex(m, x + w, y + h, 0F).color(r, g, b, a).endVertex(); // BR
-        bufferbuilder.vertex(m, x + w, y, 0F).color(r, g, b, a).endVertex(); // TR
-        bufferbuilder.vertex(m, x, y, 0F).color(r, g, b, a).endVertex(); // TL
-        //tessellator.end();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        bufferbuilder.addVertex(m, x, y + h, 0F).setColor(r, g, b, a); // BL
+        bufferbuilder.addVertex(m, x + w, y + h, 0F).setColor(r, g, b, a); // BR
+        bufferbuilder.addVertex(m, x + w, y, 0F).setColor(r, g, b, a); // TR
+        bufferbuilder.addVertex(m, x, y, 0F).setColor(r, g, b, a); // TL
+        RenderType.gui().draw(bufferbuilder.buildOrThrow());
         
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
-        
-        //ScreenUtil.white();
     }
     
     public static void drawSplitString(GuiGraphics guiGraphics, Font fontRenderer, List<Component> list, float x, float y, int maxWidth, int color)

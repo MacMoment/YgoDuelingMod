@@ -11,14 +11,14 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import java.util.function.Supplier;
 
 public class LifePointsWidget extends AbstractWidget
 {
-    public static final ResourceLocation DUEL_WIDGETS = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png");
+    public static final Identifier DUEL_WIDGETS = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png");
     
     public Supplier<Integer> lpGetter;
     public int maxLP;
@@ -52,10 +52,9 @@ public class LifePointsWidget extends AbstractWidget
         int h = height;
         
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-        RenderSystem.setShaderTexture(0, LifePointsWidget.DUEL_WIDGETS);
-        blit(ms, x, y, 0, 1 * 8, width, height);
-        blit(ms, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
-        blit(ms, x, y, 0, 2 * 8, width, height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 1 * 8, width, height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
         renderBg(ms, minecraft, mouseX, mouseY);
         
         x = this.x + width / 2;

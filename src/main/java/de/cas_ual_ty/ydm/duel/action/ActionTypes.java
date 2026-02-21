@@ -1,14 +1,14 @@
 package de.cas_ual_ty.ydm.duel.action;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ActionTypes
 {
-    private static final DeferredRegister<ActionType> DEFERRED_REGISTER = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "action_types"), YDM.MOD_ID);
+    private static final DeferredRegister<ActionType> DEFERRED_REGISTER = DeferredRegister.create(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "action_types"), YDM.MOD_ID);
     
     public static final DeferredHolder<ActionType, ActionType> POPULATE = DEFERRED_REGISTER.register("populate", () -> new ActionType(PopulateAction::new));
     public static final DeferredHolder<ActionType, ActionType> MOVE_ON_TOP = DEFERRED_REGISTER.register("move_on_top", () -> new ActionType(MoveTopAction::new));

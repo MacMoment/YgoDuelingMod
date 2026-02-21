@@ -5,7 +5,7 @@ import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public abstract class DuelContainer extends AbstractContainerMenu
 {
@@ -42,7 +42,7 @@ public abstract class DuelContainer extends AbstractContainerMenu
     public void requestFullUpdate()
     {
         getDuelManager().reset();
-        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestFullUpdate(getDuelManager().getHeader()));
+        PacketDistributor.sendToServer(new DuelMessages.RequestFullUpdate(getDuelManager().getHeader()));
     }
     
     @Override

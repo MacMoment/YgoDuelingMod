@@ -7,14 +7,14 @@ import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 
 public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
 {
-    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
+    public static final Identifier DECK_BOX_GUI_TEXTURE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
     
     public DeckBoxScreen(DeckBoxContainer screenContainer, Inventory inv, Component titleIn)
     {
@@ -100,7 +100,6 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
         ScreenUtil.white();
-        RenderSystem.setShaderTexture(0, DeckBoxScreen.DECK_BOX_GUI_TEXTURE);
-        YdmBlitUtil.blit(guiGraphics.pose(), leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
+        YdmBlitUtil.blit(guiGraphics.pose(), DeckBoxScreen.DECK_BOX_GUI_TEXTURE, leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
     }
 }

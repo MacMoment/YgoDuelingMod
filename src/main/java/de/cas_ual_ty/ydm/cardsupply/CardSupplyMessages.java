@@ -1,8 +1,12 @@
 package de.cas_ual_ty.ydm.cardsupply;
 
+import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.card.properties.Properties;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Consumer;
@@ -17,8 +21,24 @@ public class CardSupplyMessages
         }
     }
     
-    public static class RequestCard
+    public static class RequestCard implements CustomPacketPayload
     {
+        public static final CustomPacketPayload.Type<RequestCard> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "card_supply_request_card"));
+        public static final StreamCodec<FriendlyByteBuf, RequestCard> STREAM_CODEC = new StreamCodec<>()
+        {
+            @Override
+            public RequestCard decode(FriendlyByteBuf buf)
+            {
+                return RequestCard.decode(buf);
+            }
+            
+            @Override
+            public void encode(FriendlyByteBuf buf, RequestCard msg)
+            {
+                RequestCard.encode(msg, buf);
+            }
+        };
+        
         public Properties card;
         public byte imageIndex;
         
@@ -39,7 +59,6 @@ public class CardSupplyMessages
             return new RequestCard(YdmDatabase.PROPERTIES_LIST.get(buf.readLong()), buf.readByte());
         }
         
-        // TODO: Port to NeoForge payload system - handle method stub
         public static void handle(RequestCard msg, Player sender)
         {
             if(msg.card != null && msg.card != Properties.DUMMY)
@@ -49,6 +68,12 @@ public class CardSupplyMessages
                     container.giveCard(msg.card, msg.imageIndex);
                 });
             }
+        }
+        
+        @Override
+        public CustomPacketPayload.Type<? extends CustomPacketPayload> type()
+        {
+            return TYPE;
         }
     }
 }

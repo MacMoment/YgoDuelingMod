@@ -7,7 +7,7 @@ import de.cas_ual_ty.ydm.rarity.Rarities;
 import de.cas_ual_ty.ydm.util.JsonKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
@@ -82,17 +82,17 @@ public class CardHolder implements Comparable<CardHolder>
         return getCard().getImageURL(getImageIndex());
     }
     
-    public ResourceLocation getInfoImageResourceLocation()
+    public Identifier getInfoImageResourceLocation()
     {
         return getCard().getInfoImageResourceLocation(getImageIndex());
     }
     
-    public ResourceLocation getItemImageResourceLocation()
+    public Identifier getItemImageResourceLocation()
     {
         return getCard().getItemImageResourceLocation(getImageIndex());
     }
     
-    public ResourceLocation getMainImageResourceLocation()
+    public Identifier getMainImageResourceLocation()
     {
         return getCard().getMainImageResourceLocation(getImageIndex());
     }
