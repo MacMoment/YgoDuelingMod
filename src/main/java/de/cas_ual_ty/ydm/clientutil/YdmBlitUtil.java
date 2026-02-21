@@ -1,8 +1,7 @@
 package de.cas_ual_ty.ydm.clientutil;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.RenderTypes;
 import net.minecraft.resources.Identifier;
@@ -140,7 +139,7 @@ public class YdmBlitUtil
         // but rather replaces the framebuffer alpha values with values based
         // on the whiteness of the mask. In other words, if a pixel is white in the mask,
         // then the corresponding framebuffer pixel's alpha will be set to 1.
-        RenderSystem.blendFuncSeparate(SourceFactor.ZERO, DestFactor.ONE, SourceFactor.SRC_ALPHA, DestFactor.ZERO);
+        RenderSystem.blendFuncSeparate(GL11.GL_ZERO, GL11.GL_ONE, GL11.GL_SRC_ALPHA, GL11.GL_ZERO);
         
         // Now "draw" the mask (again, this doesn't produce a visible result, it just
         // changes the alpha values in the framebuffer)
@@ -151,11 +150,11 @@ public class YdmBlitUtil
         
         if(!inverted)
         {
-            RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_ALPHA, DestFactor.DST_COLOR, SourceFactor.DST_ALPHA, DestFactor.ONE_MINUS_DST_ALPHA);
+            RenderSystem.blendFuncSeparate(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_COLOR, GL11.GL_DST_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
         }
         else
         {
-            RenderSystem.blendFuncSeparate(SourceFactor.DST_ALPHA, DestFactor.DST_COLOR, SourceFactor.ONE_MINUS_DST_ALPHA, DestFactor.DST_ALPHA);
+            RenderSystem.blendFuncSeparate(GL11.GL_DST_ALPHA, GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
         }
         
         textureBinderAndDrawer.run();

@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class YdmUtil
 {
@@ -75,7 +76,7 @@ public class YdmUtil
         return Mth.createInsecureUUID();
     }
     
-    public static NonNullSupplier<IllegalArgumentException> throwNullCapabilityException()
+    public static Supplier<IllegalArgumentException> throwNullCapabilityException()
     {
         return () -> new IllegalArgumentException("[" + YDM.MOD_ID + "] Capability can not be null!");
     }
