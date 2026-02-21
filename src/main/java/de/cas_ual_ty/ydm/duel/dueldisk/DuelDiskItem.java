@@ -156,8 +156,8 @@ public class DuelDiskItem extends Item
                 level.addFreshEntity(dm);
                 setDMUUID(pStack, dm.getUUID());
                 
-                player2.displayClientMessage(Component.literal("\"" + player1.getGameProfile().getName() + "\" requested a DUEL!"), false);
-                player1.displayClientMessage(Component.literal("DUEL request sent to \"" + player2.getGameProfile().getName() + "\"!"), false);
+                player2.displayClientMessage(Component.literal("\"" + player1.getGameProfile().name() + "\" requested a DUEL!"), false);
+                player1.displayClientMessage(Component.literal("DUEL request sent to \"" + player2.getGameProfile().name() + "\"!"), false);
             }
         }
         

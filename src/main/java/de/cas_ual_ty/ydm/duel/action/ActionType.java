@@ -26,7 +26,7 @@ public class ActionType
     {
         if(localKey == null)
         {
-            Identifier rl = YDM.actionTypeRegistry.get().getKey(this);
+            Identifier rl = YDM.actionTypeRegistry.getKey(this);
             localKey = "action." + rl.getNamespace() + "." + rl.getPath();
         }
         

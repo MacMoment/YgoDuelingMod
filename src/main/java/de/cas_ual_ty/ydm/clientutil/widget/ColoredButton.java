@@ -40,11 +40,6 @@ public class ColoredButton extends Button
         
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, getMessage(), getX() + width / 2, getY() + (height - 8) / 2, j | Mth.ceil(alpha * 255.0F) << 24);
-        
-        if(isHoveredOrFocused())
-        {
-            renderToolTip(guiGraphics, mouseX, mouseY);
-        }
     }
     
     public ColoredButton setBlue()

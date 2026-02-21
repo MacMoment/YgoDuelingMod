@@ -39,10 +39,5 @@ public class TextureButton extends Button
         {
             YdmBlitUtil.blit(guiGraphics.pose(), textureLocation, getX(), getY(), width, height, texX, texY, texW, texH, 256, 256);
         }
-        
-        if(isHoveredOrFocused())
-        {
-            renderToolTip(guiGraphics, mouseX, mouseY);
-        }
     }
 }

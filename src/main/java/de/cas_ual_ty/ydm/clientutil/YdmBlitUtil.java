@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
@@ -185,12 +185,9 @@ public class YdmBlitUtil
         MeshData meshData = bufferbuilder.buildOrThrow();
         if(texture != null)
         {
-            RenderType.guiTextured(texture).draw(meshData);
+            RenderSystem.setShaderTexture(0, texture);
         }
-        else
-        {
-            RenderType.gui().draw(meshData);
-        }
+        BufferUploader.drawWithShader(meshData);
     }
 
     public interface FullBlitMethod

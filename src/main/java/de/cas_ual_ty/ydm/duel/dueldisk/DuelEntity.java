@@ -5,8 +5,7 @@ import de.cas_ual_ty.ydm.duel.DuelManager;
 import de.cas_ual_ty.ydm.duel.DuelState;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeader;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeaders;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -14,6 +13,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class DuelEntity extends Entity implements MenuProvider
     {
         super.tick();
         
-        if(!level.isClientSide())
+        if(!level().isClientSide())
         {
             if(!hasEverStarted)
             {
@@ -85,18 +86,18 @@ public class DuelEntity extends Entity implements MenuProvider
     }
     
     @Override
-    protected void defineSynchedData()
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
     {
     
     }
     
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound)
+    protected void readAdditionalSaveData(ValueInput tag)
     {
     }
     
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound)
+    protected void addAdditionalSaveData(ValueOutput tag)
     {
     }
     

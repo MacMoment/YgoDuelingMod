@@ -47,7 +47,7 @@ public class ZoneType
     {
         if(registryName == null)
         {
-            registryName = YDM.zoneTypeRegistry.get().getKey(this);
+            registryName = YDM.zoneTypeRegistry.getKey(this);
         }
         
         return registryName;

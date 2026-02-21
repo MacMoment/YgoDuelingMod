@@ -16,7 +16,8 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.minecraft.client.renderer.RenderPipelines;
 
 public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen<E>
 {
@@ -63,7 +64,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
-        guiGraphics.blit(DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
     }
     
     public Component getRoleDescription(PlayerRole role)
@@ -102,14 +103,14 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     
     protected void roleButtonClicked(Button button)
     {
-        PacketDistributor.sendToServer(new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
+        ClientPacketDistributor.sendToServer(new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
     }
     
     protected void ready1ButtonClicked()
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER1)
         {
-            PacketDistributor.sendToServer(new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
+            ClientPacketDistributor.sendToServer(new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
         }
     }
     
@@ -117,7 +118,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER2)
         {
-            PacketDistributor.sendToServer(new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
+            ClientPacketDistributor.sendToServer(new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
         }
     }
 }

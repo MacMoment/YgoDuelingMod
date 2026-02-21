@@ -14,7 +14,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.network.ServerPacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -1084,7 +1084,7 @@ public class DuelManager
     
     protected <MSG extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> void sendGeneralPacketTo(ServerPlayer player, MSG msg)
     {
-        PacketDistributor.sendToPlayer(player, msg);
+        ServerPacketDistributor.sendToPlayer(player, msg);
     }
     
     // --- Getters ---

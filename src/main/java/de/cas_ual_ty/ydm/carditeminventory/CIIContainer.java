@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.network.ServerPacketDistributor;
 
 import javax.annotation.Nonnull;
 
@@ -131,7 +131,7 @@ public class CIIContainer extends AbstractContainerMenu
     
     protected void updatePage()
     {
-        PacketDistributor.sendToPlayer((ServerPlayer) player, new CIIMessages.SetPage(page));
+        ServerPacketDistributor.sendToPlayer((ServerPlayer) player, new CIIMessages.SetPage(page));
     }
     
     public void nextPage()

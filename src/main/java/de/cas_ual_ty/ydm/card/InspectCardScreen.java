@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 
 public class InspectCardScreen extends Screen
@@ -24,18 +25,15 @@ public class InspectCardScreen extends Screen
     @Override
     public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick)
     {
-        if(minecraft != null)
-        {
-            renderBackground(guiGraphics);
-        }
+        super.render(guiGraphics, pMouseX, pMouseY, pPartialTick);
         
         CardRenderUtil.renderInfoCardWithRarity(guiGraphics, pMouseX, pMouseY, width / 2, height / 2, 128, 128, cardHolder);
     }
     
     @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers)
+    public boolean keyPressed(KeyEvent event)
     {
-        InputConstants.Key mouseKey = InputConstants.getKey(pKeyCode, pScanCode);
+        InputConstants.Key mouseKey = InputConstants.getKey(event.key(), event.scanCode());
         
         if(minecraft.options.keyInventory.isActiveAndMatches(mouseKey))
         {
@@ -43,7 +41,7 @@ public class InspectCardScreen extends Screen
             return true;
         }
         
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        return super.keyPressed(event);
     }
     
     @Override

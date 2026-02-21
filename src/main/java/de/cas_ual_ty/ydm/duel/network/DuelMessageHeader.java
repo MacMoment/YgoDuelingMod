@@ -77,7 +77,7 @@ public abstract class DuelMessageHeader
             DuelTileEntity te0 = (DuelTileEntity) player.level().getBlockEntity(pos);
             DuelManager dm = te0.duelManager;
             
-            return FMLLoader.getDist() == Dist.CLIENT
+            return FMLLoader.dist() == Dist.CLIENT
                     ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
                     : () -> dm;
         }
@@ -116,7 +116,7 @@ public abstract class DuelMessageHeader
             DuelEntity e = (DuelEntity) player.level().getEntity(entityId);
             DuelManager dm = e.duelManager;
             
-            return FMLLoader.getDist() == Dist.CLIENT
+            return FMLLoader.dist() == Dist.CLIENT
                     ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
                     : () -> dm;
         }

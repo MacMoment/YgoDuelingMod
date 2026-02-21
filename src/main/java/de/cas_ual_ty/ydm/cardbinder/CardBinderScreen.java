@@ -16,7 +16,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -80,7 +83,6 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderTooltip(guiGraphics, mouseX, mouseY);
         
@@ -133,7 +135,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
         ScreenUtil.white();
-        guiGraphics.blit(CardBinderScreen.CARD_BINDER_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CardBinderScreen.CARD_BINDER_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
     }
     
     protected void onButtonClicked(Button button)
@@ -145,15 +147,15 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button == prevButton)
         {
-            PacketDistributor.sendToServer(new CardBinderMessages.ChangePage(false));
+            ClientPacketDistributor.sendToServer(new CardBinderMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            PacketDistributor.sendToServer(new CardBinderMessages.ChangePage(true));
+            ClientPacketDistributor.sendToServer(new CardBinderMessages.ChangePage(true));
         }
         else if(button == reloadButton)
         {
-            PacketDistributor.sendToServer(new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
+            ClientPacketDistributor.sendToServer(new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
         }
     }
     
@@ -166,7 +168,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button.getCard() != null)
         {
-            PacketDistributor.sendToServer(new CardBinderMessages.IndexClicked(index));
+            ClientPacketDistributor.sendToServer(new CardBinderMessages.IndexClicked(index));
         }
     }
     
@@ -176,27 +178,27 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean keyPressed(KeyEvent event)
     {
         if(cardSearch != null && cardSearch.isFocused())
         {
-            return cardSearch.keyPressed(keyCode, scanCode, modifiers);
+            return cardSearch.keyPressed(event);
         }
         else if(getMenu().loaded)
         {
-            if(keyCode == CardBinderScreen.Q)
+            if(event.key() == CardBinderScreen.Q)
             {
                 for(CardButton button : cardButtons)
                 {
                     if(button.isHoveredOrFocused() && button.getCard() != null)
                     {
-                        PacketDistributor.sendToServer(new CardBinderMessages.IndexDropped(button.index));
+                        ClientPacketDistributor.sendToServer(new CardBinderMessages.IndexDropped(button.index));
                         break;
                     }
                 }
             }
         }
         
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 }

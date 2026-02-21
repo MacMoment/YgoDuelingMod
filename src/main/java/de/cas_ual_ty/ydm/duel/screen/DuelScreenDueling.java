@@ -27,8 +27,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -340,8 +343,8 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
-        guiGraphics.blit(DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        guiGraphics.blit(DuelContainerScreen.DUEL_FOREGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, DuelContainerScreen.DUEL_FOREGROUND_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
         
         if(cardInfo != null)
         {
@@ -361,7 +364,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         
         if(lifePointsWidget != null && lifePointsWidget.isFocused() && !lifePointsWidget.isMouseOver(mouseX, mouseY))
         {
-            lifePointsWidget.setFocus(false);
+            lifePointsWidget.setFocused(false);
         }
         
         if(button == GLFW.GLFW_MOUSE_BUTTON_2)
@@ -387,23 +390,23 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean keyPressed(KeyEvent event)
     {
         if(lifePointsWidget != null && lifePointsWidget.isFocused())
         {
-            if(keyCode == GLFW.GLFW_KEY_ENTER)
+            if(event.key() == GLFW.GLFW_KEY_ENTER)
             {
                 parseAndSendLPChange();
                 return true;
             }
             else
             {
-                return lifePointsWidget.keyPressed(keyCode, scanCode, modifiers);
+                return lifePointsWidget.keyPressed(event);
             }
         }
         else
         {
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
     }
     
@@ -924,7 +927,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     
     protected void requestDuelAction(Action action)
     {
-        PacketDistributor.sendToServer(new DuelMessages.RequestDuelAction(getDuelManager().headerFactory.get(), action));
+        ClientPacketDistributor.sendToServer(new DuelMessages.RequestDuelAction(getDuelManager().headerFactory.get(), action));
     }
     
     protected Component getShownZoneName()
@@ -999,11 +1002,11 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         }
         else if(w == admitDefeatButton)
         {
-            PacketDistributor.sendToServer(new DuelMessages.SendAdmitDefeat(getHeader()));
+            ClientPacketDistributor.sendToServer(new DuelMessages.SendAdmitDefeat(getHeader()));
         }
         else if(w == offerDrawButton)
         {
-            PacketDistributor.sendToServer(new DuelMessages.SendOfferDraw(getHeader()));
+            ClientPacketDistributor.sendToServer(new DuelMessages.SendOfferDraw(getHeader()));
         }
     }
     

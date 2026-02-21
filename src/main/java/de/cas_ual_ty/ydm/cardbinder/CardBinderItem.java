@@ -17,12 +17,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class CardBinderItem extends Item implements MenuProvider
 {
@@ -66,21 +66,21 @@ public class CardBinderItem extends Item implements MenuProvider
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+        super.appendHoverText(stack, ctx, display, tooltipAdder, flag);
         
-        tooltip.add(Component.translatable(getDescriptionId() + ".uuid"));
+        tooltipAdder.accept(Component.translatable(getDescriptionId() + ".uuid"));
         
         UUID uuid = getUUID(stack);
         
         if(uuid != null)
         {
-            tooltip.add(Component.literal(uuid.toString()));
+            tooltipAdder.accept(Component.literal(uuid.toString()));
         }
         else
         {
-            tooltip.add(Component.translatable(getDescriptionId() + ".uuid.empty"));
+            tooltipAdder.accept(Component.translatable(getDescriptionId() + ".uuid.empty"));
         }
     }
     

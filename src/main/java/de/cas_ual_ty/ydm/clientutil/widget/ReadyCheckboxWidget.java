@@ -22,15 +22,9 @@ public class ReadyCheckboxWidget extends Button
     }
     
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
-    {
-        active = isActive.get();
-        super.render(guiGraphics, mouseX, mouseY, partial);
-    }
-    
-    @Override
     public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float p_renderButton_3_)
     {
+        active = isActive.get();
         Minecraft minecraft = Minecraft.getInstance();
         ScreenUtil.white();
         if(isChecked.get())

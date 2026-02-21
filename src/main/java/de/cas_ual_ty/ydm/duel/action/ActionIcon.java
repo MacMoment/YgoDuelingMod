@@ -30,7 +30,7 @@ public class ActionIcon
     {
         if(localKey == null)
         {
-            Identifier rl = YDM.actionIconRegistry.get().getKey(this);
+            Identifier rl = YDM.actionIconRegistry.getKey(this);
             localKey = "actionIcon." + rl.getNamespace() + "." + rl.getPath();
         }
         
