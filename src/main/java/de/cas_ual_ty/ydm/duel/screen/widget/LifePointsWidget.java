@@ -60,14 +60,14 @@ public class LifePointsWidget extends AbstractWidget
         x = this.x + width / 2;
         y = this.y + height / 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.scale(0.5F, 0.5F);
         
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
-        ms.popPose();
+        ms.popMatrix();
         
         if(isHoveredOrFocused())
         {

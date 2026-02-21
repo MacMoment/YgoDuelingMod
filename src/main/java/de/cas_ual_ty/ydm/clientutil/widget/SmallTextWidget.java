@@ -43,13 +43,13 @@ public class SmallTextWidget extends AbstractWidget
         int x = this.x + width / 2;
         int y = this.y + height / 2;
         
-        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushMatrix();
         guiGraphics.pose().scale(0.5F, 0.5F);
         
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, getMessage(), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
         
         if(isHoveredOrFocused() && tooltip != null)
         {

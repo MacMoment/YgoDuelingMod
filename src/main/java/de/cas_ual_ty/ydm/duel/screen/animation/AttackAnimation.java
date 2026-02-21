@@ -92,14 +92,14 @@ public class AttackAnimation extends Animation
             relativePositionRotation = 1 - relativePositionRotation;
         }
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.translate((float)(posX), (float)(posY));
         ms.rotate(rotation);
         
         ScreenUtil.drawRect(guiGraphics, -2, 0, 4, maxSize * relativePositionRotation, 1F, 0, 0, 0.5F);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public static float getRotationForPositionAndView(boolean isOpponentView, CardPosition position)

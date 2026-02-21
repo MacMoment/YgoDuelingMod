@@ -566,7 +566,7 @@ public class ClientProxy implements ISidedProxy
         
         int maxWidth = width - margin * 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ScreenUtil.white();
         
         int x = margin;
@@ -596,7 +596,7 @@ public class ClientProxy implements ISidedProxy
         
         ScreenUtil.drawSplitString(guiGraphics, fontRenderer, list, margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     private void renderSleevesInfo(GuiGraphics guiGraphics, CardSleevesType sleeves)
@@ -618,7 +618,7 @@ public class ClientProxy implements ISidedProxy
         
         int maxWidth = width - margin * 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ScreenUtil.white();
         
         int x = margin;
@@ -646,7 +646,7 @@ public class ClientProxy implements ISidedProxy
         
         ScreenUtil.drawSplitString(guiGraphics, fontRenderer, ImmutableList.of(Component.translatable("item.ydm." + sleeves.getResourceName())), margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public static int maxMessages = 50; //TODO make configurable

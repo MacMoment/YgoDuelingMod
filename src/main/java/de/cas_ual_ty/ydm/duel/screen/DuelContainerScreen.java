@@ -162,18 +162,18 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     @Override
     public void renderTooltip(GuiGraphics guiGraphics, List<? extends FormattedCharSequence> tooltips, int mouseX, int mouseY)
     {
-        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushMatrix();
         
         super.renderTooltip(guiGraphics, tooltips, mouseX, mouseY);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
     
     public void renderTooltip(GuiGraphics guiGraphics, Component text, int mouseX, int mouseY)
     {
-        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushMatrix();
         
         guiGraphics.renderTooltip(font, text, mouseX, mouseY);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
     
     public void renderDisabledTooltip(GuiGraphics guiGraphics, List<FormattedCharSequence> tooltips, int mouseX, int mouseY)

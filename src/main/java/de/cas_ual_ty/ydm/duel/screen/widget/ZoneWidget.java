@@ -120,11 +120,11 @@ public class ZoneWidget extends Button
         {
             // see font renderer, top static Vector3f
             // white is translated in front by that
-            ms.pushPose();
+            ms.pushMatrix();
             guiGraphics.drawCenteredString(Font, Component.literal("(" + zone.getCounters() + ")"),
                     x + width / 2, y + height / 2 - Font.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
-            ms.popPose();
+            ms.popMatrix();
         }
         
         if(active)

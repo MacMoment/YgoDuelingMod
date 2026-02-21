@@ -40,7 +40,7 @@ public class RemoveTokenAnimation extends Animation
         float size = (float) relativeTickTime * (endSize - this.size) + this.size;
         float halfSize = 0.5F * size;
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.translate((float)(centerPosX), (float)(centerPosY));
         
@@ -52,7 +52,7 @@ public class RemoveTokenAnimation extends Animation
         
         
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public Identifier getTexture()

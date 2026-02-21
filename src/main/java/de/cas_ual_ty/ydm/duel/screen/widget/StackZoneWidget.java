@@ -45,11 +45,11 @@ public class StackZoneWidget extends ZoneWidget
         {
             // see font renderer, top static Vector3f
             // white is translated in front by that
-            ms.pushPose();
+            ms.pushMatrix();
             guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
                     x + width / 2, y + height / 2 - fontrenderer.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
-            ms.popPose();
+            ms.popMatrix();
         }
         
         if(active)

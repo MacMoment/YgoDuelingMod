@@ -32,11 +32,11 @@ public class SmallTextButton extends Button
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y + height / 2, 0, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y + height / 2, 200 - width / 2, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
         
-        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushMatrix();
         guiGraphics.pose().scale(0.5F, 0.5F);
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, getMessage(), (x + width / 2) * 2, (y + height / 2) * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
         
         if(isHoveredOrFocused())
         {

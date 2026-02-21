@@ -66,7 +66,7 @@ public class CardRenderUtil
         int maxWidth = width - margin * 2;
         
         Matrix3x2fStack ms = guiGraphics.pose();
-        ms.pushPose();
+        ms.pushMatrix();
         ScreenUtil.white();
         
         int x = margin;
@@ -102,7 +102,7 @@ public class CardRenderUtil
         
         ScreenUtil.drawSplitString(guiGraphics, fontRenderer, list, margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public static void bindInfoResourceLocation(CardHolder c)

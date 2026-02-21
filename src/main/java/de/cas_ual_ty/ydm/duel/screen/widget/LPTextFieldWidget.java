@@ -61,12 +61,12 @@ public class LPTextFieldWidget extends EditBox
         width -= 2;
         height -= 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ms.scale(0.5F, 0.5F);
         
         super.renderWidget(guiGraphics, mouseX * 2, mouseY * 2, partialTicks);
         
-        ms.popPose();
+        ms.popMatrix();
         
         x -= 1;
         y -= 1;

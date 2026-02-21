@@ -36,7 +36,7 @@ public class InteractionWidget extends Button
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
-        ms.pushPose();
+        ms.pushMatrix();
         
         ActionIcon icon = interaction.icon;
         
@@ -68,6 +68,6 @@ public class InteractionWidget extends Button
             renderToolTip(guiGraphics, mouseX, mouseY);
         }
         
-        ms.popPose();
+        ms.popMatrix();
     }
 }
