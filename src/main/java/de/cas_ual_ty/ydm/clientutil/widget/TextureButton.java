@@ -59,7 +59,8 @@ public class TextureButton extends Button
         
         if(textureLocation != null)
         {
-            RenderSystem.setShaderTexture(0, textureLocation);
+            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+            // RenderSystem.setShaderTexture(0, textureLocation);
             YdmBlitUtil.blit(guiGraphics.pose(), x, y, width, height, texX, texY, texW, texH, 256, 256);
         }
         

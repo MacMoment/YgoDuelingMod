@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import org.joml.Matrix4f;
 import net.minecraft.client.renderer.GameRenderer;
 
 public class YdmBlitUtil
@@ -122,19 +122,21 @@ public class YdmBlitUtil
     
     protected static void customInnerBlit(Matrix4f matrix, float posX1, float posX2, float posY1, float posY2, float posZ, float texX1, float texX2, float texY1, float texY2)
     {
-        YdmBlitUtil.customInnerBlit(matrix, posX1, posX2, posY1, posY2, posZ, texX1, texY1, texX2, texY1, texX2, texY2, texX1, texY2);
+        // TODO: 1.21.11 - Rendering pipeline rewritten; Tesselator.getBuilder() removed, RenderSystem.setShader removed. Rewrite using new RenderType/GuiGraphics API.
+        // YdmBlitUtil.customInnerBlit(matrix, posX1, posX2, posY1, posY2, posZ, texX1, texY1, texX2, texY1, texX2, texY2, texX1, texY2);
     }
     
     protected static void customInnerBlit(Matrix4f matrix, float posX1, float posX2, float posY1, float posY2, float posZ, float topLeftX, float topLeftY, float topRightX, float topRightY, float botRightX, float botRightY, float botLeftX, float botLeftY)
     {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferbuilder.vertex(matrix, posX1, posY2, posZ).uv(botLeftX, botLeftY).endVertex();
-        bufferbuilder.vertex(matrix, posX2, posY2, posZ).uv(botRightX, botRightY).endVertex();
-        bufferbuilder.vertex(matrix, posX2, posY1, posZ).uv(topRightX, topRightY).endVertex();
-        bufferbuilder.vertex(matrix, posX1, posY1, posZ).uv(topLeftX, topLeftY).endVertex();
-        BufferUploader.drawWithShader(bufferbuilder.end());
+        // TODO: 1.21.11 - Rendering pipeline rewritten; Tesselator.getBuilder() removed, RenderSystem.setShader removed. Rewrite using new RenderType/GuiGraphics API.
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        // bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        // bufferbuilder.vertex(matrix, posX1, posY2, posZ).uv(botLeftX, botLeftY).endVertex();
+        // bufferbuilder.vertex(matrix, posX2, posY2, posZ).uv(botRightX, botRightY).endVertex();
+        // bufferbuilder.vertex(matrix, posX2, posY1, posZ).uv(topRightX, topRightY).endVertex();
+        // bufferbuilder.vertex(matrix, posX1, posY1, posZ).uv(topLeftX, topLeftY).endVertex();
+        // BufferUploader.drawWithShader(bufferbuilder.end());
     }
     
     public interface FullBlitMethod

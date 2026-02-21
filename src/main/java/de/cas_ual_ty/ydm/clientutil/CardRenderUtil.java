@@ -85,7 +85,8 @@ public class CardRenderUtil
         
         if(token)
         {
-            RenderSystem.setShaderTexture(0, CardRenderUtil.getInfoTokenOverlay());
+            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+            // RenderSystem.setShaderTexture(0, CardRenderUtil.getInfoTokenOverlay());
             YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
         }
         
@@ -138,7 +139,8 @@ public class CardRenderUtil
     
     public static void bindSleeves(CardSleevesType s)
     {
-        RenderSystem.setShaderTexture(0, s.getMainRL(ClientProxy.activeCardMainImageSize));
+        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+        // RenderSystem.setShaderTexture(0, s.getMainRL(ClientProxy.activeCardMainImageSize));
     }
     
     public static Identifier getInfoCardBack()
@@ -187,13 +189,15 @@ public class CardRenderUtil
                 
                 Runnable mask = () ->
                 {
-                    RenderSystem.setShaderTexture(0, MASK_RL);
+                    // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+                    // RenderSystem.setShaderTexture(0, MASK_RL);
                     YdmBlitUtil.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
                 };
                 
                 Runnable renderer = () ->
                 {
-                    RenderSystem.setShaderTexture(0, layer.getInfoImageResourceLocation());
+                    // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+                    // RenderSystem.setShaderTexture(0, layer.getInfoImageResourceLocation());
                     YdmBlitUtil.fullBlit(ms, x - width / 2, y - height / 2, width, height);
                 };
                 
@@ -227,14 +231,16 @@ public class CardRenderUtil
         }
         else
         {
-            RenderSystem.setShaderTexture(0, back.getMainRL(ClientProxy.activeCardMainImageSize));
+            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+            // RenderSystem.setShaderTexture(0, back.getMainRL(ClientProxy.activeCardMainImageSize));
         }
         
         blitMethod.fullBlit(ms, x, y, width, height);
         
         if(card.getIsToken())
         {
-            RenderSystem.setShaderTexture(0, CardRenderUtil.getMainTokenOverlay());
+            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+            // RenderSystem.setShaderTexture(0, CardRenderUtil.getMainTokenOverlay());
             blitMethod.fullBlit(ms, x, y, width, height);
         }
         
@@ -248,13 +254,15 @@ public class CardRenderUtil
                 {
                     Runnable mask = () ->
                     {
-                        RenderSystem.setShaderTexture(0, MASK_RL);
+                        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+                        // RenderSystem.setShaderTexture(0, MASK_RL);
                         blitMethod.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
                     };
                     
                     Runnable renderer = () ->
                     {
-                        RenderSystem.setShaderTexture(0, layer.getMainImageResourceLocation());
+                        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+                        // RenderSystem.setShaderTexture(0, layer.getMainImageResourceLocation());
                         blitMethod.fullBlit(ms, x, y, width, height);
                     };
                     

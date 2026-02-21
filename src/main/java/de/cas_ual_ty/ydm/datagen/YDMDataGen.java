@@ -14,7 +14,7 @@ import java.io.IOException;
 public class YDMDataGen
 {
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event)
+    public static void gatherData(GatherDataEvent.Client event)
     {
         try
         {
@@ -26,6 +26,6 @@ public class YDMDataGen
         }
         
         PackOutput packOutput = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(event.includeClient(), new YDMItemModels(packOutput, YDM.MOD_ID, event.getExistingFileHelper()));
+        event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID, event.getExistingFileHelper()));
     }
 }

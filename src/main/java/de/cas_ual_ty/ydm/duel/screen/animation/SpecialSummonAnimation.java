@@ -52,7 +52,8 @@ public class SpecialSummonAnimation extends Animation
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
         
-        RenderSystem.setShaderTexture(0, getTexture());
+        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
+        // RenderSystem.setShaderTexture(0, getTexture());
         YdmBlitUtil.fullBlit(ms, -halfSize, -halfSize, size, size);
         
         RenderSystem.disableBlend();
