@@ -2,9 +2,10 @@ package de.cas_ual_ty.ydm.duel.network;
 
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
-public abstract class DuelMessage
+public abstract class DuelMessage implements CustomPacketPayload
 {
     // Server -> Client
     public abstract static class ClientBaseMessage extends DuelMessage
@@ -29,6 +30,8 @@ public abstract class DuelMessage
     // Client -> Server
     public abstract static class ServerBaseMessage extends DuelMessage
     {
+        public transient Player sender;
+        
         public ServerBaseMessage(DuelMessageHeader header)
         {
             super(header);
@@ -42,8 +45,7 @@ public abstract class DuelMessage
         @Override
         public final Player getPlayer()
         {
-            // TODO: Port to NeoForge payload system - obtain sender from payload context
-            return null;
+            return sender;
         }
     }
     
@@ -75,7 +77,6 @@ public abstract class DuelMessage
     
     public abstract Player getPlayer();
     
-    // TODO: Port to NeoForge payload system - handle method stub
     public void handle()
     {
         Player player = getPlayer();
