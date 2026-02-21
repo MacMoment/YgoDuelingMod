@@ -4,10 +4,8 @@ import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.card.properties.Properties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CardSupplyMessages
 {
@@ -41,22 +39,16 @@ public class CardSupplyMessages
             return new RequestCard(YdmDatabase.PROPERTIES_LIST.get(buf.readLong()), buf.readByte());
         }
         
-        public static void handle(RequestCard msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(RequestCard msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            
             if(msg.card != null && msg.card != Properties.DUMMY)
             {
-                context.enqueueWork(() ->
+                CardSupplyMessages.doForBinderContainer(sender, (container) ->
                 {
-                    CardSupplyMessages.doForBinderContainer(context.getSender(), (container) ->
-                    {
-                        container.giveCard(msg.card, msg.imageIndex);
-                    });
+                    container.giveCard(msg.card, msg.imageIndex);
                 });
             }
-            
-            context.setPacketHandled(true);
         }
     }
 }

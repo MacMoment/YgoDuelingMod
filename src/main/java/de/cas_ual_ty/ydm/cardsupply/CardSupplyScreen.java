@@ -16,7 +16,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
     {
         if(button.getCard() != null && button.getCard().getCard() != null)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
         }
     }
     

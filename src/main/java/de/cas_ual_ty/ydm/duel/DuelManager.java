@@ -14,7 +14,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -1084,7 +1084,7 @@ public class DuelManager
     
     protected <MSG> void sendGeneralPacketTo(ServerPlayer player, MSG msg)
     {
-        YDM.channel.send(PacketDistributor.PLAYER.with(() -> player), msg);
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.PLAYER.with(() -> player), msg);
     }
     
     // --- Getters ---

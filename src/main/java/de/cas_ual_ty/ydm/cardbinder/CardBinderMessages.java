@@ -5,11 +5,9 @@ import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageUtility;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.NetworkEvent;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CardBinderMessages
 {
@@ -41,25 +39,20 @@ public class CardBinderMessages
             return new ChangePage(buf.readBoolean());
         }
         
-        public static void handle(ChangePage msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(ChangePage msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(sender, (container) ->
             {
-                CardBinderMessages.doForBinderContainer(context.getSender(), (container) ->
+                if(msg.nextPage)
                 {
-                    if(msg.nextPage)
-                    {
-                        container.nextPage();
-                    }
-                    else
-                    {
-                        container.prevPage();
-                    }
-                });
+                    container.nextPage();
+                }
+                else
+                {
+                    container.prevPage();
+                }
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -83,18 +76,13 @@ public class CardBinderMessages
             return new ChangeSearch(buf.readUtf(Short.MAX_VALUE));
         }
         
-        public static void handle(ChangeSearch msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(ChangeSearch msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(sender, (container) ->
             {
-                CardBinderMessages.doForBinderContainer(context.getSender(), (container) ->
-                {
-                    container.updateSearch(msg.search);
-                });
+                container.updateSearch(msg.search);
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -121,19 +109,14 @@ public class CardBinderMessages
             return new UpdatePage(buf.readInt(), buf.readInt());
         }
         
-        public static void handle(UpdatePage msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(UpdatePage msg)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(YDM.proxy.getClientPlayer(), (container) ->
             {
-                CardBinderMessages.doForBinderContainer(YDM.proxy.getClientPlayer(), (container) ->
-                {
-                    container.setClientPage(msg.page);
-                    container.setClientMaxPage(msg.maxPage);
-                });
+                container.setClientPage(msg.page);
+                container.setClientMaxPage(msg.maxPage);
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -160,18 +143,13 @@ public class CardBinderMessages
             return new UpdateList(buf.readInt(), DuelMessageUtility.decodeList(buf, DuelMessageUtility::decodeCardHolder));
         }
         
-        public static void handle(UpdateList msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(UpdateList msg)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(YDM.proxy.getClientPlayer(), (container) ->
             {
-                CardBinderMessages.doForBinderContainer(YDM.proxy.getClientPlayer(), (container) ->
-                {
-                    container.setClientList(msg.page, msg.list);
-                });
+                container.setClientList(msg.page, msg.list);
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -195,18 +173,13 @@ public class CardBinderMessages
             return new IndexClicked(buf.readInt());
         }
         
-        public static void handle(IndexClicked msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(IndexClicked msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(sender, (container) ->
             {
-                CardBinderMessages.doForBinderContainer(context.getSender(), (container) ->
-                {
-                    container.indexClicked(msg.index);
-                });
+                container.indexClicked(msg.index);
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -229,18 +202,13 @@ public class CardBinderMessages
             return new IndexDropped(buf.readInt());
         }
         
-        public static void handle(IndexDropped msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(IndexDropped msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            context.enqueueWork(() ->
+            CardBinderMessages.doForBinderContainer(sender, (container) ->
             {
-                CardBinderMessages.doForBinderContainer(context.getSender(), (container) ->
-                {
-                    container.indexDropped(msg.index);
-                });
+                container.indexDropped(msg.index);
             });
-            
-            context.setPacketHandled(true);
         }
     }
 }

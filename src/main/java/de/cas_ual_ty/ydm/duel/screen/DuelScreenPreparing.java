@@ -21,7 +21,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import java.util.ArrayList;
 import java.util.List;
@@ -428,12 +428,12 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     
     protected void chooseDeckClicked()
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
     }
     
     public void requestDeck(int index)
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestDeck(getHeader(), index));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestDeck(getHeader(), index));
     }
     
     protected static class DeckWrapper

@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,12 +130,12 @@ public class CardBinderContainer extends AbstractContainerMenu
     
     protected void updateListToClient()
     {
-        YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CardBinderMessages.UpdateList(page, serverList.getCardsForPage(page)));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CardBinderMessages.UpdateList(page, serverList.getCardsForPage(page)));
     }
     
     protected void updatePagesToClient()
     {
-        YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CardBinderMessages.UpdatePage(page, serverList.getPagesAmount()));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CardBinderMessages.UpdatePage(page, serverList.getPagesAmount()));
     }
     
     public void setClientList(int page, List<CardHolder> list)

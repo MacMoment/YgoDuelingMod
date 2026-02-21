@@ -24,7 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -282,7 +282,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         {
             if(duelChat)
             {
-                YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
+                // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
             }
             else
             {

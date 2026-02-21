@@ -15,7 +15,7 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen<E>
 {
@@ -101,14 +101,14 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     
     protected void roleButtonClicked(Button button)
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
     }
     
     protected void ready1ButtonClicked()
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER1)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
         }
     }
     
@@ -116,7 +116,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER2)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
         }
     }
 }
