@@ -24,7 +24,7 @@ public class CardSupplyBlock extends Block
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit)
     {
-        if(!worldIn.isClientSide && player instanceof ServerPlayer p)
+        if(!worldIn.isClientSide() && player instanceof ServerPlayer p)
         {
             p.openMenu(getMenuProvider(state, worldIn, pos), pos);
         }

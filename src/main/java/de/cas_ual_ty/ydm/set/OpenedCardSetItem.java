@@ -38,7 +38,7 @@ public class OpenedCardSetItem extends CardSetBaseItem
     @Override
     public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
-        if(!world.isClientSide && hand == YdmUtil.getActiveItem(player, this))
+        if(!world.isClientSide() && hand == YdmUtil.getActiveItem(player, this))
         {
             ItemStack itemStack = player.getItemInHand(hand);
             

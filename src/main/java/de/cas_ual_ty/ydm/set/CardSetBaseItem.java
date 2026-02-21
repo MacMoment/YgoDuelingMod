@@ -81,7 +81,7 @@ public abstract class CardSetBaseItem extends Item
     
     public void viewSetContents(Level world, Player player, ItemStack itemStack)
     {
-        if(!world.isClientSide)
+        if(!world.isClientSide())
         {
             CardSet set = getCardSet(itemStack);
             TreeSet<CardHolder> cardsSet = set.getAllCardEntries();

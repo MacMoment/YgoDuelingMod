@@ -40,7 +40,7 @@ public class CardItem extends Item
     {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         CardHolder cardHolder = getCardHolder(itemStack);
-        if(cardHolder != null && pPlayer.level().isClientSide)
+        if(cardHolder != null && pPlayer.level().isClientSide())
         {
             YDM.proxy.openCardInspectScreen(cardHolder);
             return InteractionResult.SUCCESS;

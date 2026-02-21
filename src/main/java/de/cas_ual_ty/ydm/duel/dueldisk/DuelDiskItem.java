@@ -32,7 +32,7 @@ public class DuelDiskItem extends Item
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand)
     {
-        if(hand == InteractionHand.OFF_HAND && !level.isClientSide && player instanceof ServerPlayer)
+        if(hand == InteractionHand.OFF_HAND && !level.isClientSide() && player instanceof ServerPlayer)
         {
             ServerLevel slevel = (ServerLevel) level;
             ServerPlayer splayer = (ServerPlayer) player;
@@ -80,7 +80,7 @@ public class DuelDiskItem extends Item
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player player1u, LivingEntity target, InteractionHand hand)
     {
-        if(hand == InteractionHand.OFF_HAND && !player1u.level().isClientSide && player1u instanceof ServerPlayer && target instanceof ServerPlayer)
+        if(hand == InteractionHand.OFF_HAND && !player1u.level().isClientSide() && player1u instanceof ServerPlayer && target instanceof ServerPlayer)
         {
             ServerLevel level = (ServerLevel) player1u.level();
             

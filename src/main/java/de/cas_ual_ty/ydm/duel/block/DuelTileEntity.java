@@ -36,7 +36,7 @@ public class DuelTileEntity extends BlockEntity implements MenuProvider
     
     public DuelManager createDuelManager()
     {
-        return new DuelManager(level.isClientSide, this::createHeader);
+        return new DuelManager(level.isClientSide(), this::createHeader);
     }
     
     public DuelMessageHeader createHeader()
