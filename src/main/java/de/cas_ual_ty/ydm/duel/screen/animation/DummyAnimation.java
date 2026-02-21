@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class DummyAnimation extends Animation
 {
@@ -10,7 +10,7 @@ public class DummyAnimation extends Animation
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
     }
 }

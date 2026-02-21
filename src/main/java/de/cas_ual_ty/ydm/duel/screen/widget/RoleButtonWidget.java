@@ -2,6 +2,7 @@ package de.cas_ual_ty.ydm.duel.screen.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.duel.PlayerRole;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -20,9 +21,9 @@ public class RoleButtonWidget extends Button
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partial)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
     {
         active = available.get();
-        super.render(ms, mouseX, mouseY, partial);
+        super.render(guiGraphics, mouseX, mouseY, partial);
     }
 }

@@ -15,9 +15,10 @@ import de.cas_ual_ty.ydm.duel.playfield.*;
 import de.cas_ual_ty.ydm.duel.screen.animation.*;
 import de.cas_ual_ty.ydm.duel.screen.widget.*;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -332,9 +333,10 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(ms, partialTicks, mouseX, mouseY);
+        PoseStack ms = guiGraphics.pose();
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
         RenderSystem.setShaderTexture(0, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE);
@@ -349,7 +351,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int x, int y)
+    protected void renderLabels(GuiGraphics guiGraphics, int x, int y)
     {
     }
     
@@ -1085,11 +1087,11 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         renderTooltip(ms, w.getMessage(), mouseX, mouseY);
     }
     
-    protected void viewCardStackTooltip(Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void viewCardStackTooltip(Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
     }
     
-    protected void lpTooltip(ZoneOwner owner, @Nullable MutableComponent playerName, Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltip(ZoneOwner owner, @Nullable MutableComponent playerName, Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> list = new LinkedList<>();
         
@@ -1107,17 +1109,17 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         renderTooltip(ms, list, mouseX, mouseY);
     }
     
-    protected void lpTooltipView(Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltipView(Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
         lpTooltip(getView(), getViewName(), w, ms, mouseX, mouseY);
     }
     
-    protected void lpTooltipViewOpponent(Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltipViewOpponent(Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
         lpTooltip(getView().opponent(), getViewOpponentName(), w, ms, mouseX, mouseY);
     }
     
-    protected void lpTextFieldWidget(Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTextFieldWidget(Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> list = new LinkedList<>();
         
@@ -1128,7 +1130,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         renderTooltip(ms, list, mouseX, mouseY);
     }
     
-    protected void phaseWidgetHovered(Widget w, PoseStack ms, int mouseX, int mouseY)
+    protected void phaseWidgetHovered(Renderable w, PoseStack ms, int mouseX, int mouseY)
     {
         renderTooltip(ms, getCurrentPhaseTooltip(), mouseX, mouseY);
     }

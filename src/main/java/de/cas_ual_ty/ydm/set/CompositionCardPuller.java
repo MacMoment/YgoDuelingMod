@@ -8,7 +8,7 @@ import de.cas_ual_ty.ydm.YdmItems;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.util.JsonKeys;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.SortedArraySet;
+import java.util.TreeSet;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -119,7 +119,7 @@ public class CompositionCardPuller extends CardPuller
     }
     
     @Override
-    public void addAllCardEntries(SortedArraySet<CardHolder> sortedSet)
+    public void addAllCardEntries(TreeSet<CardHolder> sortedSet)
     {
         for(CardSet subSet : subSets)
         {

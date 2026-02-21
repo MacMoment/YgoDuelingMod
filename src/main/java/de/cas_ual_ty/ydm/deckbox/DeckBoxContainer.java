@@ -30,7 +30,6 @@ public class DeckBoxContainer extends AbstractContainerMenu
         this.itemStack = itemStack;
         
         itemHandler = ((DeckBoxItem) itemStack.getItem()).getItemHandler(itemStack);
-        itemHandler.load();
         
         final int itemsPerRow = 15;
         
@@ -177,7 +176,6 @@ public class DeckBoxContainer extends AbstractContainerMenu
     @Override
     public void removed(Player playerIn)
     {
-        itemHandler.save();
         super.removed(playerIn);
     }
 }

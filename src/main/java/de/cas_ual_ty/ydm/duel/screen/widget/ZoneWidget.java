@@ -13,6 +13,7 @@ import de.cas_ual_ty.ydm.duel.screen.DuelScreenDueling;
 import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -98,8 +99,9 @@ public class ZoneWidget extends Button
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font Font = minecraft.font;
         

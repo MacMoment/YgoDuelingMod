@@ -37,8 +37,6 @@ public class CIIContainer extends AbstractContainerMenu
         player = playerInventoryIn.player;
         this.itemHandler = itemHandler;
         
-        itemHandler.load();
-        
         page = 0;
         maxPage = Mth.ceil(this.itemHandler.getSlots() / (double) PAGE_SIZE);
         
@@ -165,7 +163,6 @@ public class CIIContainer extends AbstractContainerMenu
     
     public void updateSlots()
     {
-        itemHandler.save();
         slots.clear();
         createBottomSlots(player.getInventory());
         createTopSlots();
@@ -210,7 +207,6 @@ public class CIIContainer extends AbstractContainerMenu
     @Override
     public void removed(Player pPlayer)
     {
-        itemHandler.save();
         super.removed(pPlayer);
     }
     

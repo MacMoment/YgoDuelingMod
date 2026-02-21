@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 public class RemoveTokenAnimation extends Animation
@@ -26,8 +27,9 @@ public class RemoveTokenAnimation extends Animation
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         double relativeTickTime = (tickTime + partialTicks) / maxTickTime;
         
         // [0, 1/2pi]

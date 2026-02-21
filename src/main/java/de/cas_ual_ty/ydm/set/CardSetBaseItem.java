@@ -13,7 +13,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.SortedArraySet;
+import java.util.TreeSet;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -83,7 +83,7 @@ public abstract class CardSetBaseItem extends Item
         if(!world.isClientSide)
         {
             CardSet set = getCardSet(itemStack);
-            SortedArraySet<CardHolder> cardsSet = set.getAllCardEntries();
+            TreeSet<CardHolder> cardsSet = set.getAllCardEntries();
             CardHolder[] cards = cardsSet.toArray(new CardHolder[0]);
             
             CIIContainer.openGui(player, cards.length, new MenuProvider()

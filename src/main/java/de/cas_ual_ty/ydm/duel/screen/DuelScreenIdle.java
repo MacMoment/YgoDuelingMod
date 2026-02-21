@@ -11,6 +11,7 @@ import de.cas_ual_ty.ydm.duel.PlayerRole;
 import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import de.cas_ual_ty.ydm.duel.screen.widget.RoleButtonWidget;
 import de.cas_ual_ty.ydm.duel.screen.widget.RoleOccupantsWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -50,15 +51,17 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        PoseStack ms = guiGraphics.pose();
         font.draw(ms, "Waiting for players...", 8.0F, 6.0F, 0x404040);
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(ms, partialTicks, mouseX, mouseY);
+        PoseStack ms = guiGraphics.pose();
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
         RenderSystem.setShaderTexture(0, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE);

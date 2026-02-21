@@ -1,9 +1,10 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 
-public abstract class Animation implements Widget
+public abstract class Animation implements Renderable
 {
     public Runnable onStart;
     public Runnable onEnd;
@@ -55,7 +56,7 @@ public abstract class Animation implements Widget
     }
     
     @Override
-    public abstract void render(PoseStack ms, int mouseX, int mouseY, float partialTicks);
+    public abstract void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
     
     /**
      * @return true if this animation works in parallel to other animations

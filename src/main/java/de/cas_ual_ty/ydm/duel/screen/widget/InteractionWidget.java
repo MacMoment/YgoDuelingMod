@@ -7,6 +7,7 @@ import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import de.cas_ual_ty.ydm.duel.action.ActionIcon;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneInteraction;
 import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -32,8 +33,9 @@ public class InteractionWidget extends Button
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         ms.pushPose();
         ms.translate(0, 0, 5);
         

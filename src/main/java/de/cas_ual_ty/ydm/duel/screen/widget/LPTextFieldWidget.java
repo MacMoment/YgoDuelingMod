@@ -3,6 +3,7 @@ package de.cas_ual_ty.ydm.duel.screen.widget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.clientutil.widget.ITooltip;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
@@ -47,8 +48,9 @@ public class LPTextFieldWidget extends EditBox
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         x *= 2;
         y *= 2;
         width *= 2;
@@ -62,7 +64,7 @@ public class LPTextFieldWidget extends EditBox
         ms.pushPose();
         ms.scale(0.5F, 0.5F, 1);
         
-        super.renderButton(ms, mouseX * 2, mouseY * 2, partialTicks);
+        super.renderWidget(guiGraphics, mouseX * 2, mouseY * 2, partialTicks);
         
         ms.popPose();
         
