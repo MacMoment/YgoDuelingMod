@@ -146,7 +146,7 @@ public class CardBinderItem extends Item implements MenuProvider
             }
             else
             {
-                uuid = uuidStr.isEmpty() ? null : UUID.fromString(uuidStr);
+                uuid = parseUUID(uuidStr);
             }
             itemStack.set(YDM.UUID_DATA.get(), uuid == null ? "" : uuid.toString());
             tag.remove(MANAGER_UUID_KEY_OLD);
@@ -154,10 +154,26 @@ public class CardBinderItem extends Item implements MenuProvider
         }
         else
         {
-            uuid = uuidStr.isEmpty() ? null : UUID.fromString(uuidStr);
+            uuid = parseUUID(uuidStr);
         }
         
         return uuid;
+    }
+    
+    private static UUID parseUUID(String uuidStr)
+    {
+        if(uuidStr.isEmpty())
+        {
+            return null;
+        }
+        try
+        {
+            return UUID.fromString(uuidStr);
+        }
+        catch(IllegalArgumentException e)
+        {
+            return null;
+        }
     }
     
     public void setUUID(ItemStack itemStack, UUID uuid)
