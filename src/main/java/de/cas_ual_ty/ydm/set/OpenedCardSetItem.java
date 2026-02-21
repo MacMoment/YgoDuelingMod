@@ -73,7 +73,7 @@ public class OpenedCardSetItem extends CardSetBaseItem
     
     public YDMItemHandler getItemHandler(ItemStack itemStack)
     {
-        return itemStack.getData(YDM.CARD_ITEM_INVENTORY.get());
+        return itemStack.getData(YDM.CARD_ITEM_INVENTORY);
     }
     
     public ItemStack createItemForSet(CardSet set, YDMItemHandler itemHandler)

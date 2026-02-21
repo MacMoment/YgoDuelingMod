@@ -39,7 +39,7 @@ public abstract class UUIDCardsManager extends JsonCardsManager
     @Override
     public void readFromNBT(CompoundTag nbt)
     {
-        if(nbt.contains(JsonKeys.UUID, Tag.TAG_INT_ARRAY))
+        if(nbt.contains(JsonKeys.UUID))
         {
             Tag t = nbt.get(JsonKeys.UUID);
             if(t instanceof IntArrayTag)
