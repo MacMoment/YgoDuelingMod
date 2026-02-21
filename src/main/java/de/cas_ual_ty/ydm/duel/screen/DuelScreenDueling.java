@@ -31,6 +31,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 
 import javax.annotation.Nullable;
@@ -358,21 +359,21 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     }
     
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick)
     {
-        forceFinishAnimations(mouseX, mouseY);
+        forceFinishAnimations(event.x(), event.y());
         
-        if(lifePointsWidget != null && lifePointsWidget.isFocused() && !lifePointsWidget.isMouseOver(mouseX, mouseY))
+        if(lifePointsWidget != null && lifePointsWidget.isFocused() && !lifePointsWidget.isMouseOver(event.x(), event.y()))
         {
             lifePointsWidget.setFocused(false);
         }
         
-        if(button == GLFW.GLFW_MOUSE_BUTTON_2)
+        if(event.button() == GLFW.GLFW_MOUSE_BUTTON_2)
         {
             resetToNormalZoneWidgets();
         }
         
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
     
     @Override

@@ -104,7 +104,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
                     }
                     
                     //renderTooltip
-                    renderComponentTooltip(guiGraphics, tooltip, mouseX, mouseY);
+                    guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
                 }
                 
                 break;

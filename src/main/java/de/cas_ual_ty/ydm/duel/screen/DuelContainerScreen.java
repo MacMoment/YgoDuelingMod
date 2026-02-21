@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 
 public abstract class DuelContainerScreen<E extends DuelContainer> extends SwitchableContainerScreen<E>
@@ -131,14 +132,14 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     }
     
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick)
     {
-        if(textFieldWidget != null && textFieldWidget.isFocused() && !textFieldWidget.isMouseOver(mouseX, mouseY))
+        if(textFieldWidget != null && textFieldWidget.isFocused() && !textFieldWidget.isMouseOver(event.x(), event.y()))
         {
             textFieldWidget.setFocused(false);
         }
         
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
     
     @Override
