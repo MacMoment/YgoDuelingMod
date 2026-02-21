@@ -26,6 +26,6 @@ public class YDMDataGen
         }
         
         PackOutput packOutput = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID, event.getExistingFileHelper()));
+        event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID));
     }
 }

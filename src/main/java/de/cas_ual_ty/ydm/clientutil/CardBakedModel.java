@@ -1,90 +1,31 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-@SuppressWarnings("deprecation")
-public class CardBakedModel implements IDynamicBakedModel
+/**
+ * Custom item model for card items. Delegates to FinalCardBakedModel for custom card texture rendering.
+ * TODO: Implement full custom card texture rendering using the new ItemModel system.
+ */
+public class CardBakedModel implements ItemModel
 {
-    private BakedModel mainModel;
-    private ItemOverrides overrideList;
+    private final ItemModel baseModel;
     
-    public CardBakedModel(BakedModel mainModel)
+    public CardBakedModel(ItemModel baseModel)
     {
-        this.mainModel = mainModel;
-        overrideList = new CardOverrideList(new FinalCardBakedModel(mainModel));
+        this.baseModel = baseModel;
     }
     
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType)
+    public void update(ItemStackRenderState renderState, ItemStack stack, ItemModelResolver modelResolver, ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed)
     {
-        return mainModel.getQuads(state, side, rand, extraData, renderType);
-    }
-    
-    @Override
-    public boolean useAmbientOcclusion()
-    {
-        return mainModel.useAmbientOcclusion();
-    }
-    
-    @Override
-    public boolean isGui3d()
-    {
-        return mainModel.isGui3d();
-    }
-    
-    @Override
-    public boolean usesBlockLight()
-    {
-        return mainModel.usesBlockLight();
-    }
-    
-    @Override
-    public boolean isCustomRenderer()
-    {
-        return mainModel.isCustomRenderer();
-    }
-    
-    @Override
-    public TextureAtlasSprite getParticleIcon()
-    {
-        return mainModel.getParticleIcon();
-    }
-    
-    @Override
-    public ItemOverrides getOverrides()
-    {
-        return overrideList;
-    }
-    
-    private static class CardOverrideList extends ItemOverrides
-    {
-        private FinalCardBakedModel finalModel;
-        
-        public CardOverrideList(FinalCardBakedModel finalModel)
-        {
-            this.finalModel = finalModel;
-        }
-        
-        @Override
-        public BakedModel resolve(BakedModel pModel, ItemStack stack, @Nullable ClientLevel pLevel, @Nullable LivingEntity pEntity, int pSeed)
-        {
-            return finalModel.setActiveItemStack(stack);
-        }
+        // TODO: Intercept here to apply custom card texture based on stack's CardHolder data
+        baseModel.update(renderState, stack, modelResolver, displayContext, level, entity, seed);
     }
 }

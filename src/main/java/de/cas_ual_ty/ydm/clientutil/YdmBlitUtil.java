@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.clientutil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.RenderTypes;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
 

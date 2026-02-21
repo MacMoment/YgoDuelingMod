@@ -1,218 +1,60 @@
 package de.cas_ual_ty.ydm.clientutil;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.mojang.math.Transformation;
-import de.cas_ual_ty.ydm.YDM;
-import de.cas_ual_ty.ydm.YdmDatabase;
-import de.cas_ual_ty.ydm.YdmItems;
-import de.cas_ual_ty.ydm.card.CardHolder;
-import de.cas_ual_ty.ydm.card.properties.Properties;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElement;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
+import net.neoforged.neoforge.client.model.ComposedModelState;
+import net.neoforged.neoforge.client.model.UnbakedElementsHelper;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
-@SuppressWarnings("deprecation")
-public class FinalCardBakedModel implements BakedModel
+/**
+ * Final baked model for card items that renders custom card textures.
+ * TODO: Restore full custom card texture rendering using the new ItemModel system.
+ */
+public class FinalCardBakedModel implements ItemModel
 {
-    private BakedModel mainModel;
-    private ItemStack activeItemStack;
-    private Function<Identifier, TextureAtlasSprite> textureGetter;
+    private final ItemModel baseModel;
     
-    private List<BakedQuad> singleBackList = null;
-    private List<BakedQuad> partneredBackList = null;
-    private List<BakedQuad> blancList = null;
-    
-    private HashMap<Properties, List<BakedQuad>> quadsMap;
-    
-    public FinalCardBakedModel(BakedModel mainModel)
+    public FinalCardBakedModel(ItemModel baseModel)
     {
-        this.mainModel = mainModel;
-        setActiveItemStack(ItemStack.EMPTY);
-        textureGetter = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
-        quadsMap = new HashMap<>(YdmDatabase.PROPERTIES_LIST.size());
+        this.baseModel = baseModel;
     }
     
     public FinalCardBakedModel setActiveItemStack(ItemStack itemStack)
     {
-        activeItemStack = itemStack;
         return this;
     }
     
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState pState, @Nullable Direction pDirection, RandomSource pRandom)
+    public void update(ItemStackRenderState renderState, ItemStack stack, ItemModelResolver modelResolver, ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed)
     {
-        if(ClientProxy.itemsUseCardImagesActive)
-        {
-            CardHolder card = YdmItems.CARD.get().getCardHolder(activeItemStack);
-            
-            if(card != null)
-            {
-                List<BakedQuad> list = new ArrayList<>();
-                list.addAll(getPartneredBackList());
-                
-                if(card.getCard() != null)
-                {
-                    Identifier front = card.getItemImageResourceLocation();
-                    TextureAtlasSprite spriteFront = textureGetter.apply(front);
-                    
-                    if(!quadsMap.containsKey(card.getCard()))
-                    {
-                        ModelState modelState = new SimpleModelState(Transformation.identity());
-                        List<BlockElement> unbaked = UnbakedGeometryHelper.createUnbakedItemMaskElements(1, spriteFront);
-                        List<BakedQuad> baked = UnbakedGeometryHelper.bakeElements(unbaked, m -> spriteFront, modelState, front);
-                        
-                        List<BakedQuad> textureQuads = new ArrayList<>(0);
-                        textureQuads.addAll(baked);
-                        
-                        quadsMap.put(card.getCard(), textureQuads);
-                    }
-                    
-                    list.addAll(quadsMap.get(card.getCard()));
-                }
-                else
-                {
-                    list.addAll(getBlancList());
-                }
-                
-                return list;
-            }
-        }
+        baseModel.update(renderState, stack, modelResolver, displayContext, level, entity, seed);
+    }
+    
+    /**
+     * Converts a texture sprite into baked quads for a specific face direction.
+     * Note: The Identifier parameter was removed as UnbakedElementsHelper.bakeElements no longer requires it.
+     */
+    public static List<BakedQuad> convertTexture(Transformation t, TextureAtlasSprite sprite, float off, Direction direction, int color, int layerIdx)
+    {
+        ModelState modelState = new ComposedModelState(BlockModelRotation.IDENTITY, new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1F, 1F, 1F), new Quaternionf()));
         
-        return getSingleBackList();
-    }
-    
-    @Override
-    public boolean useAmbientOcclusion()
-    {
-        return mainModel.useAmbientOcclusion();
-    }
-    
-    @Override
-    public boolean isGui3d()
-    {
-        return mainModel.isGui3d();
-    }
-    
-    @Override
-    public boolean usesBlockLight()
-    {
-        return mainModel.usesBlockLight();
-    }
-    
-    @Override
-    public boolean isCustomRenderer()
-    {
-        return mainModel.isCustomRenderer();
-    }
-    
-    @Override
-    public TextureAtlasSprite getParticleIcon()
-    {
-        return mainModel.getParticleIcon();
-    }
-    
-    @Override
-    public ItemOverrides getOverrides()
-    {
-        return mainModel.getOverrides();
-    }
-    
-    @Override
-    public BakedModel applyTransform(ItemDisplayContext t, PoseStack mat, boolean applyLeftHandTransform)
-    {
-        switch(t)
-        {
-            case THIRD_PERSON_LEFT_HAND:
-            case THIRD_PERSON_RIGHT_HAND:
-            case FIRST_PERSON_LEFT_HAND:
-            case FIRST_PERSON_RIGHT_HAND:
-                // m.setTranslation(new Vector3f(0f, 3.5f, 0f));
-                
-                mat.scale(0.5F, 0.5F, 0.5F);
-                mat.translate(0, 0.35, 0);
-                
-                break;
-            case GROUND:
-                // m.setTranslation(new Vector3f(0f, 4f, 0f));
-                mat.scale(0.5F, 0.5F, 0.5F);
-                break;
-            case FIXED:
-                mat.mulPose(Axis.YP.rotationDegrees(180F));
-                break;
-            default:
-                break;
-        }
-        
-        BakedModel.super.applyTransform(t, mat, applyLeftHandTransform);
-        
-        return this;
-    }
-    
-    private List<BakedQuad> getSingleBackList()
-    {
-        if(singleBackList == null)
-        {
-            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
-            TextureAtlasSprite sprite = textureGetter.apply(rl);
-            singleBackList = new ArrayList<>(0);
-            singleBackList.addAll(convertTexture(Transformation.identity(), sprite, 0.5F, Direction.SOUTH, 0xFFFFFFFF, 1, rl));
-            singleBackList.addAll(convertTexture(Transformation.identity(), sprite, 0.5F, Direction.NORTH, 0xFFFFFFFF, 1, rl));
-        }
-        
-        return singleBackList;
-    }
-    
-    private List<BakedQuad> getPartneredBackList()
-    {
-        if(partneredBackList == null)
-        {
-            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("card_back"));
-            TextureAtlasSprite sprite = textureGetter.apply(rl);
-            partneredBackList = convertTexture(Transformation.identity(), sprite, 0.5F, Direction.NORTH, 0xFFFFFFFF, 1, rl);
-        }
-        
-        return partneredBackList;
-    }
-    
-    private List<BakedQuad> getBlancList()
-    {
-        if(blancList == null)
-        {
-            Identifier rl = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addCardItemTag("blanc_card"));
-            TextureAtlasSprite sprite = textureGetter.apply(rl);
-            blancList = convertTexture(Transformation.identity(), sprite, 0.5F, Direction.NORTH, 0xFFFFFFFF, 1, rl);
-        }
-        
-        return blancList;
-    }
-    
-    public static List<BakedQuad> convertTexture(Transformation t, TextureAtlasSprite sprite, float off, Direction direction, int color, int layerIdx, Identifier rl)
-    {
-        ModelState modelState = new SimpleModelState(new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1F, 1F, 1F), new Quaternionf()));
-        
-        List<BlockElement> unbaked = UnbakedGeometryHelper.createUnbakedItemElements(layerIdx, sprite);
+        List<BlockElement> unbaked = UnbakedElementsHelper.createUnbakedItemElements(layerIdx, sprite);
         unbaked.forEach(e ->
         {
             for(Direction d : Direction.values())
@@ -224,10 +66,10 @@ public class FinalCardBakedModel implements BakedModel
             }
             
             float z = (e.from.z() + e.to.z()) * 0.5F;
-            e.from.z = z + off * 0.1F;
-            e.to.z = z + off * 0.1F;
+            e.from = new Vector3f(e.from.x(), e.from.y(), z + off * 0.1F);
+            e.to = new Vector3f(e.to.x(), e.to.y(), z + off * 0.1F);
         });
         
-        return UnbakedGeometryHelper.bakeElements(unbaked, m -> sprite, modelState, rl);
+        return UnbakedElementsHelper.bakeElements(unbaked, m -> sprite, modelState);
     }
 }

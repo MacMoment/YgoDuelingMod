@@ -1,85 +1,30 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-@SuppressWarnings("deprecation")
-public class CardSetBakedModel implements BakedModel
+/**
+ * Custom item model for card set items. Delegates to FinalCardSetBakedModel for custom card set texture rendering.
+ * TODO: Implement full custom card set texture rendering using the new ItemModel system.
+ */
+public class CardSetBakedModel implements ItemModel
 {
-    private BakedModel mainModel;
-    private ItemOverrides overrideList;
+    private final ItemModel baseModel;
     
-    public CardSetBakedModel(BakedModel mainModel)
+    public CardSetBakedModel(ItemModel baseModel)
     {
-        this.mainModel = mainModel;
-        overrideList = new CardSetOverrideList(new FinalCardSetBakedModel(mainModel));
+        this.baseModel = baseModel;
     }
     
     @Override
-    public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand)
+    public void update(ItemStackRenderState renderState, ItemStack stack, ItemModelResolver modelResolver, ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed)
     {
-        return mainModel.getQuads(state, side, rand);
-    }
-    
-    @Override
-    public boolean useAmbientOcclusion()
-    {
-        return mainModel.useAmbientOcclusion();
-    }
-    
-    @Override
-    public boolean isGui3d()
-    {
-        return mainModel.isGui3d();
-    }
-    
-    @Override
-    public boolean usesBlockLight()
-    {
-        return mainModel.usesBlockLight();
-    }
-    
-    @Override
-    public boolean isCustomRenderer()
-    {
-        return mainModel.isCustomRenderer();
-    }
-    
-    @Override
-    public TextureAtlasSprite getParticleIcon()
-    {
-        return mainModel.getParticleIcon();
-    }
-    
-    @Override
-    public ItemOverrides getOverrides()
-    {
-        return overrideList;
-    }
-    
-    private static class CardSetOverrideList extends ItemOverrides
-    {
-        private FinalCardSetBakedModel finalModel;
-        
-        public CardSetOverrideList(FinalCardSetBakedModel finalModel)
-        {
-            this.finalModel = finalModel;
-        }
-        
-        @Override
-        public BakedModel resolve(BakedModel model, ItemStack stack, ClientLevel worldIn, LivingEntity entityIn, int seed)
-        {
-            return finalModel.setActiveItemStack(stack);
-        }
+        baseModel.update(renderState, stack, modelResolver, displayContext, level, entity, seed);
     }
 }
