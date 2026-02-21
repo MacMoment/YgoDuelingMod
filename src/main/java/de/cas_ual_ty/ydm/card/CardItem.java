@@ -1,14 +1,11 @@
 package de.cas_ual_ty.ydm.card;
 
 import de.cas_ual_ty.ydm.YDM;
-import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.rarity.Rarities;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,7 +21,7 @@ public class CardItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
         CardHolder holder = getCardHolder(itemStack);
         tooltip.clear();
@@ -43,7 +40,7 @@ public class CardItem extends Item
     {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         CardHolder cardHolder = getCardHolder(itemStack);
-        if(cardHolder != null && pPlayer.level.isClientSide)
+        if(cardHolder != null && pPlayer.level().isClientSide)
         {
             YDM.proxy.openCardInspectScreen(cardHolder);
             return InteractionResultHolder.success(itemStack);
@@ -81,25 +78,5 @@ public class CardItem extends Item
         ItemStack itemStack = new ItemStack(this);
         getCardHolder(itemStack).override(card);
         return itemStack;
-    }
-    
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items)
-    {
-        if(!allowedIn(group))
-        {
-            return;
-        }
-        
-        YdmDatabase.forAllCardVariants((card, imageIndex) ->
-        {
-            items.add(createItemForCard(card, imageIndex, Rarities.CREATIVE.name));
-        });
-    }
-    
-    @Override
-    public boolean shouldOverrideMultiplayerNbt()
-    {
-        return true;
     }
 }

@@ -2,7 +2,7 @@ package de.cas_ual_ty.ydm.datagen;
 
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.util.YdmUtil;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -11,9 +11,9 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class YDMItemModels extends ItemModelProvider
 {
-    public YDMItemModels(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper)
+    public YDMItemModels(PackOutput packOutput, String modid, ExistingFileHelper existingFileHelper)
     {
-        super(generator, modid, existingFileHelper);
+        super(packOutput, modid, existingFileHelper);
     }
     
     @Override

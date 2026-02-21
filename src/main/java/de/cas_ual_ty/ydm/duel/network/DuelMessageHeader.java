@@ -74,7 +74,7 @@ public abstract class DuelMessageHeader
         @Override
         public IDuelManagerProvider getDuelManager(Player player)
         {
-            DuelTileEntity te0 = (DuelTileEntity) player.level.getBlockEntity(pos);
+            DuelTileEntity te0 = (DuelTileEntity) player.level().getBlockEntity(pos);
             DuelManager dm = te0.duelManager;
             
             return FMLEnvironment.dist == Dist.CLIENT
@@ -113,7 +113,7 @@ public abstract class DuelMessageHeader
         @Override
         public IDuelManagerProvider getDuelManager(Player player)
         {
-            DuelEntity e = (DuelEntity) player.level.getEntity(entityId);
+            DuelEntity e = (DuelEntity) player.level().getEntity(entityId);
             DuelManager dm = e.duelManager;
             
             return FMLEnvironment.dist == Dist.CLIENT

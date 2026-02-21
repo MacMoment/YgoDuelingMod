@@ -744,7 +744,7 @@ public class DuelManager
         {
             doAction(action);
             
-            if(!player.level.isClientSide)
+            if(!player.level().isClientSide)
             {
                 setPlayerOffersDraw(player, role, false);
                 setPlayerAdmitsDefeat(player, role, false);

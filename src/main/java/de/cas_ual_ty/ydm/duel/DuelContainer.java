@@ -28,7 +28,7 @@ public abstract class DuelContainer extends AbstractContainerMenu
     
     public void onContainerOpened(Player player)
     {
-        if(player.level.isClientSide)
+        if(player.level().isClientSide)
         {
             requestFullUpdate();
         }
