@@ -158,7 +158,7 @@ public class YdmUtil
                 else
                 {
                     // winner off CD
-                    commands = YDM.commonConfig.defeatWinnerOffCDCommands.getPath();
+                    commands = YDM.commonConfig.defeatWinnerOffCDCommands.get();
                 }
             }
             else
@@ -171,7 +171,7 @@ public class YdmUtil
                 else
                 {
                     // both on CD
-                    commands = YDM.commonConfig.defeatBothOnCDCommands.getPath();
+                    commands = YDM.commonConfig.defeatBothOnCDCommands.get();
                 }
             }
             
@@ -224,7 +224,7 @@ public class YdmUtil
                 else
                 {
                     // p1 off CD
-                    commands = YDM.commonConfig.drawPlayer1OffCDCommands.getPath();
+                    commands = YDM.commonConfig.drawPlayer1OffCDCommands.get();
                 }
             }
             else
@@ -237,7 +237,7 @@ public class YdmUtil
                 else
                 {
                     // both on CD
-                    commands = YDM.commonConfig.drawBothOnCDCommands.getPath();
+                    commands = YDM.commonConfig.drawBothOnCDCommands.get();
                 }
             }
             
