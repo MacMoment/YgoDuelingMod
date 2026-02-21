@@ -65,7 +65,7 @@ public class ScreenUtil
             {
                 for(FormattedCharSequence p : fontRenderer.split(t, maxWidth))
                 {
-                    guiGraphics.drawString(fontRenderer, p, (int) x, (int) y, color);
+                    guiGraphics.drawString(fontRenderer, p, (int) x, (int) y, color, true);
                     y += fontRenderer.lineHeight;
                 }
             }

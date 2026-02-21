@@ -94,7 +94,7 @@ public class DisplayChatWidget extends AbstractWidget
                 for(j = ps.size() - 1; y >= minY && j >= 0; --j)
                 {
                     p = ps.get(j);
-                    guiGraphics.drawString(fontRenderer, p, (int) x, (int) y, color);
+                    guiGraphics.drawString(fontRenderer, p, (int) x, (int) y, color, true);
                     y -= fontRenderer.lineHeight;
                 }
             }
