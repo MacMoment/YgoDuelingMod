@@ -2,6 +2,7 @@ package de.cas_ual_ty.ydm.duel.dueldisk;
 
 import de.cas_ual_ty.ydm.YdmEntityTypes;
 import de.cas_ual_ty.ydm.duel.PlayerRole;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.NetworkHooks;
 
@@ -77,9 +79,9 @@ public class DuelDiskItem extends Item
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player player1u, LivingEntity target, InteractionHand hand)
     {
-        if(hand == InteractionHand.OFF_HAND && !player1u.level.isClientSide && player1u instanceof ServerPlayer && target instanceof ServerPlayer)
+        if(hand == InteractionHand.OFF_HAND && !player1u.level().isClientSide && player1u instanceof ServerPlayer && target instanceof ServerPlayer)
         {
-            ServerLevel level = (ServerLevel) player1u.level;
+            ServerLevel level = (ServerLevel) player1u.level();
             
             ServerPlayer player1 = (ServerPlayer) player1u;
             
@@ -168,26 +170,37 @@ public class DuelDiskItem extends Item
     
     public CompoundTag getTag(ItemStack stack)
     {
-        return stack.getOrCreateTag();
+        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+    }
+    
+    private void setTag(ItemStack stack, CompoundTag tag)
+    {
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
     
     public void setPlayer2UUID(ItemStack stack, UUID uuid)
     {
-        getTag(stack).putUUID("duel_player2", uuid);
+        CompoundTag tag = getTag(stack);
+        tag.putUUID("duel_player2", uuid);
+        setTag(stack, tag);
     }
     
     public UUID getPlayer2UUID(ItemStack stack)
     {
-        return getTag(stack).hasUUID("duel_player2") ? getTag(stack).getUUID("duel_player2") : null;
+        CompoundTag tag = getTag(stack);
+        return tag.hasUUID("duel_player2") ? tag.getUUID("duel_player2") : null;
     }
     
     public void setDMUUID(ItemStack stack, UUID uuid)
     {
-        getTag(stack).putUUID("duelmanager", uuid);
+        CompoundTag tag = getTag(stack);
+        tag.putUUID("duelmanager", uuid);
+        setTag(stack, tag);
     }
     
     public UUID getDMUUID(ItemStack stack)
     {
-        return getTag(stack).hasUUID("duelmanager") ? getTag(stack).getUUID("duelmanager") : null;
+        CompoundTag tag = getTag(stack);
+        return tag.hasUUID("duelmanager") ? tag.getUUID("duelmanager") : null;
     }
 }

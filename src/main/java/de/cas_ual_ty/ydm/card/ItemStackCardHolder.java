@@ -1,8 +1,10 @@
 package de.cas_ual_ty.ydm.card;
 
 import de.cas_ual_ty.ydm.card.properties.Properties;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 
 public class ItemStackCardHolder extends CardHolder
 {
@@ -17,12 +19,14 @@ public class ItemStackCardHolder extends CardHolder
     
     private void saveToItemStack()
     {
-        writeCardHolderToNBT(getNBT());
+        CompoundTag tag = getNBT();
+        writeCardHolderToNBT(tag);
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
     
     private CompoundTag getNBT()
     {
-        return itemStack.getOrCreateTag();
+        return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
     }
     
     @Override
