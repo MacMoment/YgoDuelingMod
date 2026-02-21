@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.clientutil.widget.ITooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -50,7 +50,7 @@ public class LPTextFieldWidget extends EditBox
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         x *= 2;
         y *= 2;
         width *= 2;
@@ -62,7 +62,7 @@ public class LPTextFieldWidget extends EditBox
         height -= 2;
         
         ms.pushPose();
-        ms.scale(0.5F, 0.5F, 1);
+        ms.scale(0.5F, 0.5F);
         
         super.renderWidget(guiGraphics, mouseX * 2, mouseY * 2, partialTicks);
         
@@ -80,7 +80,7 @@ public class LPTextFieldWidget extends EditBox
         
         if(isMouseOver(mouseX, mouseY))
         {
-            tooltip.onTooltip(this, ms, mouseX, mouseY);
+            tooltip.onTooltip(this, guiGraphics, mouseX, mouseY);
         }
     }
     

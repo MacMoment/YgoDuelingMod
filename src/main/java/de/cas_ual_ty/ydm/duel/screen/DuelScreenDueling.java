@@ -1,8 +1,8 @@
 package de.cas_ual_ty.ydm.duel.screen;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
@@ -16,6 +16,7 @@ import de.cas_ual_ty.ydm.duel.screen.animation.*;
 import de.cas_ual_ty.ydm.duel.screen.widget.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Matrix3x2fStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
@@ -335,7 +336,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
+        
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
@@ -1057,7 +1058,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         }
     }
     
-    protected void zoneTooltip(AbstractWidget w0, PoseStack ms, int mouseX, int mouseY)
+    protected void zoneTooltip(AbstractWidget w0, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> tooltip = new LinkedList<>();
         
@@ -1077,19 +1078,19 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
             tooltip.add(Component.translatable("container." + YDM.MOD_ID + ".duel.counters").append(": " + w.zone.getCounters()).getVisualOrderText());
         }
         
-        renderTooltip(ms, tooltip, mouseX, mouseY);
+        renderTooltip(guiGraphics, tooltip, mouseX, mouseY);
     }
     
-    protected void interactionTooltip(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void interactionTooltip(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        renderTooltip(ms, w.getMessage(), mouseX, mouseY);
+        renderTooltip(guiGraphics, w.getMessage(), mouseX, mouseY);
     }
     
-    protected void viewCardStackTooltip(Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void viewCardStackTooltip(Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
     }
     
-    protected void lpTooltip(ZoneOwner owner, @Nullable MutableComponent playerName, Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltip(ZoneOwner owner, @Nullable MutableComponent playerName, Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> list = new LinkedList<>();
         
@@ -1104,20 +1105,20 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
             list.add(getUnknownPlayerName().getVisualOrderText());
         }
         
-        renderTooltip(ms, list, mouseX, mouseY);
+        renderTooltip(guiGraphics, list, mouseX, mouseY);
     }
     
-    protected void lpTooltipView(Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltipView(Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        lpTooltip(getView(), getViewName(), w, ms, mouseX, mouseY);
+        lpTooltip(getView(), getViewName(), w, guiGraphics, mouseX, mouseY);
     }
     
-    protected void lpTooltipViewOpponent(Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTooltipViewOpponent(Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        lpTooltip(getView().opponent(), getViewOpponentName(), w, ms, mouseX, mouseY);
+        lpTooltip(getView().opponent(), getViewOpponentName(), w, guiGraphics, mouseX, mouseY);
     }
     
-    protected void lpTextFieldWidget(Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void lpTextFieldWidget(Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> list = new LinkedList<>();
         
@@ -1125,70 +1126,70 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         list.add(Component.translatable("container." + YDM.MOD_ID + ".duel.change_lp_tooltip2").getVisualOrderText());
         list.add(Component.translatable("container." + YDM.MOD_ID + ".duel.change_lp_tooltip3").getVisualOrderText());
         
-        renderTooltip(ms, list, mouseX, mouseY);
+        renderTooltip(guiGraphics, list, mouseX, mouseY);
     }
     
-    protected void phaseWidgetHovered(Renderable w, PoseStack ms, int mouseX, int mouseY)
+    protected void phaseWidgetHovered(Renderable w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        renderTooltip(ms, getCurrentPhaseTooltip(), mouseX, mouseY);
+        renderTooltip(guiGraphics, getCurrentPhaseTooltip(), mouseX, mouseY);
     }
     
-    protected void scrollButtonHovered(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void scrollButtonHovered(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
     }
     
-    protected void middleButtonHovered(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void middleButtonHovered(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         if(w == reloadButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.reload"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.reload"), mouseX, mouseY);
         }
         else if(w == flipViewButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.flip_view"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.flip_view"), mouseX, mouseY);
         }
         else if(w == offerDrawButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.offer_draw"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.offer_draw"), mouseX, mouseY);
         }
         else if(w == admitDefeatButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.admit_defeat"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.admit_defeat"), mouseX, mouseY);
         }
     }
     
-    protected void leftButtonHovered(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void leftButtonHovered(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         if(w == coinFlipButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.coin_flip"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.coin_flip"), mouseX, mouseY);
         }
         else if(w == diceRollButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.dice_roll"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.dice_roll"), mouseX, mouseY);
         }
         else if(w == addCounterButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.add_counter"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.add_counter"), mouseX, mouseY);
         }
         else if(w == removeCounterButton)
         {
-            renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.remove_counter"), mouseX, mouseY);
+            renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.remove_counter"), mouseX, mouseY);
         }
         else if(w == advancedOptionsButton)
         {
             if(!isAdvanced)
             {
-                renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.advanced_options"), mouseX, mouseY);
+                renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.advanced_options"), mouseX, mouseY);
             }
             else
             {
-                renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.basic_options"), mouseX, mouseY);
+                renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.basic_options"), mouseX, mouseY);
             }
         }
     }
     
-    protected void rightButtonHovered(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void rightButtonHovered(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         DuelPhase phase = getPlayField().getPhase();
         
@@ -1197,19 +1198,19 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
             if(!phase.isFirst())
             {
                 DuelPhase prevPhase = DuelPhase.getFromIndex((byte) (phase.getIndex() - 1));
-                renderTooltip(ms, (getPhaseTooltip(prevPhase).append(" ").append(Component.translatable("container." + YDM.MOD_ID + ".duel.left_arrow"))), mouseX, mouseY);
+                renderTooltip(guiGraphics, (getPhaseTooltip(prevPhase).append(" ").append(Component.translatable("container." + YDM.MOD_ID + ".duel.left_arrow"))), mouseX, mouseY);
             }
         }
         else if(w == nextPhaseButton)
         {
             if(phase.isLast())
             {
-                renderTooltip(ms, Component.translatable("action." + YDM.MOD_ID + ".end_turn"), mouseX, mouseY);
+                renderTooltip(guiGraphics, Component.translatable("action." + YDM.MOD_ID + ".end_turn"), mouseX, mouseY);
             }
             else
             {
                 DuelPhase nextPhase = DuelPhase.getFromIndex((byte) (phase.getIndex() + 1));
-                renderTooltip(ms, Component.translatable("container." + YDM.MOD_ID + ".duel.right_arrow").append(" ").append(getPhaseTooltip(nextPhase)), mouseX, mouseY);
+                renderTooltip(guiGraphics, Component.translatable("container." + YDM.MOD_ID + ".duel.right_arrow").append(" ").append(getPhaseTooltip(nextPhase)), mouseX, mouseY);
             }
         }
     }
@@ -1362,22 +1363,22 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     }
     
     @Override
-    public void renderCardInfo(PoseStack ms, DuelCard card)
+    public void renderCardInfo(Matrix3x2fStack ms, DuelCard card)
     {
         cardInfo = card;
     }
     
-    public static void renderSelectedRect(PoseStack ms, float x, float y, float w, float h)
+    public static void renderSelectedRect(Matrix3x2fStack ms, float x, float y, float w, float h)
     {
         ScreenUtil.drawLineRect(ms, x - 1, y - 1, w + 2, h + 2, 2, 0, 0, 1F, 1F);
     }
     
-    public static void renderEnemySelectedRect(PoseStack ms, float x, float y, float w, float h)
+    public static void renderEnemySelectedRect(Matrix3x2fStack ms, float x, float y, float w, float h)
     {
         ScreenUtil.drawLineRect(ms, x - 1, y - 1, w + 2, h + 2, 2, 1F, 0, 0, 1F);
     }
     
-    public static void renderBothSelectedRect(PoseStack ms, float x, float y, float w, float h)
+    public static void renderBothSelectedRect(Matrix3x2fStack ms, float x, float y, float w, float h)
     {
         ScreenUtil.drawLineRect(ms, x - 1, y - 1, w + 2, h + 2, 2, 1F, 0, 1F, 1F);
     }

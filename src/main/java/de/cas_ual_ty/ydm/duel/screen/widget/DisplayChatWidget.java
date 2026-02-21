@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import net.minecraft.client.Minecraft;
@@ -41,10 +41,10 @@ public class DisplayChatWidget extends AbstractWidget
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
         ScreenUtil.white();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
+        
+        
+        
         int color = getFGColor();
         DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), x, y, width, height, color, (float) ClientProxy.duelChatSize);
     }
@@ -57,12 +57,12 @@ public class DisplayChatWidget extends AbstractWidget
     
     public static void drawLines(GuiGraphics guiGraphics, Font fontRenderer, List<Component> list, float x, float y, int maxWidth, float maxHeight, int color, final float downScale)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         final float upScale = 1F / downScale;
         
         ms.pushPose();
         
-        ms.scale(downScale, downScale, 1F);
+        ms.scale(downScale, downScale);
         
         x *= upScale;
         y *= upScale;

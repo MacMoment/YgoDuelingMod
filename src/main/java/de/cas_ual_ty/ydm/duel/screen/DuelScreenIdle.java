@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
@@ -59,7 +59,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();

@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import net.minecraft.client.gui.Font;
@@ -29,7 +29,7 @@ public class TextAnimation extends Animation
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         Font f = ClientProxy.getMinecraft().font;
         
         double relativeTickTime = (tickTime + partialTicks) / maxTickTime;
@@ -41,7 +41,7 @@ public class TextAnimation extends Animation
         
         ms.pushPose();
         
-        ms.translate(centerPosX, centerPosY - f.lineHeight / 2, 0);
+        ms.translate((float)(centerPosX), (float)(centerPosY - f.lineHeight / 2));
         
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);

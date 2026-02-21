@@ -163,7 +163,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     public void renderTooltip(GuiGraphics guiGraphics, List<? extends FormattedCharSequence> tooltips, int mouseX, int mouseY)
     {
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0, 0, 10D);
+        
         super.renderTooltip(guiGraphics, tooltips, mouseX, mouseY);
         guiGraphics.pose().popPose();
     }
@@ -171,7 +171,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     public void renderTooltip(GuiGraphics guiGraphics, Component text, int mouseX, int mouseY)
     {
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0, 0, 10D);
+        
         guiGraphics.renderTooltip(font, text, mouseX, mouseY);
         guiGraphics.pose().popPose();
     }

@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmItems;
 import de.cas_ual_ty.ydm.card.CardHolder;
@@ -121,7 +121,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         if(renderDeckChoosing())
@@ -132,7 +132,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     
     protected void drawActiveDeckForeground(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         DeckWrapper h = getActiveDeckWrapper();
         
         if(h != DeckWrapper.DUMMY)
@@ -269,7 +269,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         }
     }
     
-    protected void drawActiveDeckBackground(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void drawActiveDeckBackground(Matrix3x2fStack ms, float partialTicks, int mouseX, int mouseY)
     {
         DeckWrapper h = getActiveDeckWrapper();
         
@@ -393,10 +393,10 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     
     public void renderCardInfoForeground(GuiGraphics guiGraphics, CardHolder c, int width)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         ms.pushPose();
         
-        ms.translate(-leftPos, -topPos, 0D);
+        ms.translate((float)(-leftPos), (float)(-topPos));
         CardRenderUtil.renderCardInfo(guiGraphics, c, width);
         
         ms.popPose();
@@ -412,7 +412,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         setActiveDeckWrapper(activeDeckWrapperIdx + 1);
     }
     
-    protected void chooseDeckTooltip(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void chooseDeckTooltip(AbstractWidget w, Matrix3x2fStack ms, int mouseX, int mouseY)
     {
         renderTooltip(ms, Component.translatable("container.ydm.duel.choose_deck"), mouseX, mouseY);
     }
