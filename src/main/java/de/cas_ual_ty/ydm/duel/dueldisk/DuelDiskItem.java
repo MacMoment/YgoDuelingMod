@@ -189,7 +189,7 @@ public class DuelDiskItem extends Item
     public UUID getPlayer2UUID(ItemStack stack)
     {
         CompoundTag tag = getTag(stack);
-        if(tag.contains("duel_player2", Tag.TAG_INT_ARRAY))
+        if(tag.contains("duel_player2"))
         {
             Tag t = tag.get("duel_player2");
             if(t instanceof IntArrayTag) return UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());
@@ -207,7 +207,7 @@ public class DuelDiskItem extends Item
     public UUID getDMUUID(ItemStack stack)
     {
         CompoundTag tag = getTag(stack);
-        if(tag.contains("duelmanager", Tag.TAG_INT_ARRAY))
+        if(tag.contains("duelmanager"))
         {
             Tag t = tag.get("duelmanager");
             if(t instanceof IntArrayTag) return UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());

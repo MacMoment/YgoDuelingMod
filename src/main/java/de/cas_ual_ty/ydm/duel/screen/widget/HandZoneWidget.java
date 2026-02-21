@@ -6,6 +6,7 @@ import de.cas_ual_ty.ydm.duel.playfield.DuelCard;
 import de.cas_ual_ty.ydm.duel.playfield.Zone;
 import de.cas_ual_ty.ydm.duel.screen.DuelScreenDueling;
 import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
@@ -20,11 +21,12 @@ public class HandZoneWidget extends ZoneWidget
     
     @Override
     @Nullable
-    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         if(zone.getCardsAmount() <= 0)
         {
-            return super.renderCards(ms, mouseX, mouseY);
+            return super.renderCards(guiGraphics, mouseX, mouseY);
         }
         
         final int cardsWidth = DuelScreenDueling.CARDS_WIDTH * height / DuelScreenDueling.CARDS_HEIGHT;
@@ -33,16 +35,16 @@ public class HandZoneWidget extends ZoneWidget
         final int cardsTextureSize = cardsHeight;
         
         DuelCard hoveredCard = null;
-        float hoverX = x;
-        float hoverY = y;
+        float hoverX = getX();
+        float hoverY = getY();
         float hoverWidth = cardsWidth;
         float hoverHeight = cardsHeight;
         
         boolean isOwner = zone.getOwner() == context.getZoneOwner();
         boolean isOpponentView = zone.getOwner() != context.getView();
         
-        final int renderX = x;
-        final int renderY = y;
+        final int renderX = getX();
+        final int renderY = getY();
         final int renderWidth = cardsTextureSize;
         final int renderHeight = cardsTextureSize;
         
@@ -67,7 +69,7 @@ public class HandZoneWidget extends ZoneWidget
                     c = zone.getCardUnsafe(zone.getCardsAmount() - i - 1);
                 }
                 
-                if(drawCard(ms, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
+                if(drawCard(guiGraphics, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
                 {
                     hoveredCard = c;
                     hoverX = newHoverX;
@@ -79,7 +81,7 @@ public class HandZoneWidget extends ZoneWidget
         }
         else
         {
-            float hoverXBase = x;
+            float hoverXBase = getX();
             
             float newRenderX;
             float newHoverX;
@@ -109,7 +111,7 @@ public class HandZoneWidget extends ZoneWidget
                 newHoverX = hoverXBase + i * margin;
                 newRenderX = newHoverX - offset / 2;
                 
-                if(drawCard(ms, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
+                if(drawCard(guiGraphics, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
                 {
                     hoveredCard = c;
                     hoverX = newHoverX;

@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
-    private static final Identifier CHEST_GUI_TEXTURE = Identifier.fromNamespaceAndPath("textures/gui/container/generic_54.png");
+    private static final Identifier CHEST_GUI_TEXTURE = Identifier.parse("textures/gui/container/generic_54.png");
     
     private final int inventoryRows;
     

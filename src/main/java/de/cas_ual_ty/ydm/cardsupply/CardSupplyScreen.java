@@ -103,7 +103,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
                     }
                     
                     //renderTooltip
-                    guiGraphics.renderTooltip(font, tooltip, mouseX, mouseY);
+                    guiGraphics.renderTooltip(font, tooltip.stream().map(Component::getVisualOrderText).toList(), mouseX, mouseY);
                 }
                 
                 break;
