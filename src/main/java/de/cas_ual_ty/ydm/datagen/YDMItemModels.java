@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Item model data generator.
- * TODO: Migrate to new client item JSON generation system for 1.21.4+
+ * TODO: Migrate to new client item JSON generation system for NeoForge 1.21.11
  */
 public class YDMItemModels implements DataProvider
 {
