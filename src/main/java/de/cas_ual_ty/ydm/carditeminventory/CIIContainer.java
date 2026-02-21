@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import net.neoforged.neoforge.network.NetworkHooks;
 // import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import javax.annotation.Nonnull;
@@ -212,7 +211,7 @@ public class CIIContainer extends AbstractContainerMenu
     
     public static void openGui(Player player, int itemHandlerSize, MenuProvider p)
     {
-        NetworkHooks.openScreen((ServerPlayer) player, p, (extraData) ->
+        ((ServerPlayer) player).openMenu(p, (extraData) ->
         {
             extraData.writeInt(itemHandlerSize);
         });

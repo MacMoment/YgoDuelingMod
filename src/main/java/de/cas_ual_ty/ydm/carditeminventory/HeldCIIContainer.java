@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public abstract class HeldCIIContainer extends CIIContainer
 {
@@ -90,7 +89,7 @@ public abstract class HeldCIIContainer extends CIIContainer
     
     public static void openGui(Player player, InteractionHand hand, int itemHandlerSize, MenuProvider p)
     {
-        NetworkHooks.openScreen((ServerPlayer) player, p, (extraData) ->
+        ((ServerPlayer) player).openMenu(p, (extraData) ->
         {
             extraData.writeInt(itemHandlerSize);
             extraData.writeBoolean(hand == InteractionHand.MAIN_HAND);

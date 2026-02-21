@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 import java.util.UUID;
 
@@ -61,7 +60,7 @@ public class DuelDiskItem extends Item
                 {
                     if(open)
                     {
-                        NetworkHooks.openScreen(splayer, dm, buf ->
+                        splayer.openMenu(dm, buf ->
                         {
                             buf.writeInt(dm.getId());
                             buf.writeBoolean(true);
@@ -110,7 +109,7 @@ public class DuelDiskItem extends Item
                         if(dm.duelManager.hasStarted())
                         {
                             // player2 is already playing -> spectate
-                            NetworkHooks.openScreen(player1, dm, buf ->
+                            player1.openMenu(dm, buf ->
                             {
                                 buf.writeInt(dm.getId());
                                 buf.writeBoolean(true);
@@ -127,12 +126,12 @@ public class DuelDiskItem extends Item
                             
                             //open it for both players
                             
-                            NetworkHooks.openScreen(player1, dm, buf ->
+                            player1.openMenu(dm, buf ->
                             {
                                 buf.writeInt(dm.getId());
                                 buf.writeBoolean(false);
                             });
-                            NetworkHooks.openScreen(player2, dm, buf ->
+                            player2.openMenu(dm, buf ->
                             {
                                 buf.writeInt(dm.getId());
                                 buf.writeBoolean(false);

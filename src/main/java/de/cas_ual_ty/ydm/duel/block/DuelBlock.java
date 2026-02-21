@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class DuelBlock extends HorizontalDirectionalBlock implements EntityBlock
 {
@@ -35,7 +34,7 @@ public class DuelBlock extends HorizontalDirectionalBlock implements EntityBlock
     {
         if(!worldIn.isClientSide && player instanceof ServerPlayer)
         {
-            NetworkHooks.openScreen((ServerPlayer) player, getTE(worldIn, pos), pos);
+            ((ServerPlayer) player).openMenu(getTE(worldIn, pos), pos);
         }
         
         return InteractionResult.SUCCESS;
