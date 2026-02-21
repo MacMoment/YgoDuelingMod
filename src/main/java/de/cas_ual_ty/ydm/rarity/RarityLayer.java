@@ -23,12 +23,12 @@ public class RarityLayer
     
     public ResourceLocation getMainImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityMainImage(this) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityMainImage(this) + ".png");
     }
     
     public ResourceLocation getInfoImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityInfoImage(this) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getRarityInfoImage(this) + ".png");
     }
     
     @Override

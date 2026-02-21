@@ -1,8 +1,8 @@
 package de.cas_ual_ty.ydm.card;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -22,14 +22,14 @@ public class InspectCardScreen extends Screen
     }
     
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick)
+    public void render(GuiGraphics guiGraphics, int pMouseX, int pMouseY, float pPartialTick)
     {
         if(minecraft != null)
         {
-            renderBackground(pPoseStack);
+            renderBackground(guiGraphics);
         }
         
-        CardRenderUtil.renderInfoCardWithRarity(pPoseStack, pMouseX, pMouseY, width / 2, height / 2, 128, 128, cardHolder);
+        CardRenderUtil.renderInfoCardWithRarity(guiGraphics, pMouseX, pMouseY, width / 2, height / 2, 128, 128, cardHolder);
     }
     
     @Override

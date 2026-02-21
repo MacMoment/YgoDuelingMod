@@ -7,6 +7,7 @@ import com.mojang.math.Quaternion;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 public class SpecialSummonAnimation extends Animation
@@ -27,8 +28,9 @@ public class SpecialSummonAnimation extends Animation
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         double relativeTickTime = (tickTime + partialTicks) / maxTickTime;
         
         // [0, 1/2pi]
@@ -60,6 +62,6 @@ public class SpecialSummonAnimation extends Animation
     
     public ResourceLocation getTexture()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
     }
 }

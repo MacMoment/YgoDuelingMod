@@ -162,7 +162,7 @@ public class YdmCommand
             {
                 ItemStack itemStack = player.getItemInHand(hand);
                 
-                ((CardSetBaseItem) itemStack.getItem()).viewSetContents(player.level, player, itemStack);
+                ((CardSetBaseItem) itemStack.getItem()).viewSetContents(player.level(), player, itemStack);
                 
                 return Command.SINGLE_SUCCESS;
             }

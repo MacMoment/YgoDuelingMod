@@ -1,7 +1,6 @@
 package de.cas_ual_ty.ydm.duel.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
@@ -16,6 +15,7 @@ import de.cas_ual_ty.ydm.duel.playfield.PlayField;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneOwner;
 import de.cas_ual_ty.ydm.duel.screen.widget.DisplayChatWidget;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -24,7 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -35,8 +35,8 @@ import java.util.function.Supplier;
 
 public abstract class DuelContainerScreen<E extends DuelContainer> extends SwitchableContainerScreen<E>
 {
-    public static final ResourceLocation DUEL_FOREGROUND_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/duel_foreground.png");
-    public static final ResourceLocation DUEL_BACKGROUND_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/duel_background.png");
+    public static final ResourceLocation DUEL_FOREGROUND_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_foreground.png");
+    public static final ResourceLocation DUEL_BACKGROUND_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_background.png");
     
     public static final ResourceLocation DECK_BACKGROUND_GUI_TEXTURE = DeckBoxScreen.DECK_BOX_GUI_TEXTURE;
     
@@ -99,13 +99,12 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        ScreenUtil.renderDisabledRect(ms, 0, 0, width, height);
+        ScreenUtil.renderDisabledRect(guiGraphics, 0, 0, width, height);
         
         ScreenUtil.white();
-        RenderSystem.setShaderTexture(0, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE);
-        blit(ms, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
     
     @Override
@@ -161,31 +160,30 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     }
     
     @Override
-    public void renderTooltip(PoseStack ms, List<? extends FormattedCharSequence> tooltips, int mouseX, int mouseY)
+    public void renderTooltip(GuiGraphics guiGraphics, List<? extends FormattedCharSequence> tooltips, int mouseX, int mouseY)
     {
-        ms.pushPose();
-        ms.translate(0, 0, 10D);
-        super.renderTooltip(ms, tooltips, mouseX, mouseY);
-        ms.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 10D);
+        super.renderTooltip(guiGraphics, tooltips, mouseX, mouseY);
+        guiGraphics.pose().popPose();
     }
     
-    @Override
-    public void renderTooltip(PoseStack ms, Component text, int mouseX, int mouseY)
+    public void renderTooltip(GuiGraphics guiGraphics, Component text, int mouseX, int mouseY)
     {
-        ms.pushPose();
-        ms.translate(0, 0, 10D);
-        super.renderTooltip(ms, text, mouseX, mouseY);
-        ms.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(0, 0, 10D);
+        guiGraphics.renderTooltip(font, text, mouseX, mouseY);
+        guiGraphics.pose().popPose();
     }
     
-    public void renderDisabledTooltip(PoseStack ms, List<FormattedCharSequence> tooltips, int mouseX, int mouseY)
+    public void renderDisabledTooltip(GuiGraphics guiGraphics, List<FormattedCharSequence> tooltips, int mouseX, int mouseY)
     {
         tooltips.add(Component.literal("DISABLED").withStyle((s) -> s.applyFormat(ChatFormatting.ITALIC).applyFormat(ChatFormatting.RED)).getVisualOrderText());
         tooltips.add(Component.literal("COMING SOON").withStyle((s) -> s.applyFormat(ChatFormatting.ITALIC).applyFormat(ChatFormatting.RED)).getVisualOrderText());
-        renderTooltip(ms, tooltips, mouseX, mouseY);
+        renderTooltip(guiGraphics, tooltips, mouseX, mouseY);
     }
     
-    public void renderDisabledTooltip(PoseStack ms, @Nullable Component text, int mouseX, int mouseY)
+    public void renderDisabledTooltip(GuiGraphics guiGraphics, @Nullable Component text, int mouseX, int mouseY)
     {
         List<FormattedCharSequence> tooltips = new LinkedList<>();
         
@@ -194,7 +192,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
             tooltips.add(text.getVisualOrderText());
         }
         
-        renderDisabledTooltip(ms, tooltips, mouseX, mouseY);
+        renderDisabledTooltip(guiGraphics, tooltips, mouseX, mouseY);
     }
     
     protected void initDefaultChat(int width, int height)
@@ -282,7 +280,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         {
             if(duelChat)
             {
-                YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
+                // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
             }
             else
             {
@@ -344,10 +342,10 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         //TODO
     }
     
-    protected void chatScrollButtonHovered(AbstractWidget w, PoseStack ms, int mouseX, int mouseY)
+    protected void chatScrollButtonHovered(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         //TODO
-        renderDisabledTooltip(ms, (Component) null, mouseX, mouseY);
+        renderDisabledTooltip(guiGraphics, (Component) null, mouseX, mouseY);
     }
     
     public void populateDeckSources(List<DeckSource> deckSources)

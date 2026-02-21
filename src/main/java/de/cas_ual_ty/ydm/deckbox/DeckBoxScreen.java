@@ -1,10 +1,10 @@
 package de.cas_ual_ty.ydm.deckbox;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.Slot;
 
 public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
 {
-    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/deck_box.png");
+    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
     
     public DeckBoxScreen(DeckBoxContainer screenContainer, Inventory inv, Component titleIn)
     {
@@ -30,15 +30,15 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(ms);
-        super.render(ms, mouseX, mouseY, partialTicks);
-        renderTooltip(ms, mouseX, mouseY);
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         Slot s;
         int amount;
@@ -57,7 +57,7 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
         }
         
         //drawString
-        font.draw(ms, Component.translatable("container.ydm.deck_box.main").append(" " + amount + "/" + DeckHolder.MAIN_DECK_SIZE), 8F, 6F, 0x404040);
+        guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.main").append(" " + amount + "/" + DeckHolder.MAIN_DECK_SIZE), 8, 6, 0x404040, false);
         
         // extra deck
         
@@ -73,7 +73,7 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
         }
         
         //drawString
-        font.draw(ms, Component.translatable("container.ydm.deck_box.extra").append(" " + amount + "/" + DeckHolder.EXTRA_DECK_SIZE), 8F, 92F, 0x404040);
+        guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.extra").append(" " + amount + "/" + DeckHolder.EXTRA_DECK_SIZE), 8, 92, 0x404040, false);
         
         // side deck
         
@@ -89,18 +89,18 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
         }
         
         //drawString
-        font.draw(ms, Component.translatable("container.ydm.deck_box.side").append(" " + amount + "/" + DeckHolder.SIDE_DECK_SIZE), 8F, 124F, 0x404040);
+        guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.side").append(" " + amount + "/" + DeckHolder.SIDE_DECK_SIZE), 8, 124, 0x404040, false);
         
-        font.draw(ms, Component.translatable("container.ydm.deck_box.sleeves"), 224F, (float) (imageHeight - 96 + 2), 0x404040);
+        guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.sleeves"), 224, imageHeight - 96 + 2, 0x404040, false);
         
-        font.draw(ms, playerInventoryTitle.getVisualOrderText(), 8F, (float) (imageHeight - 96 + 2), 0x404040);
+        guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 96 + 2, 0x404040, false);
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
         ScreenUtil.white();
         RenderSystem.setShaderTexture(0, DeckBoxScreen.DECK_BOX_GUI_TEXTURE);
-        YdmBlitUtil.blit(ms, leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
+        YdmBlitUtil.blit(guiGraphics.pose(), leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
     }
 }

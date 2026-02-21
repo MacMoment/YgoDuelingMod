@@ -108,7 +108,7 @@ public class DuelMessages
         @Override
         public void handleMessage(Player player, IDuelManagerProvider provider)
         {
-            Player rolePlayer = player.level.getPlayerByUUID(rolePlayerId);
+            Player rolePlayer = player.level().getPlayerByUUID(rolePlayerId);
             
             if(role != null && rolePlayer != null)
             {

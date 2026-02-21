@@ -19,7 +19,7 @@ public class DuelBlockContainer extends DuelContainer
     
     public DuelBlockContainer(MenuType<?> type, int id, Inventory playerInventory, BlockPos blockPos)
     {
-        super(type, id, playerInventory.player, ((DuelTileEntity) playerInventory.player.level.getBlockEntity(blockPos)).duelManager);
+        super(type, id, playerInventory.player, ((DuelTileEntity) playerInventory.player.level().getBlockEntity(blockPos)).duelManager);
         pos = blockPos;
     }
     

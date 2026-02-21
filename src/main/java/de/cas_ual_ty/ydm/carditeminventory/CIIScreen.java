@@ -1,21 +1,21 @@
 package de.cas_ual_ty.ydm.carditeminventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.clientutil.widget.ImprovedButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
-    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation CHEST_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath("textures/gui/container/generic_54.png");
     
     private final int inventoryRows;
     
@@ -43,41 +43,40 @@ public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T
     }
     
     @Override
-    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(PoseStack);
-        super.render(PoseStack, mouseX, mouseY, partialTicks);
-        renderTooltip(PoseStack, mouseX, mouseY);
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int x, int y)
+    protected void renderLabels(GuiGraphics guiGraphics, int x, int y)
     {
         MutableComponent title = Component.literal(this.title.getString());
         title = title.append(" ").append(Component.literal((menu.getPage() + 1) + "/" + menu.getMaxPage()));
-        font.draw(ms, title, 8.0F, 6.0F, 0x404040);
+        guiGraphics.drawString(font, title, 8, 6, 0x404040, false);
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int x, int y)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y)
     {
         ScreenUtil.white();
-        RenderSystem.setShaderTexture(0, CIIScreen.CHEST_GUI_TEXTURE);
         int i = (width - imageWidth) / 2;
         int j = (height - imageHeight) / 2;
-        blit(ms, i, j, 0, 0, imageWidth, inventoryRows * 18 + 17);
-        blit(ms, i, j + inventoryRows * 18 + 17, 0, 126, imageWidth, 96);
+        guiGraphics.blit(CIIScreen.CHEST_GUI_TEXTURE, i, j, 0, 0, imageWidth, inventoryRows * 18 + 17);
+        guiGraphics.blit(CIIScreen.CHEST_GUI_TEXTURE, i, j + inventoryRows * 18 + 17, 0, 126, imageWidth, 96);
     }
     
     protected void onButtonClicked(Button button)
     {
         if(button == prevButton)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(false));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(true));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(true));
         }
     }
     

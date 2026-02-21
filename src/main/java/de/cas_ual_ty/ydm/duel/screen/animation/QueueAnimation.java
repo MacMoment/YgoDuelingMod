@@ -1,6 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.Queue;
 
@@ -59,12 +60,12 @@ public class QueueAnimation extends Animation
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         if(!animations.isEmpty())
         {
             Animation a = animations.peek();
-            a.render(ms, mouseX, mouseY, partialTicks);
+            a.render(guiGraphics, mouseX, mouseY, partialTicks);
         }
     }
     

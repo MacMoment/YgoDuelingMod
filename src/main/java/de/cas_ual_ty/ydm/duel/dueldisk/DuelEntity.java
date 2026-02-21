@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkHooks;
 
 import java.util.UUID;
 
@@ -102,10 +101,7 @@ public class DuelEntity extends Entity implements MenuProvider
     }
     
     @Override
-    public Packet<?> getAddEntityPacket()
     {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
     
     
     @Override

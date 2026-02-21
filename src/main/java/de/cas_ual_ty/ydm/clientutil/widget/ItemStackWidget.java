@@ -8,6 +8,7 @@ import de.cas_ual_ty.ydm.YdmItems;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,7 +43,7 @@ public class ItemStackWidget extends AbstractWidget
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partial)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
     {
         Minecraft minecraft = Minecraft.getInstance();
         ResourceLocation rl = replacement;
@@ -107,7 +108,7 @@ public class ItemStackWidget extends AbstractWidget
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         
-        YdmBlitUtil.fullBlit(ms, x, y, width, height);
+        YdmBlitUtil.fullBlit(guiGraphics.pose(), x, y, width, height);
     }
     
     @Override

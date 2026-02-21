@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.set;
 import com.google.gson.JsonObject;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.SortedArraySet;
+import java.util.TreeSet;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public abstract class CardPuller
     
     public abstract boolean addInformationInComposition();
     
-    public void addAllCardEntries(SortedArraySet<CardHolder> sortedSet)
+    public void addAllCardEntries(TreeSet<CardHolder> sortedSet)
     {
         set.cards.forEach(sortedSet::add);
     }

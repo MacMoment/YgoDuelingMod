@@ -10,21 +10,20 @@ import de.cas_ual_ty.ydm.util.JsonKeys;
 import de.cas_ual_ty.ydm.util.YDMItemHandler;
 import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.SortedArraySet;
+import java.util.TreeSet;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-
-import java.util.List;
 
 public abstract class CardSetBaseItem extends Item
 {
@@ -34,7 +33,7 @@ public abstract class CardSetBaseItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
         CardSet set = getCardSet(itemStack);
         tooltip.clear();
@@ -69,21 +68,14 @@ public abstract class CardSetBaseItem extends Item
     
     public void setCardSet(ItemStack itemStack, CardSet set)
     {
-        getNBT(itemStack).putString(JsonKeys.CODE, set.code);
+        CompoundTag tag = getNBT(itemStack);
+        tag.putString(JsonKeys.CODE, set.code);
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
     
     public CompoundTag getNBT(ItemStack itemStack)
     {
-        return itemStack.getOrCreateTag();
-    }
-    
-    @Override
-    public abstract void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items);
-    
-    @Override
-    public boolean shouldOverrideMultiplayerNbt()
-    {
-        return true;
+        return itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
     }
     
     public void viewSetContents(Level world, Player player, ItemStack itemStack)
@@ -91,7 +83,7 @@ public abstract class CardSetBaseItem extends Item
         if(!world.isClientSide)
         {
             CardSet set = getCardSet(itemStack);
-            SortedArraySet<CardHolder> cardsSet = set.getAllCardEntries();
+            TreeSet<CardHolder> cardsSet = set.getAllCardEntries();
             CardHolder[] cards = cardsSet.toArray(new CardHolder[0]);
             
             CIIContainer.openGui(player, cards.length, new MenuProvider()
@@ -99,7 +91,7 @@ public abstract class CardSetBaseItem extends Item
                 @Override
                 public AbstractContainerMenu createMenu(int id, Inventory playerInv, Player p_createMenu_3_)
                 {
-                    YDMItemHandler itemHandler = new YDMItemHandler(cards.length, itemStack::getOrCreateTag);
+                    YDMItemHandler itemHandler = new YDMItemHandler(cards.length);
                     
                     for(int i = 0; i < cards.length; ++i)
                     {

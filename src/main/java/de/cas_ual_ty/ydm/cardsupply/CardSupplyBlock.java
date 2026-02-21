@@ -5,7 +5,6 @@ import de.cas_ual_ty.ydm.YdmContainerTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -14,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class CardSupplyBlock extends Block
 {
@@ -24,11 +22,11 @@ public class CardSupplyBlock extends Block
     }
     
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit)
     {
         if(!worldIn.isClientSide && player instanceof ServerPlayer p)
         {
-            NetworkHooks.openScreen(p, getMenuProvider(state, worldIn, pos), pos);
+            p.openMenu(getMenuProvider(state, worldIn, pos), pos);
         }
         
         return InteractionResult.SUCCESS;

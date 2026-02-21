@@ -11,7 +11,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.NonNullSupplier;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -139,139 +138,133 @@ public class YdmUtil
     
     public static void executeAdmitDefeatCommands(Player winner, Player loser)
     {
-        if(winner.level instanceof ServerLevel)
+        if(winner.level() instanceof ServerLevel)
         {
-            ServerLevel world = (ServerLevel) winner.level;
+            ServerLevel world = (ServerLevel) winner.level();
             MinecraftServer server = world.getServer();
             
-            winner.getCapability(YDM.COOLDOWN_HOLDER).ifPresent(cdWinner ->
+            CooldownHolder cdWinner = winner.getData(YDM.COOLDOWN_HOLDER);
+            CooldownHolder cdLoser = loser.getData(YDM.COOLDOWN_HOLDER);
+            
+            List<? extends String> commands;
+            
+            if(cdWinner.isOffCooldown())
             {
-                loser.getCapability(YDM.COOLDOWN_HOLDER).ifPresent(cdLoser ->
+                if(cdLoser.isOffCooldown())
                 {
-                    List<? extends String> commands;
-                    
-                    if(cdWinner.isOffCooldown())
-                    {
-                        if(cdLoser.isOffCooldown())
-                        {
-                            // both off CD
-                            commands = YDM.commonConfig.defeatBothOffCDCommands.get();
-                        }
-                        else
-                        {
-                            // winner off CD
-                            commands = YDM.commonConfig.defeatWinnerOffCDCommands.getPath();
-                        }
-                    }
-                    else
-                    {
-                        if(cdLoser.isOffCooldown())
-                        {
-                            // loser off CD
-                            commands = YDM.commonConfig.defeatLoserOffCDCommands.get();
-                        }
-                        else
-                        {
-                            // both on CD
-                            commands = YDM.commonConfig.defeatBothOnCDCommands.getPath();
-                        }
-                    }
-                    
-                    if(cdWinner.isOffCooldown())
-                    {
-                        cdWinner.setCooldown(YDM.commonConfig.winnerCooldown.get());
-                    }
-                    
-                    if(cdLoser.isOffCooldown())
-                    {
-                        cdLoser.setCooldown(YDM.commonConfig.loserCooldown.get());
-                    }
-                    
-                    for(String command : commands)
-                    {
-                        command = command.replace("%winner%", winner.getScoreboardName()).replace("%loser%", loser.getScoreboardName());
-                        
-                        try
-                        {
-                            server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), command);
-                        }
-                        catch(Exception e)
-                        {
-                            YDM.log("Could not execute command triggered by duel defeat: " + command);
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            });
+                    // both off CD
+                    commands = YDM.commonConfig.defeatBothOffCDCommands.get();
+                }
+                else
+                {
+                    // winner off CD
+                    commands = YDM.commonConfig.defeatWinnerOffCDCommands.get();
+                }
+            }
+            else
+            {
+                if(cdLoser.isOffCooldown())
+                {
+                    // loser off CD
+                    commands = YDM.commonConfig.defeatLoserOffCDCommands.get();
+                }
+                else
+                {
+                    // both on CD
+                    commands = YDM.commonConfig.defeatBothOnCDCommands.get();
+                }
+            }
+            
+            if(cdWinner.isOffCooldown())
+            {
+                cdWinner.setCooldown(YDM.commonConfig.winnerCooldown.get());
+            }
+            
+            if(cdLoser.isOffCooldown())
+            {
+                cdLoser.setCooldown(YDM.commonConfig.loserCooldown.get());
+            }
+            
+            for(String command : commands)
+            {
+                command = command.replace("%winner%", winner.getScoreboardName()).replace("%loser%", loser.getScoreboardName());
+                
+                try
+                {
+                    server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), command);
+                }
+                catch(Exception e)
+                {
+                    YDM.log("Could not execute command triggered by duel defeat: " + command);
+                    e.printStackTrace();
+                }
+            }
         }
     }
     
     public static void executeDrawCommands(Player player1, Player player2)
     {
-        if(player1.level instanceof ServerLevel)
+        if(player1.level() instanceof ServerLevel)
         {
-            ServerLevel world = (ServerLevel) player1.level;
+            ServerLevel world = (ServerLevel) player1.level();
             MinecraftServer server = world.getServer();
             
-            player1.getCapability(YDM.COOLDOWN_HOLDER).ifPresent(cd1 ->
+            CooldownHolder cd1 = player1.getData(YDM.COOLDOWN_HOLDER);
+            CooldownHolder cd2 = player2.getData(YDM.COOLDOWN_HOLDER);
+            
+            List<? extends String> commands;
+            
+            if(cd1.isOffCooldown())
             {
-                player2.getCapability(YDM.COOLDOWN_HOLDER).ifPresent(cd2 ->
+                if(cd2.isOffCooldown())
                 {
-                    List<? extends String> commands;
-                    
-                    if(cd1.isOffCooldown())
-                    {
-                        if(cd2.isOffCooldown())
-                        {
-                            // both off CD
-                            commands = YDM.commonConfig.drawBothOffCDCommands.get();
-                        }
-                        else
-                        {
-                            // p1 off CD
-                            commands = YDM.commonConfig.drawPlayer1OffCDCommands.getPath();
-                        }
-                    }
-                    else
-                    {
-                        if(cd2.isOffCooldown())
-                        {
-                            // p2 off CD
-                            commands = YDM.commonConfig.drawPlayer2OffCDCommands.get();
-                        }
-                        else
-                        {
-                            // both on CD
-                            commands = YDM.commonConfig.drawBothOnCDCommands.getPath();
-                        }
-                    }
-                    
-                    if(cd1.isOffCooldown())
-                    {
-                        cd1.setCooldown(YDM.commonConfig.drawCooldown.get());
-                    }
-                    
-                    if(cd2.isOffCooldown())
-                    {
-                        cd2.setCooldown(YDM.commonConfig.drawCooldown.get());
-                    }
-                    
-                    for(String command : commands)
-                    {
-                        command = command.replace("%player1%", player1.getScoreboardName()).replace("%player2%", player2.getScoreboardName());
-                        
-                        try
-                        {
-                            server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), command);
-                        }
-                        catch(Exception e)
-                        {
-                            YDM.log("Could not execute command triggered by duel draw: " + command);
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            });
+                    // both off CD
+                    commands = YDM.commonConfig.drawBothOffCDCommands.get();
+                }
+                else
+                {
+                    // p1 off CD
+                    commands = YDM.commonConfig.drawPlayer1OffCDCommands.get();
+                }
+            }
+            else
+            {
+                if(cd2.isOffCooldown())
+                {
+                    // p2 off CD
+                    commands = YDM.commonConfig.drawPlayer2OffCDCommands.get();
+                }
+                else
+                {
+                    // both on CD
+                    commands = YDM.commonConfig.drawBothOnCDCommands.get();
+                }
+            }
+            
+            if(cd1.isOffCooldown())
+            {
+                cd1.setCooldown(YDM.commonConfig.drawCooldown.get());
+            }
+            
+            if(cd2.isOffCooldown())
+            {
+                cd2.setCooldown(YDM.commonConfig.drawCooldown.get());
+            }
+            
+            for(String command : commands)
+            {
+                command = command.replace("%player1%", player1.getScoreboardName()).replace("%player2%", player2.getScoreboardName());
+                
+                try
+                {
+                    server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), command);
+                }
+                catch(Exception e)
+                {
+                    YDM.log("Could not execute command triggered by duel draw: " + command);
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

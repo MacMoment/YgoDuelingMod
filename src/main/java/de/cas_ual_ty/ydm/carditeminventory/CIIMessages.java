@@ -3,10 +3,8 @@ package de.cas_ual_ty.ydm.carditeminventory;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CIIMessages
 {
@@ -37,19 +35,13 @@ public class CIIMessages
             return new SetPage(buf.readInt());
         }
         
-        public static void handle(SetPage msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(SetPage msg)
         {
-            NetworkEvent.Context context = ctx.get();
-            
-            context.enqueueWork(() ->
+            CIIMessages.doForContainer(YDM.proxy.getClientPlayer(), (container) ->
             {
-                CIIMessages.doForContainer(YDM.proxy.getClientPlayer(), (container) ->
-                {
-                    container.setPage(msg.page);
-                });
+                container.setPage(msg.page);
             });
-            
-            context.setPacketHandled(true);
         }
     }
     
@@ -72,26 +64,20 @@ public class CIIMessages
             return new ChangePage(buf.readBoolean());
         }
         
-        public static void handle(ChangePage msg, Supplier<NetworkEvent.Context> ctx)
+        // TODO: Port to NeoForge payload system - handle method stub
+        public static void handle(ChangePage msg, Player sender)
         {
-            NetworkEvent.Context context = ctx.get();
-            
-            context.enqueueWork(() ->
+            CIIMessages.doForContainer(sender, (container) ->
             {
-                CIIMessages.doForContainer(context.getSender(), (container) ->
+                if(msg.nextPage)
                 {
-                    if(msg.nextPage)
-                    {
-                        container.nextPage();
-                    }
-                    else
-                    {
-                        container.prevPage();
-                    }
-                });
+                    container.nextPage();
+                }
+                else
+                {
+                    container.prevPage();
+                }
             });
-            
-            context.setPacketHandled(true);
         }
     }
 }

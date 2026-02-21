@@ -200,17 +200,17 @@ public class Properties
     
     public ResourceLocation getInfoImageResourceLocation(byte imageIndex)
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardInfoReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardInfoReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
     }
     
     public ResourceLocation getItemImageResourceLocation(byte imageIndex)
     {
-        return new ResourceLocation(YDM.MOD_ID, "item/" + getItemImageName(imageIndex));
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName(imageIndex));
     }
     
     public ResourceLocation getMainImageResourceLocation(byte imageIndex)
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardMainReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getCardMainReplacementImage(this, adjustImageIndex(imageIndex)) + ".png");
     }
     
     public void addInformation(List<Component> list)

@@ -20,7 +20,7 @@ public class DuelEntityContainer extends DuelContainer
     
     public DuelEntityContainer(MenuType<?> type, int id, Inventory playerInventory, int entityId, boolean requestUpdate)
     {
-        super(type, id, playerInventory.player, ((DuelEntity) playerInventory.player.level.getEntity(entityId)).duelManager);
+        super(type, id, playerInventory.player, ((DuelEntity) playerInventory.player.level().getEntity(entityId)).duelManager);
         this.entityId = entityId;
         this.requestUpdate = requestUpdate;
     }
@@ -28,7 +28,7 @@ public class DuelEntityContainer extends DuelContainer
     @Override
     public void onContainerOpened(Player player)
     {
-        if(!player.level.isClientSide)
+        if(!player.level().isClientSide)
         {
             getDuelManager().playerOpenContainer(player);
         }
@@ -37,7 +37,7 @@ public class DuelEntityContainer extends DuelContainer
     // need to override the above method as it is called in constructor and "requestUpdate" is not set yet
     public void onContainerOpenedClient(Player player)
     {
-        if(player.level.isClientSide && requestUpdate)
+        if(player.level().isClientSide && requestUpdate)
         {
             requestFullUpdate();
         }

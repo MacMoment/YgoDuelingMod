@@ -5,8 +5,6 @@ import de.cas_ual_ty.ydm.YdmContainerTypes;
 import de.cas_ual_ty.ydm.YdmItems;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.util.YDMItemHandler;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -17,8 +15,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
 
 public class DeckBoxItem extends Item implements MenuProvider
 {
@@ -32,7 +28,7 @@ public class DeckBoxItem extends Item implements MenuProvider
     
     public YDMItemHandler getItemHandler(ItemStack itemStack)
     {
-        return itemStack.getCapability(YDM.CARD_ITEM_INVENTORY).orElse(null);
+        return itemStack.getData(YDM.CARD_ITEM_INVENTORY);
     }
     
     @Override
@@ -122,7 +118,6 @@ public class DeckBoxItem extends Item implements MenuProvider
             itemHandler.setStackInSlot(DeckHolder.SLEEVES_INDEX, new ItemStack(holder.getSleeves().getItem()));
         }
         
-        itemHandler.save();
     }
     
     public static ItemStack getActiveDeckBox(Player player)
@@ -139,46 +134,5 @@ public class DeckBoxItem extends Item implements MenuProvider
         {
             return ItemStack.EMPTY;
         }
-    }
-    
-    @Override
-    public boolean shouldOverrideMultiplayerNbt()
-    {
-        return true;
-    }
-    
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        super.readShareTag(stack, nbt);
-        
-        if(nbt != null && nbt.contains("card_item_inventory", Tag.TAG_COMPOUND))
-        {
-            stack.getCapability(YDM.CARD_ITEM_INVENTORY).ifPresent(handler ->
-            {
-                handler.deserializeNBT(nbt.getCompound("card_item_inventory"));
-            });
-        }
-    }
-    
-    @Nullable
-    @Override
-    public CompoundTag getShareTag(ItemStack stack)
-    {
-        CompoundTag nbt = super.getShareTag(stack);
-        
-        if(nbt == null)
-        {
-            nbt = new CompoundTag();
-        }
-        
-        CompoundTag finalNBT = nbt;
-        
-        stack.getCapability(YDM.CARD_ITEM_INVENTORY).ifPresent(handler ->
-        {
-            finalNBT.put("card_item_inventory", handler.serializeNBT());
-        });
-        
-        return finalNBT;
     }
 }

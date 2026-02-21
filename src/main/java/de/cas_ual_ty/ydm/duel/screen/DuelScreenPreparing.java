@@ -16,12 +16,13 @@ import de.cas_ual_ty.ydm.duel.DuelContainer;
 import de.cas_ual_ty.ydm.duel.PlayerRole;
 import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneOwner;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +89,9 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        PoseStack ms = guiGraphics.pose();
         font.draw(ms, "Choose your decks...", 8.0F, 6.0F, 0x404040);
         
         PlayerRole role = getPlayerRole();
@@ -118,9 +120,10 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(ms, partialTicks, mouseX, mouseY);
+        PoseStack ms = guiGraphics.pose();
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         if(renderDeckChoosing())
         {
@@ -428,12 +431,12 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     
     protected void chooseDeckClicked()
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
     }
     
     public void requestDeck(int index)
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestDeck(getHeader(), index));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestDeck(getHeader(), index));
     }
     
     protected static class DeckWrapper

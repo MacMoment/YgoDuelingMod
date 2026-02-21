@@ -1,7 +1,6 @@
 package de.cas_ual_ty.ydm.cardbinder;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.cardinventory.CardInventory;
@@ -9,6 +8,7 @@ import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.clientutil.widget.ImprovedButton;
 import de.cas_ual_ty.ydm.clientutil.widget.TextureButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CardBinderScreen extends AbstractContainerScreen<CardBinderContainer>
 {
-    private static final ResourceLocation CARD_BINDER_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/card_binder.png");
+    private static final ResourceLocation CARD_BINDER_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/card_binder.png");
     
     // https://www.glfw.org/docs/latest/group__keys.html
     private static final int LEFT_SHIFT = 340;
@@ -73,16 +73,16 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         addRenderableWidget(nextButton = new ImprovedButton(leftPos + imageWidth - 12 - 8 - 27, topPos + 4, 12, 12, Component.translatable("generic.ydm.right_arrow"), this::onButtonClicked));
         
         addRenderableWidget(reloadButton = new TextureButton(leftPos + imageWidth - 12 - 8 - 27, topPos + imageHeight - 96, 12, 12, Component.empty(), this::onButtonClicked)
-                .setTexture(new ResourceLocation(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
+                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
         addRenderableWidget(cardSearch = new EditBox(font, leftPos + imageWidth - 12 - 8 - 27 - 82, topPos + imageHeight - 96, 80, 12, Component.empty()));
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(ms);
-        super.render(ms, mouseX, mouseY, partialTicks);
-        renderTooltip(ms, mouseX, mouseY);
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        renderTooltip(guiGraphics, mouseX, mouseY);
         
         for(CardButton button : cardButtons)
         {
@@ -90,7 +90,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
             {
                 if(button.getCard() != null)
                 {
-                    CardRenderUtil.renderCardInfo(ms, button.getCard(), this);
+                    CardRenderUtil.renderCardInfo(guiGraphics, button.getCard(), this);
                     
                     List<Component> list = new LinkedList<>();
                     button.getCard().addInformation(list);
@@ -102,7 +102,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
                     }
                     
                     //renderTooltip
-                    renderComponentTooltip(ms, tooltip, mouseX, mouseY);
+                    renderComponentTooltip(guiGraphics, tooltip, mouseX, mouseY);
                 }
                 
                 break;
@@ -111,7 +111,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
         MutableComponent title = Component.literal(this.title.getString());
         
@@ -124,17 +124,16 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
             title = title.append(" ").append(Component.literal(menu.page + "/" + menu.clientMaxPage));
         }
         
-        font.draw(ms, title, 8.0F, 6.0F, 0x404040);
+        guiGraphics.drawString(font, title, 8, 6, 0x404040, false);
         
-        font.draw(ms, playerInventoryTitle.getVisualOrderText(), 8.0F, (float) (imageHeight - 96 + 2), 0x404040);
+        guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 96 + 2, 0x404040, false);
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
         ScreenUtil.white();
-        RenderSystem.setShaderTexture(0, CardBinderScreen.CARD_BINDER_GUI_TEXTURE);
-        blit(ms, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(CardBinderScreen.CARD_BINDER_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
     
     protected void onButtonClicked(Button button)
@@ -146,15 +145,15 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button == prevButton)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(false));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(true));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(true));
         }
         else if(button == reloadButton)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
         }
     }
     
@@ -167,7 +166,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button.getCard() != null)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexClicked(index));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexClicked(index));
         }
     }
     
@@ -191,7 +190,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
                 {
                     if(button.isHoveredOrFocused() && button.getCard() != null)
                     {
-                        YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexDropped(button.index));
+                        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexDropped(button.index));
                         break;
                     }
                 }

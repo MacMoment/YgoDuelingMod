@@ -3,11 +3,6 @@ package de.cas_ual_ty.ydm.duel.network;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.simple.SimpleChannel;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public abstract class DuelMessage
 {
@@ -25,7 +20,7 @@ public abstract class DuelMessage
         }
         
         @Override
-        public final Player getPlayer(NetworkEvent.Context context)
+        public final Player getPlayer()
         {
             return YDM.proxy.getClientPlayer();
         }
@@ -45,9 +40,10 @@ public abstract class DuelMessage
         }
         
         @Override
-        public final Player getPlayer(NetworkEvent.Context context)
+        public final Player getPlayer()
         {
-            return context.getSender();
+            // TODO: Port to NeoForge payload system - obtain sender from payload context
+            return null;
         }
     }
     
@@ -77,23 +73,15 @@ public abstract class DuelMessage
     
     public abstract void handleMessage(Player player, IDuelManagerProvider provider);
     
-    public abstract Player getPlayer(NetworkEvent.Context context);
+    public abstract Player getPlayer();
     
-    public void handle(Supplier<NetworkEvent.Context> ctx)
+    // TODO: Port to NeoForge payload system - handle method stub
+    public void handle()
     {
-        NetworkEvent.Context context = ctx.get();
-        Player player = getPlayer(context);
-        
-        context.enqueueWork(() ->
+        Player player = getPlayer();
+        if(player != null && decodedHeader != null)
         {
             handleMessage(player, decodedHeader.getDuelManager(player));
-        });
-        
-        context.setPacketHandled(true);
-    }
-    
-    public static <M extends DuelMessage> void register(SimpleChannel channel, int index, Class<M> c, Function<FriendlyByteBuf, M> constructor)
-    {
-        channel.registerMessage(index, c, (m, buf) -> m.encode(buf), constructor, (m, ctx) -> m.handle(ctx));
+        }
     }
 }

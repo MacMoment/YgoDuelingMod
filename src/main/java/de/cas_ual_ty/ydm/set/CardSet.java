@@ -12,7 +12,7 @@ import de.cas_ual_ty.ydm.card.properties.Properties;
 import de.cas_ual_ty.ydm.util.JsonKeys;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.SortedArraySet;
+import java.util.TreeSet;
 import net.minecraft.world.item.ItemStack;
 
 import java.text.ParseException;
@@ -35,7 +35,7 @@ public class CardSet
         }
         
         @Override
-        public void addAllCardEntries(SortedArraySet<CardHolder> sortedSet)
+        public void addAllCardEntries(TreeSet<CardHolder> sortedSet)
         {
             
         }
@@ -187,14 +187,14 @@ public class CardSet
         return pull.open(random);
     }
     
-    public SortedArraySet<CardHolder> getAllCardEntries()
+    public TreeSet<CardHolder> getAllCardEntries()
     {
-        SortedArraySet<CardHolder> sortedSet = SortedArraySet.create(0);
+        TreeSet<CardHolder> sortedSet = new TreeSet<>();
         addAllCardEntries(sortedSet);
         return sortedSet;
     }
     
-    public void addAllCardEntries(SortedArraySet<CardHolder> sortedSet)
+    public void addAllCardEntries(TreeSet<CardHolder> sortedSet)
     {
         pull.addAllCardEntries(sortedSet);
     }
@@ -243,12 +243,12 @@ public class CardSet
     
     public ResourceLocation getInfoImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
     }
     
     public ResourceLocation getItemImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "item/" + getItemImageName());
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName());
     }
     
     public boolean getIsHardcoded()

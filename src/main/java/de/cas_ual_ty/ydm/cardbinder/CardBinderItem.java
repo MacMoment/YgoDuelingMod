@@ -2,8 +2,8 @@ package de.cas_ual_ty.ydm.cardbinder;
 
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmContainerTypes;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,9 +14,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.item.component.CustomData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -63,9 +61,9 @@ public class CardBinderItem extends Item implements MenuProvider
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(stack, context, tooltip, flagIn);
         
         tooltip.add(Component.translatable(getDescriptionId() + ".uuid"));
         
@@ -131,13 +129,15 @@ public class CardBinderItem extends Item implements MenuProvider
     {
         UUID uuid;
         
-        UUIDHolder holder = itemStack.getCapability(YDM.UUID_HOLDER).orElse(UUIDHolder.NULL_HOLDER);
+        UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER) ? itemStack.getData(YDM.UUID_HOLDER) : UUIDHolder.NULL_HOLDER;
         
-        if(itemStack.getOrCreateTag().contains(CardBinderItem.MANAGER_UUID_KEY_OLD))
+        CompoundTag tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        if(tag.contains(CardBinderItem.MANAGER_UUID_KEY_OLD))
         {
-            uuid = itemStack.getOrCreateTag().getUUID(CardBinderItem.MANAGER_UUID_KEY_OLD);
+            uuid = tag.getUUID(CardBinderItem.MANAGER_UUID_KEY_OLD);
             holder.setUUID(uuid);
-            itemStack.getOrCreateTag().remove(MANAGER_UUID_KEY_OLD);
+            tag.remove(MANAGER_UUID_KEY_OLD);
+            itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         }
         else
         {
@@ -149,49 +149,15 @@ public class CardBinderItem extends Item implements MenuProvider
     
     public void setUUID(ItemStack itemStack, UUID uuid)
     {
-        itemStack.getCapability(YDM.UUID_HOLDER).ifPresent(holder -> holder.setUUID(uuid));
+        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
     }
     
     public void setUUIDAndUpdateManager(ItemStack itemStack, UUID uuid)
     {
         CardBinderCardsManager manager = getInventoryManager(itemStack);
-        itemStack.getCapability(YDM.UUID_HOLDER).ifPresent(holder -> holder.setUUID(uuid));
+        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
         MANAGER_MAP.remove(manager.getUUID());
         manager.setUUID(uuid);
         MANAGER_MAP.put(uuid, manager);
-    }
-    
-    @Override
-    public boolean shouldOverrideMultiplayerNbt()
-    {
-        return true;
-    }
-    
-    @Nullable
-    @Override
-    public CompoundTag getShareTag(ItemStack stack)
-    {
-        CompoundTag nbt = super.getShareTag(stack);
-        
-        if(nbt == null)
-        {
-            nbt = new CompoundTag();
-        }
-        
-        CompoundTag finalNbt = nbt;
-        
-        stack.getCapability(YDM.UUID_HOLDER).ifPresent(holder -> finalNbt.put(MANAGER_UUID_KEY, holder.serializeNBT()));
-        return finalNbt;
-    }
-    
-    @Override
-    public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        super.readShareTag(stack, nbt);
-        
-        if(nbt != null && nbt.contains(MANAGER_UUID_KEY, 8))
-        {
-            stack.getCapability(YDM.UUID_HOLDER).ifPresent(holder -> holder.deserializeNBT((StringTag) nbt.get(MANAGER_UUID_KEY)));
-        }
     }
 }

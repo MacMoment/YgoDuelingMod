@@ -10,6 +10,7 @@ import de.cas_ual_ty.ydm.duel.playfield.CardPosition;
 import de.cas_ual_ty.ydm.duel.playfield.DuelCard;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneOwner;
 import de.cas_ual_ty.ydm.duel.screen.widget.ZoneWidget;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class MoveAnimation extends Animation
 {
@@ -46,8 +47,9 @@ public class MoveAnimation extends Animation
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
+        PoseStack ms = guiGraphics.pose();
         double relativeTickTime = (double) (tickTime + partialTicks) / maxTickTime;
         float relativePositionRotation;
         float relativeScale;

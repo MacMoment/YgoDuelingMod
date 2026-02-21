@@ -6,7 +6,8 @@ import de.cas_ual_ty.ydm.duel.dueldisk.DuelEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 public abstract class DuelMessageHeader
 {
@@ -73,12 +74,12 @@ public abstract class DuelMessageHeader
         @Override
         public IDuelManagerProvider getDuelManager(Player player)
         {
-            DuelTileEntity te0 = (DuelTileEntity) player.level.getBlockEntity(pos);
+            DuelTileEntity te0 = (DuelTileEntity) player.level().getBlockEntity(pos);
             DuelManager dm = te0.duelManager;
             
-            return DistExecutor.<IDuelManagerProvider>unsafeRunForDist(
-                    () -> () -> new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm),
-                    () -> () -> () -> dm);
+            return FMLEnvironment.dist == Dist.CLIENT
+                    ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
+                    : () -> dm;
         }
     }
     
@@ -112,12 +113,12 @@ public abstract class DuelMessageHeader
         @Override
         public IDuelManagerProvider getDuelManager(Player player)
         {
-            DuelEntity e = (DuelEntity) player.level.getEntity(entityId);
+            DuelEntity e = (DuelEntity) player.level().getEntity(entityId);
             DuelManager dm = e.duelManager;
             
-            return DistExecutor.<IDuelManagerProvider>unsafeRunForDist(
-                    () -> () -> new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm),
-                    () -> () -> () -> dm);
+            return FMLEnvironment.dist == Dist.CLIENT
+                    ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
+                    : () -> dm;
         }
     }
 }

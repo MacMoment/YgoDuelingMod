@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/CAS-ual-TY/YgoDuelingMod/issues"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="https://github.com/CAS-ual-TY/YgoDuelingMod"
+    logoFile="logo.png"
+    credits="Mojang and the NeoForge Team"
+    authors="CAS_ual_TY"
+    description='''
+The Ygo Dueling Mod for Minecraft aims to reflect the real life TCG experience in a 3D open world game by not only adding the cards but also the packs and their pull ratios to the game.
+Work in progress features:
+- All cards and their different variants are available
+- Collect them by opening packs, each representing a real life counter part, with accurate rarities and pull ratios
+- Chose where to duel, either using a stationairy duel block or having a 3D duel in front of you via duel disks
+- It uses a new and intuitive manual dueling simulator that feels more alive (no top-down/bottom-up menus!)
+- Make your own server/cards/sets/addons; the mod is open source and the database can be fully customized
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

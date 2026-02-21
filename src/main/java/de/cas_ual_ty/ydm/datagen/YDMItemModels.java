@@ -2,19 +2,18 @@ package de.cas_ual_ty.ydm.datagen;
 
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.util.YdmUtil;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class YDMItemModels extends ItemModelProvider
 {
-    public YDMItemModels(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper)
+    public YDMItemModels(PackOutput packOutput, String modid, ExistingFileHelper existingFileHelper)
     {
-        super(generator, modid, existingFileHelper);
+        super(packOutput, modid, existingFileHelper);
     }
     
     @Override
@@ -44,7 +43,7 @@ public class YDMItemModels extends ItemModelProvider
     
     public void defaultSizedModel(Item item, int size)
     {
-        ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+        ResourceLocation rl = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
         getBuilder(rl.toString() + "_" + size)
                 .parent(new UncheckedModelFile(rl.toString()))
                 .texture("layer0", modLoc("item/" + rl.getPath() + "_" + size));

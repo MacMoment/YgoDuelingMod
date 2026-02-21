@@ -2,11 +2,9 @@ package de.cas_ual_ty.ydm.set;
 
 import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.YdmItems;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -45,7 +43,7 @@ public class CardSetItem extends CardSetBaseItem
         {
             itemStack.shrink(1);
             
-            if(!player.level.isClientSide)
+            if(!player.level().isClientSide)
             {
                 player.getInventory().placeItemBackInInventory(itemStack);
             }
@@ -57,23 +55,6 @@ public class CardSetItem extends CardSetBaseItem
         ItemStack itemStack = new ItemStack(this);
         setCardSet(itemStack, set);
         return itemStack;
-    }
-    
-    @Override
-    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items)
-    {
-        if(!allowedIn(group))
-        {
-            return;
-        }
-        
-        for(CardSet set : YdmDatabase.SETS_LIST)
-        {
-            if(set.isIndependentAndItem())
-            {
-                items.add(createItemForSet(set));
-            }
-        }
     }
     
     public static ItemStack getActiveSet(Player player)

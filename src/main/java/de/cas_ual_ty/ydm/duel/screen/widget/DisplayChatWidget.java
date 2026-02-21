@@ -6,6 +6,7 @@ import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -26,16 +27,16 @@ public class DisplayChatWidget extends AbstractWidget
     }
     
     @Override
-    public void render(PoseStack PoseStack, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         if(textSupplier != null)
         {
-            super.render(PoseStack, mouseX, mouseY, partialTicks);
+            super.render(guiGraphics, mouseX, mouseY, partialTicks);
         }
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
@@ -45,7 +46,7 @@ public class DisplayChatWidget extends AbstractWidget
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
         int color = getFGColor();
-        DisplayChatWidget.drawLines(ms, fontrenderer, textSupplier.get(), x, y, width, height, color, (float) ClientProxy.duelChatSize);
+        DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), x, y, width, height, color, (float) ClientProxy.duelChatSize);
     }
     
     public DisplayChatWidget setTextSupplier(Supplier<List<Component>> textSupplier)
@@ -54,8 +55,9 @@ public class DisplayChatWidget extends AbstractWidget
         return this;
     }
     
-    public static void drawLines(PoseStack ms, Font fontRenderer, List<Component> list, float x, float y, int maxWidth, float maxHeight, int color, final float downScale)
+    public static void drawLines(GuiGraphics guiGraphics, Font fontRenderer, List<Component> list, float x, float y, int maxWidth, float maxHeight, int color, final float downScale)
     {
+        PoseStack ms = guiGraphics.pose();
         final float upScale = 1F / downScale;
         
         ms.pushPose();
@@ -92,7 +94,7 @@ public class DisplayChatWidget extends AbstractWidget
                 for(j = ps.size() - 1; y >= minY && j >= 0; --j)
                 {
                     p = ps.get(j);
-                    fontRenderer.drawShadow(ms, p, x, y, color);
+                    guiGraphics.drawString(fontRenderer, p, (int) x, (int) y, color, true);
                     y -= fontRenderer.lineHeight;
                 }
             }

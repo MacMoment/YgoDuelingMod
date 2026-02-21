@@ -1,10 +1,6 @@
 package de.cas_ual_ty.ydm;
 
-import de.cas_ual_ty.ydm.cardbinder.CardBinderMessages;
-import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
 import de.cas_ual_ty.ydm.cardinventory.JsonCardsManager;
-import de.cas_ual_ty.ydm.carditeminventory.CIIMessages;
-import de.cas_ual_ty.ydm.cardsupply.CardSupplyMessages;
 import de.cas_ual_ty.ydm.deckbox.DeckBoxItem;
 import de.cas_ual_ty.ydm.deckbox.DeckHolder;
 import de.cas_ual_ty.ydm.deckbox.ItemHandlerDeckHolder;
@@ -13,52 +9,41 @@ import de.cas_ual_ty.ydm.duel.action.ActionIcon;
 import de.cas_ual_ty.ydm.duel.action.ActionIcons;
 import de.cas_ual_ty.ydm.duel.action.ActionType;
 import de.cas_ual_ty.ydm.duel.action.ActionTypes;
-import de.cas_ual_ty.ydm.duel.network.DuelMessage;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeaderType;
 import de.cas_ual_ty.ydm.duel.network.DuelMessageHeaders;
-import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneType;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneTypes;
 import de.cas_ual_ty.ydm.serverutil.YdmCommand;
-import de.cas_ual_ty.ydm.simplebinder.SimpleBinderItem;
 import de.cas_ual_ty.ydm.task.WorkerManager;
 import de.cas_ual_ty.ydm.util.CooldownHolder;
 import de.cas_ual_ty.ydm.util.ISidedProxy;
 import de.cas_ual_ty.ydm.util.YDMItemHandler;
 import de.cas_ual_ty.ydm.util.YdmIOUtil;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.Tag;
+import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.NewRegistryEvent;
-import net.minecraftforge.registries.RegistryBuilder;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,11 +64,8 @@ public class YDM
     public static YDM instance;
     public static ISidedProxy proxy;
     public static Random random;
-    public static CreativeModeTab ydmItemGroup;
-    public static CreativeModeTab cardsItemGroup;
-    public static CreativeModeTab setsItemGroup;
     
-    public static ForgeConfigSpec commonConfigSpec;
+    public static ModConfigSpec commonConfigSpec;
     public static CommonConfig commonConfig;
     
     public static String dbSourceUrl;
@@ -95,76 +77,66 @@ public class YDM
     public static File raritiesFolder;
     public static File bindersFolder;
     
-    public static SimpleChannel channel;
+    // Data Attachments (replaces old Capability system)
+    private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MOD_ID);
+    public static final Supplier<AttachmentType<UUIDHolder>> UUID_HOLDER = ATTACHMENT_TYPES.register("uuid_holder", () -> AttachmentType.serializable(UUIDHolder::new).build());
+    public static final Supplier<AttachmentType<YDMItemHandler>> CARD_ITEM_INVENTORY = ATTACHMENT_TYPES.register("card_item_inventory", () -> AttachmentType.serializable(() -> new YDMItemHandler(0)).build());
+    public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.serializable(CooldownHolder::new).build());
     
-    public static Capability<UUIDHolder> UUID_HOLDER = CapabilityManager.get(new CapabilityToken<>() {});
-    public static Capability<YDMItemHandler> CARD_ITEM_INVENTORY = CapabilityManager.get(new CapabilityToken<>() {});
-    public static Capability<CooldownHolder> COOLDOWN_HOLDER = CapabilityManager.get(new CapabilityToken<>() {});
+    // Custom Registry Keys
+    public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_icons"));
+    public static final ResourceKey<Registry<ZoneType>> ZONE_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "zone_types"));
+    public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_types"));
+    public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
     
-    public static Supplier<IForgeRegistry<ActionIcon>> actionIconRegistry;
-    public static Supplier<IForgeRegistry<ZoneType>> zoneTypeRegistry;
-    public static Supplier<IForgeRegistry<ActionType>> actionTypeRegistry;
-    public static Supplier<IForgeRegistry<DuelMessageHeaderType>> duelMessageHeaderRegistry;
+    public static Supplier<Registry<ActionIcon>> actionIconRegistry;
+    public static Supplier<Registry<ZoneType>> zoneTypeRegistry;
+    public static Supplier<Registry<ActionType>> actionTypeRegistry;
+    public static Supplier<Registry<DuelMessageHeaderType>> duelMessageHeaderRegistry;
+    
     public static volatile boolean continueTasks = true;
     public static volatile boolean forceTaskStop = false;
     
-    public YDM()
+    public YDM(IEventBus modBus, ModContainer modContainer)
     {
         YDM.instance = this;
-        YDM.proxy = DistExecutor.unsafeRunForDist(
-                () -> de.cas_ual_ty.ydm.clientutil.ClientProxy::new,
-                () -> de.cas_ual_ty.ydm.serverutil.ServerProxy::new);
-        YDM.random = new Random();
-        YDM.ydmItemGroup = new YdmItemGroup(YDM.MOD_ID, YdmItems.CARD_BACK);
-        YDM.cardsItemGroup = new YdmItemGroup(YDM.MOD_ID + ".cards", YdmItems.BLANC_CARD)
-        {
-            @Override
-            public boolean hasSearchBar()
-            {
-                return true;
-            }
-        }.setBackgroundSuffix("item_search.png");
-        YDM.setsItemGroup = new YdmItemGroup(YDM.MOD_ID + ".sets", YdmItems.BLANC_SET)
-        {
-            @Override
-            public boolean hasSearchBar()
-            {
-                return true;
-            }
-        }.setBackgroundSuffix("item_search.png");
         
-        Pair<CommonConfig, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
+        } else {
+            YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();
+        }
+        
+        YDM.random = new Random();
+        
+        Pair<CommonConfig, ModConfigSpec> common = new ModConfigSpec.Builder().configure(CommonConfig::new);
         YDM.commonConfig = common.getLeft();
         YDM.commonConfigSpec = common.getRight();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, YDM.commonConfigSpec);
+        modContainer.registerConfig(ModConfig.Type.COMMON, YDM.commonConfigSpec);
         
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::init);
-        bus.addListener(this::modConfig);
-        bus.addListener(this::newRegistry);
-        YDM.proxy.registerModEventListeners(bus);
+        modBus.addListener(this::init);
+        modBus.addListener(this::modConfig);
+        modBus.addListener(this::newRegistry);
+        YDM.proxy.registerModEventListeners(modBus);
         
-        YdmBlocks.register(bus);
-        YdmItems.register(bus);
-        YdmContainerTypes.register(bus);
-        YdmEntityTypes.register(bus);
-        YdmTileEntityTypes.register(bus);
-        ActionIcons.register(bus);
-        ZoneTypes.register(bus);
-        ActionTypes.register(bus);
-        DuelMessageHeaders.register(bus);
+        YdmBlocks.register(modBus);
+        YdmItems.register(modBus);
+        YdmContainerTypes.register(modBus);
+        YdmEntityTypes.register(modBus);
+        YdmTileEntityTypes.register(modBus);
+        ATTACHMENT_TYPES.register(modBus);
+        ActionIcons.register(modBus);
+        ZoneTypes.register(modBus);
+        ActionTypes.register(modBus);
+        DuelMessageHeaders.register(modBus);
         
-        bus = MinecraftForge.EVENT_BUS;
-        // see: https://github.com/MinecraftForge/MinecraftForge/pull/6954
-        // need to write directly to nbt for now
-        bus.addGenericListener(ItemStack.class, this::attachItemStackCapabilities);
-        bus.addGenericListener(Entity.class, this::attachPlayerCapabilities);
-        bus.addListener(this::playerClone);
-        bus.addListener(this::playerTick);
-        bus.addListener(this::registerCommands);
-        bus.addListener(this::findDecks);
-        bus.addListener(this::serverStopped);
-        YDM.proxy.registerForgeEventListeners(bus);
+        IEventBus forgeBus = NeoForge.EVENT_BUS;
+        forgeBus.addListener(this::playerClone);
+        forgeBus.addListener(this::playerTick);
+        forgeBus.addListener(this::registerCommands);
+        forgeBus.addListener(this::findDecks);
+        forgeBus.addListener(this::serverStopped);
+        YDM.proxy.registerForgeEventListeners(forgeBus);
         
         YDM.proxy.preInit();
         initFolders();
@@ -172,43 +144,11 @@ public class YDM
     
     private void init(FMLCommonSetupEvent event)
     {
-        YDM.channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(YDM.MOD_ID, "main"),
-                () -> YDM.PROTOCOL_VERSION,
-                YDM.PROTOCOL_VERSION::equals,
-                YDM.PROTOCOL_VERSION::equals);
+        // Network registration is now done via PayloadRegistrar in NeoForge 1.21.1
+        // All messages need to implement CustomPacketPayload
+        // TODO: Port networking to NeoForge payload system
         
         initFiles();
-        
-        int index = 0;
-        YDM.channel.registerMessage(index++, CardBinderMessages.ChangePage.class, CardBinderMessages.ChangePage::encode, CardBinderMessages.ChangePage::decode, CardBinderMessages.ChangePage::handle);
-        YDM.channel.registerMessage(index++, CardBinderMessages.ChangeSearch.class, CardBinderMessages.ChangeSearch::encode, CardBinderMessages.ChangeSearch::decode, CardBinderMessages.ChangeSearch::handle);
-        YDM.channel.registerMessage(index++, CardBinderMessages.UpdatePage.class, CardBinderMessages.UpdatePage::encode, CardBinderMessages.UpdatePage::decode, CardBinderMessages.UpdatePage::handle);
-        YDM.channel.registerMessage(index++, CardBinderMessages.UpdateList.class, CardBinderMessages.UpdateList::encode, CardBinderMessages.UpdateList::decode, CardBinderMessages.UpdateList::handle);
-        YDM.channel.registerMessage(index++, CardBinderMessages.IndexClicked.class, CardBinderMessages.IndexClicked::encode, CardBinderMessages.IndexClicked::decode, CardBinderMessages.IndexClicked::handle);
-        YDM.channel.registerMessage(index++, CardBinderMessages.IndexDropped.class, CardBinderMessages.IndexDropped::encode, CardBinderMessages.IndexDropped::decode, CardBinderMessages.IndexDropped::handle);
-        YDM.channel.registerMessage(index++, CardSupplyMessages.RequestCard.class, CardSupplyMessages.RequestCard::encode, CardSupplyMessages.RequestCard::decode, CardSupplyMessages.RequestCard::handle);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SelectRole.class, DuelMessages.SelectRole::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.UpdateRole.class, DuelMessages.UpdateRole::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.UpdateDuelState.class, DuelMessages.UpdateDuelState::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.RequestFullUpdate.class, DuelMessages.RequestFullUpdate::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.RequestReady.class, DuelMessages.RequestReady::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.UpdateReady.class, DuelMessages.UpdateReady::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendAvailableDecks.class, DuelMessages.SendAvailableDecks::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.RequestDeck.class, DuelMessages.RequestDeck::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendDeck.class, DuelMessages.SendDeck::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.ChooseDeck.class, DuelMessages.ChooseDeck::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.DeckAccepted.class, DuelMessages.DeckAccepted::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.DuelAction.class, DuelMessages.DuelAction::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.RequestDuelAction.class, DuelMessages.RequestDuelAction::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.AllDuelActions.class, DuelMessages.AllDuelActions::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendMessageToServer.class, DuelMessages.SendMessageToServer::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendMessageToClient.class, DuelMessages.SendMessageToClient::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendAllMessagesToClient.class, DuelMessages.SendAllMessagesToClient::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendAdmitDefeat.class, DuelMessages.SendAdmitDefeat::new);
-        DuelMessage.register(YDM.channel, index++, DuelMessages.SendOfferDraw.class, DuelMessages.SendOfferDraw::new);
-        YDM.channel.registerMessage(index++, CIIMessages.SetPage.class, CIIMessages.SetPage::encode, CIIMessages.SetPage::decode, CIIMessages.SetPage::handle);
-        YDM.channel.registerMessage(index++, CIIMessages.ChangePage.class, CIIMessages.ChangePage::encode, CIIMessages.ChangePage::decode, CIIMessages.ChangePage::handle);
-        
         YDM.proxy.init();
         WorkerManager.init();
     }
@@ -234,97 +174,23 @@ public class YDM
         YdmDatabase.initDatabase();
     }
     
-    private void attachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event)
-    {
-        if(event.getObject().getItem() == YdmItems.CARD_BINDER.get())
-        {
-            attachCapability(event, new UUIDHolder(event.getObject()::getOrCreateTag), UUID_HOLDER, "uuid_holder", true);
-        }
-        if(event.getObject().getItem() instanceof SimpleBinderItem)
-        {
-            SimpleBinderItem item = (SimpleBinderItem) event.getObject().getItem();
-            YDMItemHandler handler = new YDMItemHandler(item.binderSize, event.getObject()::getOrCreateTag);
-            attachCapability(event, handler, CARD_ITEM_INVENTORY, "card_item_inventory", true);
-        }
-        if(event.getObject().getItem() == YdmItems.OPENED_SET.get())
-        {
-            attachCapability(event, new YDMItemHandler(0, event.getObject()::getOrCreateTag), CARD_ITEM_INVENTORY, "card_item_inventory", true);
-        }
-        if(event.getObject().getItem() instanceof DeckBoxItem)
-        {
-            attachCapability(event, new YDMItemHandler(DeckHolder.TOTAL_SIZE_WITH_EXTRAS, event.getObject()::getOrCreateTag), CARD_ITEM_INVENTORY, "card_item_inventory", true);
-        }
-    }
-    
-    private void attachPlayerCapabilities(AttachCapabilitiesEvent<Entity> event)
-    {
-        if(event.getObject() instanceof Player)
-        {
-            Player player = (Player) event.getObject();
-            attachCapability(event, new CooldownHolder(), COOLDOWN_HOLDER, "cooldown_holder", false);
-        }
-    }
-    
-    private static <T extends Tag, C extends INBTSerializable<T>> void attachCapability(AttachCapabilitiesEvent<?> event, C capData, Capability<C> capability, String name, boolean invalidate)
-    {
-        LazyOptional<C> optional = LazyOptional.of(() -> capData);
-        ICapabilitySerializable<T> provider = new ICapabilitySerializable<T>()
-        {
-            @Override
-            public <S> LazyOptional<S> getCapability(Capability<S> cap, Direction side)
-            {
-                if(cap == capability)
-                {
-                    return optional.cast();
-                }
-                
-                return LazyOptional.empty();
-            }
-            
-            @Override
-            public T serializeNBT()
-            {
-                return capData.serializeNBT();
-            }
-            
-            @Override
-            public void deserializeNBT(T tag)
-            {
-                capData.deserializeNBT(tag);
-            }
-        };
-        
-        event.addCapability(new ResourceLocation(MOD_ID, name), provider);
-        
-        if(invalidate)
-        {
-            event.addListener(optional::invalidate);
-        }
-    }
-    
     private void playerClone(PlayerEvent.Clone event)
     {
         final Player original = event.getOriginal();
         final Player current = event.getEntity();
         
-        original.revive();
-        
-        original.getCapability(COOLDOWN_HOLDER).ifPresent(originalCD ->
+        if (original.hasData(COOLDOWN_HOLDER))
         {
-            current.getCapability(COOLDOWN_HOLDER).ifPresent(currentCD ->
-            {
-                currentCD.deserializeNBT(original.serializeNBT());
-            });
-        });
-        
-        original.discard();
+            current.getData(COOLDOWN_HOLDER).deserializeNBT(original.registryAccess(), original.getData(COOLDOWN_HOLDER).serializeNBT(original.registryAccess()));
+        }
     }
     
-    private void playerTick(TickEvent.PlayerTickEvent event)
+    private void playerTick(PlayerTickEvent.Post event)
     {
-        if(event.phase == TickEvent.Phase.END)
+        Player player = event.getEntity();
+        if (player.hasData(COOLDOWN_HOLDER))
         {
-            event.player.getCapability(COOLDOWN_HOLDER).ifPresent(CooldownHolder::tick);
+            player.getData(COOLDOWN_HOLDER).tick();
         }
     }
     
@@ -378,10 +244,10 @@ public class YDM
     
     private void newRegistry(NewRegistryEvent event)
     {
-        YDM.actionIconRegistry = event.create(new RegistryBuilder<ActionIcon>().setName(new ResourceLocation(YDM.MOD_ID, "action_icons")).setMaxID(511));
-        YDM.zoneTypeRegistry = event.create(new RegistryBuilder<ZoneType>().setName(new ResourceLocation(YDM.MOD_ID, "zone_types")).setMaxID(511));
-        YDM.actionTypeRegistry = event.create(new RegistryBuilder<ActionType>().setName(new ResourceLocation(YDM.MOD_ID, "action_types")).setMaxID(511));
-        YDM.duelMessageHeaderRegistry = event.create(new RegistryBuilder<DuelMessageHeaderType>().setName(new ResourceLocation(YDM.MOD_ID, "duel_message_headers")).setMaxID(63));
+        YDM.actionIconRegistry = event.create(new RegistryBuilder<>(ACTION_ICON_KEY).sync(true).maxId(511));
+        YDM.zoneTypeRegistry = event.create(new RegistryBuilder<>(ZONE_TYPE_KEY).sync(true).maxId(511));
+        YDM.actionTypeRegistry = event.create(new RegistryBuilder<>(ACTION_TYPE_KEY).sync(true).maxId(511));
+        YDM.duelMessageHeaderRegistry = event.create(new RegistryBuilder<>(DUEL_MESSAGE_HEADER_KEY).sync(true).maxId(63));
     }
     
     private void serverStopped(ServerStoppedEvent event)

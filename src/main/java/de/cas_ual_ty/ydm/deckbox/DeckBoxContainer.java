@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class DeckBoxContainer extends AbstractContainerMenu
 {
@@ -30,7 +30,6 @@ public class DeckBoxContainer extends AbstractContainerMenu
         this.itemStack = itemStack;
         
         itemHandler = ((DeckBoxItem) itemStack.getItem()).getItemHandler(itemStack);
-        itemHandler.load();
         
         final int itemsPerRow = 15;
         
@@ -177,7 +176,6 @@ public class DeckBoxContainer extends AbstractContainerMenu
     @Override
     public void removed(Player playerIn)
     {
-        itemHandler.save();
         super.removed(playerIn);
     }
 }

@@ -11,11 +11,12 @@ import de.cas_ual_ty.ydm.duel.PlayerRole;
 import de.cas_ual_ty.ydm.duel.network.DuelMessages;
 import de.cas_ual_ty.ydm.duel.screen.widget.RoleButtonWidget;
 import de.cas_ual_ty.ydm.duel.screen.widget.RoleOccupantsWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.network.PacketDistributor;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen<E>
 {
@@ -50,15 +51,17 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     }
     
     @Override
-    protected void renderLabels(PoseStack ms, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        PoseStack ms = guiGraphics.pose();
         font.draw(ms, "Waiting for players...", 8.0F, 6.0F, 0x404040);
     }
     
     @Override
-    protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(ms, partialTicks, mouseX, mouseY);
+        PoseStack ms = guiGraphics.pose();
+        super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
         RenderSystem.setShaderTexture(0, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE);
@@ -101,14 +104,14 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     
     protected void roleButtonClicked(Button button)
     {
-        YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SelectRole(getHeader(), ((RoleButtonWidget) button).role));
     }
     
     protected void ready1ButtonClicked()
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER1)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player1Ready));
         }
     }
     
@@ -116,7 +119,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     {
         if(player1Button != null && player2Button != null && getPlayerRole() == PlayerRole.PLAYER2)
         {
-            YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
+            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestReady(getHeader(), !getDuelManager().player2Ready));
         }
     }
 }

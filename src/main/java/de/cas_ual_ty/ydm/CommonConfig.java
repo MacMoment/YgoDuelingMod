@@ -1,8 +1,8 @@
 package de.cas_ual_ty.ydm;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class CommonConfig
     public final ConfigValue<Boolean> mohistWorkaround;
     public final ConfigValue<Boolean> logBinderIO;
     
-    public CommonConfig(ForgeConfigSpec.Builder builder)
+    public CommonConfig(ModConfigSpec.Builder builder)
     {
         builder.push("common");
         

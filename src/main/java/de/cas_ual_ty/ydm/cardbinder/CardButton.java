@@ -1,11 +1,11 @@
 package de.cas_ual_ty.ydm.cardbinder;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -28,30 +28,30 @@ public class CardButton extends AbstractButton
     }
     
     @Override
-    public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTick)
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         CardHolder card = getCard();
         if(card != null)
         {
             ScreenUtil.white();
             CardRenderUtil.bindMainResourceLocation(card);
-            YdmBlitUtil.fullBlit(ms, x + 1, y + 1, 16, 16);
+            YdmBlitUtil.fullBlit(guiGraphics.pose(), x + 1, y + 1, 16, 16);
             
             if(isHoveredOrFocused())
             {
-                drawHover(ms);
+                drawHover(guiGraphics);
             }
         }
     }
     
-    protected void drawHover(PoseStack ms)
+    protected void drawHover(GuiGraphics guiGraphics)
     {
         RenderSystem.disableDepthTest();
         int x = this.x + 1;
         int y = this.y + 1;
         RenderSystem.colorMask(true, true, true, false);
         int slotColor = -2130706433; // From ContainerScreen::slotColor
-        fillGradient(ms, x, y, x + 16, y + 16, slotColor, slotColor);
+        guiGraphics.fillGradient(x, y, x + 16, y + 16, slotColor, slotColor);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.enableDepthTest();
     }

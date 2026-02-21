@@ -3,6 +3,7 @@ package de.cas_ual_ty.ydm.duel.screen.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.cas_ual_ty.ydm.duel.screen.animation.Animation;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -40,7 +41,7 @@ public class AnimationsWidget extends AbstractWidget
     }
     
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
         
@@ -48,7 +49,7 @@ public class AnimationsWidget extends AbstractWidget
         {
             for(Animation a : animations)
             {
-                a.render(ms, mouseX, mouseY, partialTicks);
+                a.render(guiGraphics, mouseX, mouseY, partialTicks);
             }
         }
     }

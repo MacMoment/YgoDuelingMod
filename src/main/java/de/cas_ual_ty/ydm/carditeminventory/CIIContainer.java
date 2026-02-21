@@ -12,9 +12,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.items.SlotItemHandler;
+// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 import javax.annotation.Nonnull;
 
@@ -36,8 +35,6 @@ public class CIIContainer extends AbstractContainerMenu
         
         player = playerInventoryIn.player;
         this.itemHandler = itemHandler;
-        
-        itemHandler.load();
         
         page = 0;
         maxPage = Mth.ceil(this.itemHandler.getSlots() / (double) PAGE_SIZE);
@@ -134,7 +131,7 @@ public class CIIContainer extends AbstractContainerMenu
     
     protected void updatePage()
     {
-        YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CIIMessages.SetPage(page));
+        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CIIMessages.SetPage(page));
     }
     
     public void nextPage()
@@ -165,7 +162,6 @@ public class CIIContainer extends AbstractContainerMenu
     
     public void updateSlots()
     {
-        itemHandler.save();
         slots.clear();
         createBottomSlots(player.getInventory());
         createTopSlots();
@@ -210,13 +206,12 @@ public class CIIContainer extends AbstractContainerMenu
     @Override
     public void removed(Player pPlayer)
     {
-        itemHandler.save();
         super.removed(pPlayer);
     }
     
     public static void openGui(Player player, int itemHandlerSize, MenuProvider p)
     {
-        NetworkHooks.openScreen((ServerPlayer) player, p, (extraData) ->
+        ((ServerPlayer) player).openMenu(p, (extraData) ->
         {
             extraData.writeInt(itemHandlerSize);
         });
