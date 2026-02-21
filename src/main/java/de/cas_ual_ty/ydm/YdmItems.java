@@ -31,9 +31,9 @@ public class YdmItems
     public static final DeferredHolder<Item, Item> DUEL_TABLE = DEFERRED_REGISTER.register("duel_table", () -> new BlockItem(YdmBlocks.DUEL_TABLE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> CARD_SUPPLY = DEFERRED_REGISTER.register("card_supply", () -> new BlockItem(YdmBlocks.CARD_SUPPLY.get(), new Item.Properties()));
     
-    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_3 = DEFERRED_REGISTER.register("simple_binder_" + 3, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, YDM.ydmItemGroup, 3));
-    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_9 = DEFERRED_REGISTER.register("simple_binder_" + 9, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, YDM.ydmItemGroup, 9));
-    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_27 = DEFERRED_REGISTER.register("simple_binder_" + 27, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, YDM.ydmItemGroup, 27));
+    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_3 = DEFERRED_REGISTER.register("simple_binder_" + 3, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, 3));
+    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_9 = DEFERRED_REGISTER.register("simple_binder_" + 9, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, 9));
+    public static final DeferredHolder<Item, SimpleBinderItem> SIMPLE_BINDER_27 = DEFERRED_REGISTER.register("simple_binder_" + 27, () -> SimpleBinderItem.makeItem(YDM.MOD_ID, 27));
     
     public static final DeferredHolder<Item, Item> MILLENIUM_EYE = DEFERRED_REGISTER.register("millennium_eye", () -> new CosmeticItem(new Item.Properties().stacksTo(1)));
     public static final DeferredHolder<Item, Item> MILLENIUM_KEY = DEFERRED_REGISTER.register("millennium_key", () -> new CosmeticItem(new Item.Properties().stacksTo(1)));
