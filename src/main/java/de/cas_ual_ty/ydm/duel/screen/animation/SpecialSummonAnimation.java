@@ -1,9 +1,9 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import org.lwjgl.opengl.GL11;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+
+
+
+
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
@@ -30,7 +30,7 @@ public class SpecialSummonAnimation extends Animation
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         double relativeTickTime = (tickTime + partialTicks) / maxTickTime;
         
         // [0, 1/2pi]
@@ -45,16 +45,16 @@ public class SpecialSummonAnimation extends Animation
         
         ms.pushPose();
         
-        ms.translate(centerPosX, centerPosY, 0);
-        ms.mulPose(Axis.ZP.rotationDegrees(rotation));
+        ms.translate((float)(centerPosX), (float)(centerPosY));
+        ms.rotate((float)Math.toRadians(rotation));
         
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-        RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ZERO, GL11.GL_ONE);
+        
+        
+        
         
         YdmBlitUtil.fullBlit(ms, getTexture(), -halfSize, -halfSize, size, size);
         
-        RenderSystem.disableBlend();
+        
         
         ms.popPose();
     }

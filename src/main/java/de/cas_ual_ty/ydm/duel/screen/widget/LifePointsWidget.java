@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.widget.ITooltip;
 import net.minecraft.client.Minecraft;
@@ -9,7 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -35,12 +35,12 @@ public class LifePointsWidget extends AbstractWidget
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        
+        
         
         int lp = lpGetter.get();
         float relativeLP = Math.min(1F, lp / (float) maxLP);
@@ -51,32 +51,32 @@ public class LifePointsWidget extends AbstractWidget
         int w = width;
         int h = height;
         
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 1 * 8, width, height);
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
-        renderBg(ms, minecraft, mouseX, mouseY);
+        // renderBg removed in 1.21.11; LP bar is fully rendered by the blit calls above
         
         x = this.x + width / 2;
         y = this.y + height / 2;
         
         ms.pushPose();
         
-        ms.scale(0.5F, 0.5F, 1F);
+        ms.scale(0.5F, 0.5F);
         
         int j = getFGColor();
-        Screen.drawCenteredString(ms, fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
         ms.popPose();
         
         if(isHoveredOrFocused())
         {
-            tooltip.onTooltip(this, ms, mouseX, mouseY);
+            tooltip.onTooltip(this, guiGraphics, mouseX, mouseY);
         }
     }
     
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput)
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput)
     {
     
     }

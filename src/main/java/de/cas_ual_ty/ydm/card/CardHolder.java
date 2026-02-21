@@ -147,16 +147,16 @@ public class CardHolder implements Comparable<CardHolder>
     
     public void readCardHolderFromNBT(CompoundTag nbt)
     {
-        card = YdmDatabase.PROPERTIES_LIST.get(nbt.getLong(JsonKeys.ID));
+        card = YdmDatabase.PROPERTIES_LIST.get(nbt.getLong(JsonKeys.ID).orElse(0L));
         
         if(card == null)
         {
             card = Properties.DUMMY;
         }
         
-        imageIndex = nbt.getByte(JsonKeys.IMAGE_INDEX);
-        rarity = nbt.getString(JsonKeys.RARITY);
-        code = nbt.getString(JsonKeys.CODE);
+        imageIndex = nbt.getByte(JsonKeys.IMAGE_INDEX).orElse((byte) 0);
+        rarity = nbt.getString(JsonKeys.RARITY).orElse("");
+        code = nbt.getString(JsonKeys.CODE).orElse("");
     }
     
     public void writeCardHolderToNBT(CompoundTag nbt)

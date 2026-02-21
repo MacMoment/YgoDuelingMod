@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -111,14 +111,14 @@ public class ViewCardStackWidget extends Button
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
         
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
+        
+        
+        
         
         if(!cards.isEmpty())
         {
@@ -130,11 +130,11 @@ public class ViewCardStackWidget extends Button
         }
         
         int j = getFGColor();
-        Screen.drawCenteredString(ms, fontrenderer, getMessage(), x, y, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, getMessage(), x, y, j | Mth.ceil(alpha * 255.0F) << 24);
     }
     
     @Nullable
-    public DuelCard renderCards(PoseStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
     {
         DuelCard hoveredCard = null;
         int hoverX = 0, hoverY = 0;
@@ -181,7 +181,7 @@ public class ViewCardStackWidget extends Button
         }
     }
     
-    protected boolean drawCard(PoseStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY)
+    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY)
     {
         if(context.getClickedCard() == duelCard)
         {

@@ -1,8 +1,8 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.*;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.card.CardSleevesItem;
@@ -311,12 +311,13 @@ public class ClientProxy implements ISidedProxy
     {
         event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
         event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
-        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (container, inv, title) -> new DuelScreenBase((DuelContainer) container, inv, title));
+        // Cast MenuType to base type to resolve generic type inference
+        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase::new);
+        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase::new);
         event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-        event.register(YdmContainerTypes.CARD_SET.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
-        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
-        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET.get(), CIIScreen::new);
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen::new);
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen::new);
     }
     
     private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)
@@ -476,7 +477,7 @@ public class ClientProxy implements ISidedProxy
             {
                 ItemStack itemStack = containerScreen.getSlotUnderMouse().getItem();
                 GuiGraphics guiGraphics = event.getGuiGraphics();
-                PoseStack ms = guiGraphics.pose();
+                var ms = guiGraphics.pose();
                 
                 if(itemStack.getItem() == YdmItems.CARD.get())
                 {
@@ -509,7 +510,7 @@ public class ClientProxy implements ISidedProxy
         {
             Player player = getClientPlayer();
             GuiGraphics guiGraphics = event.getGuiGraphics();
-            PoseStack ms = guiGraphics.pose();
+            var ms = guiGraphics.pose();
             
             if(player.getMainHandItem().getItem() == YdmItems.CARD.get())
             {
@@ -558,7 +559,7 @@ public class ClientProxy implements ISidedProxy
             return;
         }
         
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         final float f = 0.5f;
         final int imageSize = 64;
         int margin = 2;
@@ -584,7 +585,7 @@ public class ClientProxy implements ISidedProxy
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;
         margin *= 2;
-        ms.scale(f, f, f);
+        ms.scale(f, f);
         
         // card description text
         
@@ -610,7 +611,7 @@ public class ClientProxy implements ISidedProxy
             return;
         }
         
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         final float f = 0.5f;
         final int imageSize = 64;
         int margin = 2;
@@ -636,7 +637,7 @@ public class ClientProxy implements ISidedProxy
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;
         margin *= 2;
-        ms.scale(f, f, f);
+        ms.scale(f, f);
         
         // card description text
         

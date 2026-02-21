@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.clientutil;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 

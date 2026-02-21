@@ -1,6 +1,5 @@
 package de.cas_ual_ty.ydm.clientutil.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,10 +34,8 @@ public class ReadyCheckboxWidget extends Button
     {
         Minecraft minecraft = Minecraft.getInstance();
         ScreenUtil.white();
-        int i = getYImage(isHoveredOrFocused());
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        // In 1.21.11, getYImage is removed; compute texture row from hover/active state
+        int i = isActive() ? (isHoveredOrFocused() ? 2 : 1) : 0;
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y, 0, 46 + i * 20, width / 2, height);
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y, 200 - width / 2, 46 + i * 20, width / 2, height);
         if(isChecked.get())

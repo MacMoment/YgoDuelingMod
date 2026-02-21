@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.duel.DuelManager;
@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -101,28 +101,27 @@ public class ZoneWidget extends Button
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font Font = minecraft.font;
         
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
+        
+        
+        
         
         renderZoneSelectRect(ms, zone, x, y, width, height);
         
         hoverCard = renderCards(ms, mouseX, mouseY);
         
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
         
         if(zone.type.getCanHaveCounters() && zone.getCounters() > 0)
         {
             // see font renderer, top static Vector3f
             // white is translated in front by that
             ms.pushPose();
-            ms.translate(0, 0, 0.03F);
-            Screen.drawCenteredString(ms, Font, Component.literal("(" + zone.getCounters() + ")"),
+            guiGraphics.drawCenteredString(Font, Component.literal("(" + zone.getCounters() + ")"),
                     x + width / 2, y + height / 2 - Font.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
             ms.popPose();
@@ -137,7 +136,7 @@ public class ZoneWidget extends Button
                     ScreenUtil.renderHoverRect(ms, x, y, width, height);
                 }
                 
-                renderToolTip(ms, mouseX, mouseY);
+                renderToolTip(guiGraphics, mouseX, mouseY);
             }
         }
         else
@@ -146,7 +145,7 @@ public class ZoneWidget extends Button
         }
     }
     
-    public void renderZoneSelectRect(PoseStack ms, Zone zone, float x, float y, float width, float height)
+    public void renderZoneSelectRect(Matrix3x2fStack ms, Zone zone, float x, float y, float width, float height)
     {
         if(context.getClickedZone() == zone && context.getClickedCard() == null)
         {
@@ -172,7 +171,7 @@ public class ZoneWidget extends Button
         }
     }
     
-    public void renderCardSelectRect(PoseStack ms, DuelCard card, float x, float y, float width, float height)
+    public void renderCardSelectRect(Matrix3x2fStack ms, DuelCard card, float x, float y, float width, float height)
     {
         if(context.getClickedCard() == card)
         {
@@ -199,7 +198,7 @@ public class ZoneWidget extends Button
     }
     
     @Nullable
-    public DuelCard renderCards(PoseStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
     {
         if(zone.getCardsAmount() <= 0)
         {
@@ -234,7 +233,7 @@ public class ZoneWidget extends Button
         return null;
     }
     
-    protected boolean drawCard(PoseStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY, int cardsWidth, int cardsHeight)
+    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY, int cardsWidth, int cardsHeight)
     {
         int offset = cardsHeight - cardsWidth;
         
@@ -259,7 +258,7 @@ public class ZoneWidget extends Button
         return drawCard(ms, duelCard, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, hoverX, hoverY, hoverWidth, hoverHeight);
     }
     
-    protected boolean drawCard(PoseStack ms, DuelCard duelCard, float renderX, float renderY, float renderWidth, float renderHeight, int mouseX, int mouseY, float hoverX, float hoverY, float hoverWidth, float hoverHeight)
+    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, float renderX, float renderY, float renderWidth, float renderHeight, int mouseX, int mouseY, float hoverX, float hoverY, float hoverWidth, float hoverHeight)
     {
         boolean isOwner = zone.getOwner() == context.getZoneOwner();
         boolean faceUp = zone.getType().getShowFaceDownCardsToOwner() && isOwner;

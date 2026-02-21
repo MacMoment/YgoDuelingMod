@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+
+
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.duel.playfield.CardPosition;
@@ -38,7 +38,7 @@ public class AttackAnimation extends Animation
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         int halfTime = maxTickTime / 2;
         
         double relativeTickTime = (double) ((tickTime % halfTime) + partialTicks) / halfTime;
@@ -94,8 +94,8 @@ public class AttackAnimation extends Animation
         
         ms.pushPose();
         
-        ms.translate(posX, posY, 0);
-        ms.mulPose(Axis.ZP.rotation(rotation));
+        ms.translate((float)(posX), (float)(posY));
+        ms.rotate(rotation);
         
         ScreenUtil.drawRect(guiGraphics, -2, 0, 4, maxSize * relativePositionRotation, 1F, 0, 0, 0.5F);
         

@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import de.cas_ual_ty.ydm.duel.action.ActionIcon;
@@ -35,9 +35,8 @@ public class InteractionWidget extends Button
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         ms.pushPose();
-        ms.translate(0, 0, 5);
         
         ActionIcon icon = interaction.icon;
         
@@ -57,16 +56,16 @@ public class InteractionWidget extends Button
         }
         
         ScreenUtil.white();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        
+        
         
         YdmBlitUtil.blit(ms, icon.sourceFile, x + (width - iconWidth) / 2, y + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
         
         if(isHoveredOrFocused() && active)
         {
             ScreenUtil.renderHoverRect(ms, x, y, width, height);
-            renderToolTip(ms, mouseX, mouseY);
+            renderToolTip(guiGraphics, mouseX, mouseY);
         }
         
         ms.popPose();

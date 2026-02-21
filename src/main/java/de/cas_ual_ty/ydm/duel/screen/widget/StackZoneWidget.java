@@ -1,14 +1,14 @@
 package de.cas_ual_ty.ydm.duel.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import de.cas_ual_ty.ydm.duel.playfield.Zone;
 import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -26,28 +26,27 @@ public class StackZoneWidget extends ZoneWidget
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
         
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
+        
+        
+        
         
         renderZoneSelectRect(ms, zone, x, y, width, height);
         
         hoverCard = renderCards(ms, mouseX, mouseY);
         
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
         
         if(zone.getCardsAmount() > 0)
         {
             // see font renderer, top static Vector3f
             // white is translated in front by that
             ms.pushPose();
-            ms.translate(0, 0, 0.03F);
-            Screen.drawCenteredString(ms, fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
+            guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
                     x + width / 2, y + height / 2 - fontrenderer.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
             ms.popPose();
@@ -62,7 +61,7 @@ public class StackZoneWidget extends ZoneWidget
                     ScreenUtil.renderHoverRect(ms, x, y, width, height);
                 }
                 
-                renderToolTip(ms, mouseX, mouseY);
+                renderToolTip(guiGraphics, mouseX, mouseY);
             }
         }
         else

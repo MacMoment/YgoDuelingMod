@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+
+
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
@@ -49,7 +49,7 @@ public class MoveAnimation extends Animation
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        PoseStack ms = guiGraphics.pose();
+        var ms = guiGraphics.pose();
         double relativeTickTime = (double) (tickTime + partialTicks) / maxTickTime;
         float relativePositionRotation;
         float relativeScale;
@@ -121,11 +121,11 @@ public class MoveAnimation extends Animation
         
         ms.pushPose();
         
-        ms.translate(posX, posY, 0);
-        ms.mulPose(Axis.ZP.rotationDegrees(rotation));
+        ms.translate((float)(posX), (float)(posY));
+        ms.rotate((float)Math.toRadians(rotation));
         
         // we always render the card position straight and manually rotate it, thats why we use fullBlit here
-        CardRenderUtil.renderDuelCardAdvanced(ms, sleeves, mouseX, mouseY, -cardWidth / 2, -cardHeight / 2, cardWidth, cardHeight, duelCard, cardPosition, YdmBlitUtil::fullBlit);
+        CardRenderUtil.renderDuelCardAdvanced(guiGraphics, sleeves, mouseX, mouseY, -cardWidth / 2, -cardHeight / 2, cardWidth, cardHeight, duelCard, cardPosition, YdmBlitUtil::fullBlit);
         
         ms.popPose();
     }
