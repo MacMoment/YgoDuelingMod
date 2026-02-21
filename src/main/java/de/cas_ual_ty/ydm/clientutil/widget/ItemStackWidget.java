@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 
@@ -26,9 +26,9 @@ public class ItemStackWidget extends AbstractWidget
 {
     public ItemStack itemStack;
     public ItemRenderer itemRenderer;
-    public ResourceLocation replacement;
+    public Identifier replacement;
     
-    public ItemStackWidget(int xIn, int yIn, int size, ItemRenderer itemRenderer, ResourceLocation replacement)
+    public ItemStackWidget(int xIn, int yIn, int size, ItemRenderer itemRenderer, Identifier replacement)
     {
         super(xIn, yIn, size, size, Component.empty());
         itemStack = ItemStack.EMPTY;
@@ -46,7 +46,7 @@ public class ItemStackWidget extends AbstractWidget
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial)
     {
         Minecraft minecraft = Minecraft.getInstance();
-        ResourceLocation rl = replacement;
+        Identifier rl = replacement;
         
         if(!itemStack.isEmpty())
         {

@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.datagen;
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -43,7 +43,7 @@ public class YDMItemModels extends ItemModelProvider
     
     public void defaultSizedModel(Item item, int size)
     {
-        ResourceLocation rl = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
+        Identifier rl = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
         getBuilder(rl.toString() + "_" + size)
                 .parent(new UncheckedModelFile(rl.toString()))
                 .texture("layer0", modLoc("item/" + rl.getPath() + "_" + size));

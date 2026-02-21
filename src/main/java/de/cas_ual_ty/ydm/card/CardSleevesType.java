@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.card;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
 public enum CardSleevesType
@@ -51,12 +51,12 @@ public enum CardSleevesType
         return this == CARD_BACK;
     }
     
-    public ResourceLocation getMainRL(int size)
+    public Identifier getMainRL(int size)
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + size + "/" + getResourceName() + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + size + "/" + getResourceName() + ".png");
     }
     
-    public ResourceLocation getItemModelRL(int size)
+    public Identifier getItemModelRL(int size)
     {
         if(isCardBack())
         {
@@ -64,7 +64,7 @@ public enum CardSleevesType
         }
         else
         {
-            return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, getResourceName() + "_" + size);
+            return Identifier.fromNamespaceAndPath(YDM.MOD_ID, getResourceName() + "_" + size);
         }
     }
     
@@ -82,7 +82,7 @@ public enum CardSleevesType
     
     public Item getItem()
     {
-        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, getResourceName()));
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(YDM.MOD_ID, getResourceName()));
     }
     
     public byte getIndex()

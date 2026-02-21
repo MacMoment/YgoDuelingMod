@@ -7,14 +7,14 @@ import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 
 public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
 {
-    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
+    public static final Identifier DECK_BOX_GUI_TEXTURE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
     
     public DeckBoxScreen(DeckBoxContainer screenContainer, Inventory inv, Component titleIn)
     {

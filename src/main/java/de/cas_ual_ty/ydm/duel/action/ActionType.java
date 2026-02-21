@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.duel.action;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ActionType
 {
@@ -26,7 +26,7 @@ public class ActionType
     {
         if(localKey == null)
         {
-            ResourceLocation rl = YDM.actionTypeRegistry.get().getKey(this);
+            Identifier rl = YDM.actionTypeRegistry.get().getKey(this);
             localKey = "action." + rl.getNamespace() + "." + rl.getPath();
         }
         

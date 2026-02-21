@@ -1,14 +1,14 @@
 package de.cas_ual_ty.ydm.duel.action;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ActionIcons
 {
-    private static final DeferredRegister<ActionIcon> DEFERRED_REGISTER = DeferredRegister.create(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "action_icons"), YDM.MOD_ID);
+    private static final DeferredRegister<ActionIcon> DEFERRED_REGISTER = DeferredRegister.create(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "action_icons"), YDM.MOD_ID);
     
     public static final DeferredHolder<ActionIcon, ActionIcon> TO_TOP_OF_DECK_FD = DEFERRED_REGISTER.register("to_top_of_deck_fd", () -> ActionIcons.create("to_top_of_deck_fd"));
     public static final DeferredHolder<ActionIcon, ActionIcon> TO_BOTTOM_OF_DECK_FD = DEFERRED_REGISTER.register("to_bottom_of_deck_fd", () -> ActionIcons.create("to_bottom_of_deck_fd"));
@@ -60,6 +60,6 @@ public class ActionIcons
     
     public static ActionIcon create(String name)
     {
-        return new ActionIcon(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_icons/" + name + ".png"), 64);
+        return new ActionIcon(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_icons/" + name + ".png"), 64);
     }
 }

@@ -11,7 +11,7 @@ import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.card.properties.Properties;
 import de.cas_ual_ty.ydm.util.JsonKeys;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import java.util.TreeSet;
 import net.minecraft.world.item.ItemStack;
 
@@ -241,14 +241,14 @@ public class CardSet
         return YDM.proxy.addSetItemTag(getImageName());
     }
     
-    public ResourceLocation getInfoImageResourceLocation()
+    public Identifier getInfoImageResourceLocation()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
     }
     
-    public ResourceLocation getItemImageResourceLocation()
+    public Identifier getItemImageResourceLocation()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName());
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName());
     }
     
     public boolean getIsHardcoded()

@@ -22,7 +22,7 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -142,13 +142,13 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         y = (height - zoneSize) / 2;
         
         addRenderableWidget(reloadButton = new TextureButton(x, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.reload"), this::middleButtonClicked, this::middleButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
         addRenderableWidget(flipViewButton = new TextureButton(x + quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.flip_view"), this::middleButtonClicked, this::middleButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 80, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 80, 0, 16, 16));
         addRenderableWidget(offerDrawButton = new TextureButton(x + 2 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.offer_draw"), this::middleButtonClicked, this::middleButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 96, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 96, 0, 16, 16));
         addRenderableWidget(admitDefeatButton = new TextureButton(x + 3 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.admit_defeat"), this::middleButtonClicked, this::middleButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 112, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 112, 0, 16, 16));
         
         // lp text field for players, "Spectator" text for spectators
         if(getZoneOwner() != ZoneOwner.NONE)
@@ -175,15 +175,15 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         x = (width - zoneSize) / 2 - (zoneSize + zonesMargin) * 2;
         
         addRenderableWidget(coinFlipButton = new TextureButton(x, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.coin_flip"), this::leftButtonClicked, this::leftButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 32, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 32, 0, 16, 16));
         addRenderableWidget(diceRollButton = new TextureButton(x + halfSize, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.dice_roll"), this::leftButtonClicked, this::leftButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 48, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 48, 0, 16, 16));
         addRenderableWidget(addCounterButton = new TextureButton(x, y + halfSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.add_counter"), this::leftButtonClicked, this::leftButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 0, 16, 8));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 0, 16, 8));
         addRenderableWidget(removeCounterButton = new TextureButton(x, y + halfSize + quarterSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.remove_counter"), this::leftButtonClicked, this::leftButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 8, 16, 8));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 8, 16, 8));
         addRenderableWidget(advancedOptionsButton = new TextureButton(x + halfSize, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.advanced_options"), this::leftButtonClicked, this::leftButtonHovered)
-                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 144, 0, 16, 16));
+                .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 144, 0, 16, 16));
         
         if(getZoneOwner() == ZoneOwner.NONE)
         {

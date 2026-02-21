@@ -7,13 +7,13 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 
 public class ColoredButton extends Button
 {
-    public static final ResourceLocation RESOURCE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
+    public static final Identifier RESOURCE = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
     
     public int offset;
     

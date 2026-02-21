@@ -9,13 +9,13 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 // import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
-    private static final ResourceLocation CHEST_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath("textures/gui/container/generic_54.png");
+    private static final Identifier CHEST_GUI_TEXTURE = Identifier.fromNamespaceAndPath("textures/gui/container/generic_54.png");
     
     private final int inventoryRows;
     

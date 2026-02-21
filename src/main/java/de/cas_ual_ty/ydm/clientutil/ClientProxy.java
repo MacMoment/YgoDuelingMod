@@ -28,7 +28,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.*;
@@ -362,8 +362,8 @@ public class ClientProxy implements ISidedProxy
         if(ClientProxy.activeCardItemImageSize != 16)
         {
             
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+            event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+            event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
@@ -378,7 +378,7 @@ public class ClientProxy implements ISidedProxy
         
         if(ClientProxy.activeSetItemImageSize != 16)
         {
-            event.register(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
+            event.register(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
         }
     }
     
@@ -392,18 +392,18 @@ public class ClientProxy implements ISidedProxy
             event.getModels().put(ModelResourceLocation.inventory(YdmItems.BLANC_CARD.getId()),
                     event.getModelManager().getModel(
                             ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
+                                    Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
             
             event.getModels().put(ModelResourceLocation.inventory(YdmItems.CARD_BACK.getId()),
                     event.getModelManager().getModel(
                             ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
+                                    Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize))));
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
                 if(!sleeves.isCardBack())
                 {
-                    event.getModels().put(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name)),
+                    event.getModels().put(ModelResourceLocation.inventory(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name)),
                             event.getModelManager().getModel(
                                     ModelResourceLocation.inventory(
                                             sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize))));
@@ -416,7 +416,7 @@ public class ClientProxy implements ISidedProxy
             event.getModels().put(ModelResourceLocation.inventory(YdmItems.BLANC_SET.getId()),
                     event.getModelManager().getModel(
                             ModelResourceLocation.inventory(
-                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize))));
+                                    Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize))));
         }
         
         ModelResourceLocation key = ModelResourceLocation.inventory(YdmItems.CARD.getId());

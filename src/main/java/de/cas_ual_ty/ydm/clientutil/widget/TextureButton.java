@@ -8,12 +8,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 
 public class TextureButton extends Button
 {
-    public ResourceLocation textureLocation;
+    public Identifier textureLocation;
     
     public int texX;
     public int texY;
@@ -32,7 +32,7 @@ public class TextureButton extends Button
         textureLocation = null;
     }
     
-    public TextureButton setTexture(ResourceLocation textureLocation, int texX, int texY, int texW, int texH)
+    public TextureButton setTexture(Identifier textureLocation, int texX, int texY, int texW, int texH)
     {
         this.textureLocation = textureLocation;
         this.texX = texX;

@@ -11,14 +11,14 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import java.util.function.Supplier;
 
 public class LifePointsWidget extends AbstractWidget
 {
-    public static final ResourceLocation DUEL_WIDGETS = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png");
+    public static final Identifier DUEL_WIDGETS = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png");
     
     public Supplier<Integer> lpGetter;
     public int maxLP;

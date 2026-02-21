@@ -18,14 +18,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class CardRenderUtil
 {
-    public static final ResourceLocation MASK_RL = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/rarity_mask.png");
+    public static final Identifier MASK_RL = Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/rarity_mask.png");
     
     private static LimitedTextureBinder infoTextureBinder;
     private static LimitedTextureBinder mainTextureBinder;
@@ -126,12 +126,12 @@ public class CardRenderUtil
         CardRenderUtil.mainTextureBinder.bind(p.getMainImageResourceLocation(imageIndex));
     }
     
-    public static void bindInfoResourceLocation(ResourceLocation r)
+    public static void bindInfoResourceLocation(Identifier r)
     {
         CardRenderUtil.infoTextureBinder.bind(r);
     }
     
-    public static void bindMainResourceLocation(ResourceLocation r)
+    public static void bindMainResourceLocation(Identifier r)
     {
         CardRenderUtil.mainTextureBinder.bind(r);
     }
@@ -141,29 +141,29 @@ public class CardRenderUtil
         RenderSystem.setShaderTexture(0, s.getMainRL(ClientProxy.activeCardMainImageSize));
     }
     
-    public static ResourceLocation getInfoCardBack()
+    public static Identifier getInfoCardBack()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
-    public static ResourceLocation getMainCardBack()
+    public static Identifier getMainCardBack()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
-    public static ResourceLocation getInfoTokenOverlay()
+    public static Identifier getInfoTokenOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
-    public static ResourceLocation getMainTokenOverlay()
+    public static Identifier getMainTokenOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
     }
     
-    public static ResourceLocation getRarityOverlay()
+    public static Identifier getRarityOverlay()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
     public static void renderInfoCardWithRarity(GuiGraphics guiGraphics, int mouseX, int mouseY, float x, float y, float width, float height, CardHolder card)

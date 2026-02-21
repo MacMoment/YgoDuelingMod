@@ -22,7 +22,7 @@ import de.cas_ual_ty.ydm.util.YdmIOUtil;
 import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -84,10 +84,10 @@ public class YDM
     public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.serializable(CooldownHolder::new).build());
     
     // Custom Registry Keys
-    public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_icons"));
-    public static final ResourceKey<Registry<ZoneType>> ZONE_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "zone_types"));
-    public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "action_types"));
-    public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
+    public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_icons"));
+    public static final ResourceKey<Registry<ZoneType>> ZONE_TYPE_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "zone_types"));
+    public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_types"));
+    public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
     
     public static Supplier<Registry<ActionIcon>> actionIconRegistry;
     public static Supplier<Registry<ZoneType>> zoneTypeRegistry;

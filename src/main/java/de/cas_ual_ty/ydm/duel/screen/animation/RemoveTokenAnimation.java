@@ -7,7 +7,7 @@ import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class RemoveTokenAnimation extends Animation
 {
@@ -56,8 +56,8 @@ public class RemoveTokenAnimation extends Animation
         ms.popPose();
     }
     
-    public ResourceLocation getTexture()
+    public Identifier getTexture()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/remove_token.png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/remove_token.png");
     }
 }

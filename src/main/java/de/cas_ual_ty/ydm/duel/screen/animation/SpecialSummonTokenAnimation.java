@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SpecialSummonTokenAnimation extends SpecialSummonAnimation
 {
@@ -11,8 +11,8 @@ public class SpecialSummonTokenAnimation extends SpecialSummonAnimation
     }
     
     @Override
-    public ResourceLocation getTexture()
+    public Identifier getTexture()
     {
-        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon_token.png");
+        return Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon_token.png");
     }
 }
