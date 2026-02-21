@@ -11,7 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
@@ -22,7 +22,7 @@ public class DuelMessages
 {
     public static class SelectRole extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<SelectRole> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_select_role"));
+        public static final CustomPacketPayload.Type<SelectRole> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_select_role"));
         public static final StreamCodec<FriendlyByteBuf, SelectRole> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -78,7 +78,7 @@ public class DuelMessages
     
     public static class UpdateRole extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<UpdateRole> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_role"));
+        public static final CustomPacketPayload.Type<UpdateRole> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_role"));
         public static final StreamCodec<FriendlyByteBuf, UpdateRole> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -171,7 +171,7 @@ public class DuelMessages
     
     public static class UpdateDuelState extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<UpdateDuelState> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_state"));
+        public static final CustomPacketPayload.Type<UpdateDuelState> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_state"));
         public static final StreamCodec<FriendlyByteBuf, UpdateDuelState> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -227,7 +227,7 @@ public class DuelMessages
     
     public static class RequestFullUpdate extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<RequestFullUpdate> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_full_update"));
+        public static final CustomPacketPayload.Type<RequestFullUpdate> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_full_update"));
         public static final StreamCodec<FriendlyByteBuf, RequestFullUpdate> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -280,7 +280,7 @@ public class DuelMessages
     
     public static class RequestReady extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<RequestReady> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_ready"));
+        public static final CustomPacketPayload.Type<RequestReady> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_ready"));
         public static final StreamCodec<FriendlyByteBuf, RequestReady> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -336,7 +336,7 @@ public class DuelMessages
     
     public static class UpdateReady extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<UpdateReady> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_ready"));
+        public static final CustomPacketPayload.Type<UpdateReady> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_update_ready"));
         public static final StreamCodec<FriendlyByteBuf, UpdateReady> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -396,7 +396,7 @@ public class DuelMessages
     
     public static class SendAvailableDecks extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendAvailableDecks> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_available_decks"));
+        public static final CustomPacketPayload.Type<SendAvailableDecks> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_available_decks"));
         public static final StreamCodec<FriendlyByteBuf, SendAvailableDecks> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -452,7 +452,7 @@ public class DuelMessages
     
     public static class RequestDeck extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<RequestDeck> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_deck"));
+        public static final CustomPacketPayload.Type<RequestDeck> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_deck"));
         public static final StreamCodec<FriendlyByteBuf, RequestDeck> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -508,7 +508,7 @@ public class DuelMessages
     
     public static class SendDeck extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendDeck> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_deck"));
+        public static final CustomPacketPayload.Type<SendDeck> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_deck"));
         public static final StreamCodec<FriendlyByteBuf, SendDeck> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -568,7 +568,7 @@ public class DuelMessages
     
     public static class ChooseDeck extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<ChooseDeck> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_choose_deck"));
+        public static final CustomPacketPayload.Type<ChooseDeck> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_choose_deck"));
         public static final StreamCodec<FriendlyByteBuf, ChooseDeck> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -624,7 +624,7 @@ public class DuelMessages
     
     public static class DeckAccepted extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<DeckAccepted> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_deck_accepted"));
+        public static final CustomPacketPayload.Type<DeckAccepted> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_deck_accepted"));
         public static final StreamCodec<FriendlyByteBuf, DeckAccepted> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -680,7 +680,7 @@ public class DuelMessages
     
     public static class RequestDuelAction extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<RequestDuelAction> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_action"));
+        public static final CustomPacketPayload.Type<RequestDuelAction> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_request_action"));
         public static final StreamCodec<FriendlyByteBuf, RequestDuelAction> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -736,7 +736,7 @@ public class DuelMessages
     
     public static class DuelAction extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<DuelAction> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_action"));
+        public static final CustomPacketPayload.Type<DuelAction> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_action"));
         public static final StreamCodec<FriendlyByteBuf, DuelAction> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -798,7 +798,7 @@ public class DuelMessages
     
     public static class AllDuelActions extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<AllDuelActions> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_all_actions"));
+        public static final CustomPacketPayload.Type<AllDuelActions> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_all_actions"));
         public static final StreamCodec<FriendlyByteBuf, AllDuelActions> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -855,7 +855,7 @@ public class DuelMessages
     
     public static class SendMessageToServer extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendMessageToServer> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_msg_server"));
+        public static final CustomPacketPayload.Type<SendMessageToServer> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_msg_server"));
         public static final StreamCodec<FriendlyByteBuf, SendMessageToServer> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -911,7 +911,7 @@ public class DuelMessages
     
     public static class SendMessageToClient extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendMessageToClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_msg_client"));
+        public static final CustomPacketPayload.Type<SendMessageToClient> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_msg_client"));
         public static final StreamCodec<FriendlyByteBuf, SendMessageToClient> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -967,7 +967,7 @@ public class DuelMessages
     
     public static class SendAllMessagesToClient extends DuelMessage.ClientBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendAllMessagesToClient> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_all_msgs_client"));
+        public static final CustomPacketPayload.Type<SendAllMessagesToClient> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_send_all_msgs_client"));
         public static final StreamCodec<FriendlyByteBuf, SendAllMessagesToClient> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -1026,7 +1026,7 @@ public class DuelMessages
     
     public static class SendAdmitDefeat extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendAdmitDefeat> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_admit_defeat"));
+        public static final CustomPacketPayload.Type<SendAdmitDefeat> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_admit_defeat"));
         public static final StreamCodec<FriendlyByteBuf, SendAdmitDefeat> STREAM_CODEC = new StreamCodec<>()
         {
             @Override
@@ -1079,7 +1079,7 @@ public class DuelMessages
     
     public static class SendOfferDraw extends DuelMessage.ServerBaseMessage
     {
-        public static final CustomPacketPayload.Type<SendOfferDraw> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "duel_offer_draw"));
+        public static final CustomPacketPayload.Type<SendOfferDraw> TYPE = new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "duel_offer_draw"));
         public static final StreamCodec<FriendlyByteBuf, SendOfferDraw> STREAM_CODEC = new StreamCodec<>()
         {
             @Override

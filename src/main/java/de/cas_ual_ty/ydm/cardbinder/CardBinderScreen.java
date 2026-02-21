@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -145,15 +145,15 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button == prevButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(false));
+            PacketDistributor.sendToServer(new CardBinderMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangePage(true));
+            PacketDistributor.sendToServer(new CardBinderMessages.ChangePage(true));
         }
         else if(button == reloadButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
+            PacketDistributor.sendToServer(new CardBinderMessages.ChangeSearch(cardSearch.getValue()));
         }
     }
     
@@ -166,7 +166,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         
         if(button.getCard() != null)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexClicked(index));
+            PacketDistributor.sendToServer(new CardBinderMessages.IndexClicked(index));
         }
     }
     
@@ -190,7 +190,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
                 {
                     if(button.isHoveredOrFocused() && button.getCard() != null)
                     {
-                        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CardBinderMessages.IndexDropped(button.index));
+                        PacketDistributor.sendToServer(new CardBinderMessages.IndexDropped(button.index));
                         break;
                     }
                 }

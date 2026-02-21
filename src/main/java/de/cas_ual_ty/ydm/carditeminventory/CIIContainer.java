@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 
@@ -131,7 +131,7 @@ public class CIIContainer extends AbstractContainerMenu
     
     protected void updatePage()
     {
-        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new CIIMessages.SetPage(page));
+        PacketDistributor.sendToPlayer((ServerPlayer) player, new CIIMessages.SetPage(page));
     }
     
     public void nextPage()

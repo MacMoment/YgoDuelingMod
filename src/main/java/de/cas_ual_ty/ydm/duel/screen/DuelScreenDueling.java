@@ -26,7 +26,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -923,7 +923,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
     
     protected void requestDuelAction(Action action)
     {
-        // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.RequestDuelAction(getDuelManager().headerFactory.get(), action));
+        PacketDistributor.sendToServer(new DuelMessages.RequestDuelAction(getDuelManager().headerFactory.get(), action));
     }
     
     protected Component getShownZoneName()
@@ -998,11 +998,11 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         }
         else if(w == admitDefeatButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendAdmitDefeat(getHeader()));
+            PacketDistributor.sendToServer(new DuelMessages.SendAdmitDefeat(getHeader()));
         }
         else if(w == offerDrawButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new DuelMessages.SendOfferDraw(getHeader()));
+            PacketDistributor.sendToServer(new DuelMessages.SendOfferDraw(getHeader()));
         }
     }
     

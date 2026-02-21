@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-// import net.neoforged.neoforge.network.PacketDistributor; // Removed: old API
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
@@ -72,11 +72,11 @@ public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T
     {
         if(button == prevButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(false));
+            PacketDistributor.sendToServer(new CIIMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            // TODO: Port to NeoForge payload system: YDM.channel.send(PacketDistributor.SERVER.noArg(), new CIIMessages.ChangePage(true));
+            PacketDistributor.sendToServer(new CIIMessages.ChangePage(true));
         }
     }
     
