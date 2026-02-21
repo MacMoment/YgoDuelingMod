@@ -13,6 +13,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import java.util.List;
 import java.util.TreeSet;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;

@@ -2,50 +2,37 @@ package de.cas_ual_ty.ydm.datagen;
 
 import de.cas_ual_ty.ydm.card.CardSleevesType;
 import de.cas_ual_ty.ydm.util.YdmUtil;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class YDMItemModels extends ItemModelProvider
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * Item model data generator.
+ * TODO: Migrate to new client item JSON generation system for NeoForge 1.21.11
+ */
+public class YDMItemModels implements DataProvider
 {
-    public YDMItemModels(PackOutput packOutput, String modid, ExistingFileHelper existingFileHelper)
+    private final PackOutput packOutput;
+    private final String modid;
+    
+    public YDMItemModels(PackOutput packOutput, String modid)
     {
-        super(packOutput, modid, existingFileHelper);
+        this.packOutput = packOutput;
+        this.modid = modid;
     }
     
     @Override
-    protected void registerModels()
+    public CompletableFuture<?> run(CachedOutput cache)
     {
-        for(CardSleevesType sleeves : CardSleevesType.VALUES)
-        {
-            if(!sleeves.isCardBack())
-            {
-                String main = modid + ":item/" + sleeves.getResourceName();
-                
-                getBuilder(main)
-                        .parent(new UncheckedModelFile("item/generated"))
-                        .texture("layer0", modLoc("item/" + 16 + "/" + sleeves.getResourceName()));
-                
-                for(int i = 4; i <= 10; ++i)
-                {
-                    int size = YdmUtil.getPow2(i);
-                    
-                    getBuilder(sleeves.getItemModelRL(size).toString())
-                            .parent(new UncheckedModelFile(main))
-                            .texture("layer0", modLoc("item/" + size + "/" + sleeves.getResourceName()));
-                }
-            }
-        }
+        // TODO: Generate client item JSON files for card sleeves using the new model system
+        return CompletableFuture.completedFuture(null);
     }
     
-    public void defaultSizedModel(Item item, int size)
+    @Override
+    public String getName()
     {
-        Identifier rl = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
-        getBuilder(rl.toString() + "_" + size)
-                .parent(new UncheckedModelFile(rl.toString()))
-                .texture("layer0", modLoc("item/" + rl.getPath() + "_" + size));
+        return "YDM Item Models";
     }
 }

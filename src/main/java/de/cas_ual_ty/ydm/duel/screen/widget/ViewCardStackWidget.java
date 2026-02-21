@@ -31,9 +31,9 @@ public class ViewCardStackWidget extends Button
     protected List<DuelCard> cards;
     protected boolean forceFaceUp;
     
-    public ViewCardStackWidget(IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<ViewCardStackWidget> onPress, OnTooltip onTooltip)
+    public ViewCardStackWidget(IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<ViewCardStackWidget> onPress)
     {
-        super(x, y, width, height, title, (button) -> onPress.accept((ViewCardStackWidget) button), onTooltip);
+        super(x, y, width, height, title, (button) -> onPress.accept((ViewCardStackWidget) button));
         this.context = context;
         hoverCard = null;
         rows = 0;

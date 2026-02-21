@@ -18,16 +18,16 @@ public class InteractionWidget extends Button
     public final ZoneInteraction interaction;
     public final IDuelScreenContext context;
     
-    public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<InteractionWidget> onPress, OnTooltip onTooltip)
+    public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<InteractionWidget> onPress)
     {
-        super(x, y, width, height, title, (w) -> onPress.accept((InteractionWidget) w), onTooltip);
+        super(x, y, width, height, title, (w) -> onPress.accept((InteractionWidget) w));
         this.interaction = interaction;
         this.context = context;
     }
     
-    public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Consumer<InteractionWidget> onPress, OnTooltip onTooltip)
+    public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Consumer<InteractionWidget> onPress)
     {
-        super(x, y, width, height, interaction.icon.getLocal(), (w) -> onPress.accept((InteractionWidget) w), onTooltip);
+        super(x, y, width, height, interaction.icon.getLocal(), (w) -> onPress.accept((InteractionWidget) w));
         this.interaction = interaction;
         this.context = context;
     }

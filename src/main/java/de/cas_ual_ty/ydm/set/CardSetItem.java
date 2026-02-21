@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.set;
 import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.YdmItems;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ public class CardSetItem extends CardSetBaseItem
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+    public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
         ItemStack stack = CardSetItem.getActiveSet(player);
         

@@ -9,7 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +36,7 @@ public class OpenedCardSetItem extends CardSetBaseItem
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+    public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
         if(!world.isClientSide && hand == YdmUtil.getActiveItem(player, this))
         {
@@ -58,7 +58,7 @@ public class OpenedCardSetItem extends CardSetBaseItem
                 }
             });
             
-            return InteractionResultHolder.success(itemStack);
+            return InteractionResult.SUCCESS;
         }
         
         return super.use(world, player, hand);

@@ -378,46 +378,68 @@ public class ClientProxy implements ISidedProxy
     //     }
     // }
     
-    private void modelBake(ModelEvent.BakingCompleted event)
+    private void modelBake(ModelEvent.ModifyBakingResult event)
     {
         YDM.log("Baking models (size: " + ClientProxy.activeCardItemImageSize + ") for " + YdmItems.BLANC_CARD.getId().toString() + " and " + YdmItems.CARD_BACK.getId().toString());
+        
+        var itemModels = event.getBakingResult().itemStackModels();
         
         // 16 is default texture; no need to do anything special in that case
         if(ClientProxy.activeCardItemImageSize != 16)
         {
-            event.getModels().put(YdmItems.BLANC_CARD.getId(),
-                    event.getModelManager().getModel(
-                            Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+            var blancCardModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
+            if(blancCardModel != null)
+            {
+                itemModels.put(YdmItems.BLANC_CARD.getId(), blancCardModel);
+            }
             
-            event.getModels().put(YdmItems.CARD_BACK.getId(),
-                    event.getModelManager().getModel(
-                            Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize)));
+            var cardBackModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
+            if(cardBackModel != null)
+            {
+                itemModels.put(YdmItems.CARD_BACK.getId(), cardBackModel);
+            }
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
                 if(!sleeves.isCardBack())
                 {
-                    event.getModels().put(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name),
-                            event.getModelManager().getModel(
-                                    sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize)));
+                    var sleevesModel = itemModels.get(sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize));
+                    if(sleevesModel != null)
+                    {
+                        itemModels.put(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name), sleevesModel);
+                    }
                 }
             }
         }
         
         if(ClientProxy.activeSetItemImageSize != 16)
         {
-            event.getModels().put(YdmItems.BLANC_SET.getId(),
-                    event.getModelManager().getModel(
-                            Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize)));
+            var blancSetModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize));
+            if(blancSetModel != null)
+            {
+                itemModels.put(YdmItems.BLANC_SET.getId(), blancSetModel);
+            }
         }
         
         Identifier key = YdmItems.CARD.getId();
-        event.getModels().put(key, new CardBakedModel(event.getModelManager().getModel(key)));
+        var cardModel = itemModels.get(key);
+        if(cardModel != null)
+        {
+            itemModels.put(key, new CardBakedModel(cardModel));
+        }
         
         key = YdmItems.SET.getId();
-        event.getModels().put(key, new CardSetBakedModel(event.getModelManager().getModel(key)));
+        var setModel = itemModels.get(key);
+        if(setModel != null)
+        {
+            itemModels.put(key, new CardSetBakedModel(setModel));
+        }
         key = YdmItems.OPENED_SET.getId();
-        event.getModels().put(key, new CardSetBakedModel(event.getModelManager().getModel(key)));
+        var openedSetModel = itemModels.get(key);
+        if(openedSetModel != null)
+        {
+            itemModels.put(key, new CardSetBakedModel(openedSetModel));
+        }
     }
     
     private void modConfig(ModConfigEvent event)

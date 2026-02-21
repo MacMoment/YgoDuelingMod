@@ -6,7 +6,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -80,7 +81,7 @@ public class CardBinderItem extends Item implements MenuProvider
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+    public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
         // must also fix UUID on client side if player is in creative mode
         getUUID(player.getItemInHand(hand));
@@ -90,7 +91,7 @@ public class CardBinderItem extends Item implements MenuProvider
         if(player.getItemInHand(hand) == stack)
         {
             player.openMenu(this);
-            return InteractionResultHolder.success(stack);
+            return InteractionResult.SUCCESS;
         }
         
         return super.use(world, player, hand);

@@ -70,7 +70,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
             int chooseWidth = imageWidth - 20;
             addRenderableWidget(prevDeckButton = new ImprovedButton(x - 16 - 16 - 10 - 5 - 10, topPos + imageHeight - 20 - 10 - 5 - 16 - 10, 20, 20, Component.translatable("container." + YDM.MOD_ID + ".duel.left_arrow"), (button) -> prevDeckClicked()));
             addRenderableWidget(nextDeckButton = new ImprovedButton(x - 16 + 32 + 16 + 5, topPos + imageHeight - 20 - 10 - 5 - 16 - 10, 20, 20, Component.translatable("container." + YDM.MOD_ID + ".duel.right_arrow"), (button) -> nextDeckClicked()));
-            addRenderableWidget(chooseDeckButton = new ImprovedButton(x - chooseWidth / 2, topPos + imageHeight - 20 - 10, chooseWidth, 20, Component.translatable("container." + YDM.MOD_ID + ".duel.choose_deck"), (button) -> chooseDeckClicked(), this::chooseDeckTooltip));
+            addRenderableWidget(chooseDeckButton = new ImprovedButton(x - chooseWidth / 2, topPos + imageHeight - 20 - 10, chooseWidth, 20, Component.translatable("container." + YDM.MOD_ID + ".duel.choose_deck"), (button) -> chooseDeckClicked()));
             
             addRenderableWidget(prevDeckWidget = new ItemStackWidget(x - 16 - 16, topPos + imageHeight - 20 - 10 - 5 - 16 - 8, 16, itemRenderer, CardRenderUtil.getInfoCardBack()));
             addRenderableWidget(activeDeckWidget = new ItemStackWidget(x - 16, topPos + imageHeight - 20 - 10 - 5 - 32, 32, itemRenderer, CardRenderUtil.getInfoCardBack()));

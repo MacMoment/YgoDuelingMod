@@ -20,12 +20,6 @@ public class TextureButton extends Button
     public int texW;
     public int texH;
     
-    public TextureButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip)
-    {
-        super(x, y, width, height, title, pressedAction, onTooltip);
-        textureLocation = null;
-    }
-    
     public TextureButton(int x, int y, int width, int height, Component title, OnPress pressedAction)
     {
         super(x, y, width, height, title, pressedAction);

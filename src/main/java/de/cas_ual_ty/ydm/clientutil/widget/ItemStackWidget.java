@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.clientutil.widget;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import org.lwjgl.opengl.GL11;
 import de.cas_ual_ty.ydm.YdmItems;
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
@@ -61,7 +61,7 @@ public class ItemStackWidget extends AbstractWidget
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         
         YdmBlitUtil.fullBlit(guiGraphics.pose(), rl, getX(), getY(), width, height);
     }

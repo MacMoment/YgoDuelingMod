@@ -7,7 +7,7 @@ import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.util.YDMItemHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,14 +32,14 @@ public class DeckBoxItem extends Item implements MenuProvider
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+    public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
         ItemStack stack = DeckBoxItem.getActiveDeckBox(player);
         
         if(player.getItemInHand(hand) == stack)
         {
             player.openMenu(this);
-            return InteractionResultHolder.success(stack);
+            return InteractionResult.SUCCESS;
         }
         
         return super.use(world, player, hand);

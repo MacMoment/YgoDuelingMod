@@ -9,7 +9,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +39,7 @@ public class SimpleBinderItem extends Item
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+    public InteractionResult use(Level world, Player player, InteractionHand hand)
     {
         if(!world.isClientSide && hand == YdmUtil.getActiveItem(player, this))
         {
@@ -61,7 +62,7 @@ public class SimpleBinderItem extends Item
                 }
             });
             
-            return InteractionResultHolder.success(itemStack);
+            return InteractionResult.SUCCESS;
         }
         
         return super.use(world, player, hand);

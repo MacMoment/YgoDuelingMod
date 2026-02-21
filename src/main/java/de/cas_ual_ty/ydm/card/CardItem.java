@@ -4,7 +4,7 @@ import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.rarity.Rarities;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,14 +36,14 @@ public class CardItem extends Item
     }
     
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
+    public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pUsedHand)
     {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         CardHolder cardHolder = getCardHolder(itemStack);
         if(cardHolder != null && pPlayer.level().isClientSide)
         {
             YDM.proxy.openCardInspectScreen(cardHolder);
-            return InteractionResultHolder.success(itemStack);
+            return InteractionResult.SUCCESS;
         }
         
         return super.use(pLevel, pPlayer, pUsedHand);

@@ -13,9 +13,9 @@ import java.util.function.Consumer;
 
 public class MonsterZoneWidget extends ZoneWidget
 {
-    public MonsterZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress, OnTooltip onTooltip)
+    public MonsterZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress)
     {
-        super(zone, context, width, height, title, onPress, onTooltip);
+        super(zone, context, width, height, title, onPress);
     }
     
     @Override

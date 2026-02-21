@@ -141,13 +141,13 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         x = (width - zoneSize) / 2;
         y = (height - zoneSize) / 2;
         
-        addRenderableWidget(reloadButton = new TextureButton(x, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.reload"), this::middleButtonClicked, this::middleButtonHovered)
+        addRenderableWidget(reloadButton = new TextureButton(x, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.reload"), this::middleButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
-        addRenderableWidget(flipViewButton = new TextureButton(x + quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.flip_view"), this::middleButtonClicked, this::middleButtonHovered)
+        addRenderableWidget(flipViewButton = new TextureButton(x + quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.flip_view"), this::middleButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 80, 0, 16, 16));
-        addRenderableWidget(offerDrawButton = new TextureButton(x + 2 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.offer_draw"), this::middleButtonClicked, this::middleButtonHovered)
+        addRenderableWidget(offerDrawButton = new TextureButton(x + 2 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.offer_draw"), this::middleButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 96, 0, 16, 16));
-        addRenderableWidget(admitDefeatButton = new TextureButton(x + 3 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.admit_defeat"), this::middleButtonClicked, this::middleButtonHovered)
+        addRenderableWidget(admitDefeatButton = new TextureButton(x + 3 * quarterSize, y, quarterSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.admit_defeat"), this::middleButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 112, 0, 16, 16));
         
         // lp text field for players, "Spectator" text for spectators
@@ -174,15 +174,15 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         //left
         x = (width - zoneSize) / 2 - (zoneSize + zonesMargin) * 2;
         
-        addRenderableWidget(coinFlipButton = new TextureButton(x, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.coin_flip"), this::leftButtonClicked, this::leftButtonHovered)
+        addRenderableWidget(coinFlipButton = new TextureButton(x, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.coin_flip"), this::leftButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 32, 0, 16, 16));
-        addRenderableWidget(diceRollButton = new TextureButton(x + halfSize, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.dice_roll"), this::leftButtonClicked, this::leftButtonHovered)
+        addRenderableWidget(diceRollButton = new TextureButton(x + halfSize, y, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.dice_roll"), this::leftButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 48, 0, 16, 16));
-        addRenderableWidget(addCounterButton = new TextureButton(x, y + halfSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.add_counter"), this::leftButtonClicked, this::leftButtonHovered)
+        addRenderableWidget(addCounterButton = new TextureButton(x, y + halfSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.add_counter"), this::leftButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 0, 16, 8));
-        addRenderableWidget(removeCounterButton = new TextureButton(x, y + halfSize + quarterSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.remove_counter"), this::leftButtonClicked, this::leftButtonHovered)
+        addRenderableWidget(removeCounterButton = new TextureButton(x, y + halfSize + quarterSize, halfSize, quarterSize, Component.translatable("container." + YDM.MOD_ID + ".duel.remove_counter"), this::leftButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 128, 8, 16, 8));
-        addRenderableWidget(advancedOptionsButton = new TextureButton(x + halfSize, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.advanced_options"), this::leftButtonClicked, this::leftButtonHovered)
+        addRenderableWidget(advancedOptionsButton = new TextureButton(x + halfSize, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.advanced_options"), this::leftButtonClicked)
                 .setTexture(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 144, 0, 16, 16));
         
         if(getZoneOwner() == ZoneOwner.NONE)
@@ -199,8 +199,8 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         
         addRenderableWidget(phaseWidget = new ColoredTextWidget(x, y, zoneSize, halfSize, this::getPhaseShort, this::phaseWidgetHovered));
         phaseWidget.active = false;
-        addRenderableWidget(prevPhaseButton = new ColoredButton(x, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.left_arrow"), this::rightButtonClicked, this::rightButtonHovered));
-        addRenderableWidget(nextPhaseButton = new ColoredButton(x + halfSize, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.right_arrow"), this::rightButtonClicked, this::rightButtonHovered));
+        addRenderableWidget(prevPhaseButton = new ColoredButton(x, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.left_arrow"), this::rightButtonClicked));
+        addRenderableWidget(nextPhaseButton = new ColoredButton(x + halfSize, y + halfSize, halfSize, halfSize, Component.translatable("container." + YDM.MOD_ID + ".duel.right_arrow"), this::rightButtonClicked));
         
         if(getZoneOwner() == ZoneOwner.NONE)
         {
@@ -283,16 +283,16 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         addRenderableWidget(cardStackNameWidget = new TextWidget(x, y, w, buttonHeight, this::getShownZoneName));
         y += offset;
         
-        addRenderableWidget(scrollUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::scrollButtonClicked, this::scrollButtonHovered));
+        addRenderableWidget(scrollUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::scrollButtonClicked));
         y += offset;
         
         int columns = chatWidth / cardsSize;
         int rows = chatHeight / cardsSize;
-        addRenderableWidget(viewCardStackWidget = new ViewCardStackWidget(this, x + (w - widgetWidth) / 2, y + (chatHeight - widgetHeight) / 2, chatWidth, chatHeight, Component.empty(), this::viewCardStackClicked, this::viewCardStackTooltip)
+        addRenderableWidget(viewCardStackWidget = new ViewCardStackWidget(this, x + (w - widgetWidth) / 2, y + (chatHeight - widgetHeight) / 2, chatWidth, chatHeight, Component.empty(), this::viewCardStackClicked)
                 .setRowsAndColumns(cardsSize, rows, columns));
         y += chatHeight + margin;
         
-        addRenderableWidget(scrollDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::scrollButtonClicked, this::scrollButtonHovered));
+        addRenderableWidget(scrollDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::scrollButtonClicked));
         y += offset;
     }
     
@@ -309,26 +309,26 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
                 zone.getType() == ZoneTypes.EXTRA_MONSTER_RIGHT.get() ||
                 zone.getType() == ZoneTypes.EXTRA_MONSTER_LEFT.get())
         {
-            return new MonsterZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked, this::zoneTooltip);
+            return new MonsterZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked);
         }
         else if(zone.getType() == ZoneTypes.HAND.get())
         {
-            return new HandZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked, this::zoneTooltip);
+            return new HandZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked);
         }
         else if(zone.getType() == ZoneTypes.EXTRA_DECK.get() ||
                 zone.getType() == ZoneTypes.GRAVEYARD.get() ||
                 zone.getType() == ZoneTypes.BANISHED.get() ||
                 zone.getType() == ZoneTypes.EXTRA.get())
         {
-            return new NonSecretStackZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked, this::zoneTooltip);
+            return new NonSecretStackZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked);
         }
         else if(zone.getType() == ZoneTypes.DECK.get())
         {
-            return new StackZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked, this::zoneTooltip);
+            return new StackZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked);
         }
         else
         {
-            return new ZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked, this::zoneTooltip);
+            return new ZoneWidget(zone, this, zone.width, zone.height, zone.getType().getLocal(), this::zoneClicked);
         }
     }
     
@@ -872,7 +872,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         
         for(ZoneWidget w : zoneWidgets)
         {
-            w.addInteractionWidgets(owner, clickedZoneWidget.zone, clickedCard, getDuelManager(), interactionWidgets, this::interactionClicked, this::interactionTooltip, isAdvanced);
+            w.addInteractionWidgets(owner, clickedZoneWidget.zone, clickedCard, getDuelManager(), interactionWidgets, this::interactionClicked, isAdvanced);
             w.active = false;
         }
         

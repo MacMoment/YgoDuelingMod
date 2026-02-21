@@ -10,9 +10,9 @@ import java.util.function.Consumer;
 
 public class NonSecretStackZoneWidget extends StackZoneWidget
 {
-    public NonSecretStackZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress, OnTooltip onTooltip)
+    public NonSecretStackZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress)
     {
-        super(zone, context, width, height, title, onPress, onTooltip);
+        super(zone, context, width, height, title, onPress);
     }
     
     @Override
