@@ -58,8 +58,6 @@ public class LimitedTextureBinder
     
     private void bindTexture(Identifier rl)
     {
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, rl);
     }
     
     private void unbindTexture(Identifier rl)

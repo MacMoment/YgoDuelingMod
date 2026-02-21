@@ -85,9 +85,7 @@ public class CardRenderUtil
         
         if(token)
         {
-            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-            // RenderSystem.setShaderTexture(0, CardRenderUtil.getInfoTokenOverlay());
-            YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+            YdmBlitUtil.fullBlit(ms, CardRenderUtil.getInfoTokenOverlay(), x, margin, imageSize, imageSize);
         }
         
         // need to multiply x2 because we are scaling the text to x0.5
@@ -139,8 +137,6 @@ public class CardRenderUtil
     
     public static void bindSleeves(CardSleevesType s)
     {
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, s.getMainRL(ClientProxy.activeCardMainImageSize));
     }
     
     public static Identifier getInfoCardBack()
@@ -189,16 +185,12 @@ public class CardRenderUtil
                 
                 Runnable mask = () ->
                 {
-                    // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                    // RenderSystem.setShaderTexture(0, MASK_RL);
-                    YdmBlitUtil.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
+                    YdmBlitUtil.fullBlit(ms, MASK_RL, mouseX - width / 2, mouseY - height / 2, width, height);
                 };
                 
                 Runnable renderer = () ->
                 {
-                    // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                    // RenderSystem.setShaderTexture(0, layer.getInfoImageResourceLocation());
-                    YdmBlitUtil.fullBlit(ms, x - width / 2, y - height / 2, width, height);
+                    YdmBlitUtil.fullBlit(ms, layer.getInfoImageResourceLocation(), x - width / 2, y - height / 2, width, height);
                 };
                 
                 YdmBlitUtil.advancedMaskedBlit(ms, x, y, width, height, mask, renderer, layer.type.invertedRendering);
@@ -231,17 +223,13 @@ public class CardRenderUtil
         }
         else
         {
-            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-            // RenderSystem.setShaderTexture(0, back.getMainRL(ClientProxy.activeCardMainImageSize));
         }
         
         blitMethod.fullBlit(ms, x, y, width, height);
         
         if(card.getIsToken())
         {
-            // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-            // RenderSystem.setShaderTexture(0, CardRenderUtil.getMainTokenOverlay());
-            blitMethod.fullBlit(ms, x, y, width, height);
+            YdmBlitUtil.fullBlit(ms, CardRenderUtil.getMainTokenOverlay(), x, y, width, height);
         }
         
         if(position.isFaceUp && !card.getIsToken())
@@ -254,16 +242,12 @@ public class CardRenderUtil
                 {
                     Runnable mask = () ->
                     {
-                        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                        // RenderSystem.setShaderTexture(0, MASK_RL);
-                        blitMethod.fullBlit(ms, mouseX - width / 2, mouseY - height / 2, width, height);
+                        YdmBlitUtil.fullBlit(ms, MASK_RL, mouseX - width / 2, mouseY - height / 2, width, height);
                     };
                     
                     Runnable renderer = () ->
                     {
-                        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                        // RenderSystem.setShaderTexture(0, layer.getMainImageResourceLocation());
-                        blitMethod.fullBlit(ms, x, y, width, height);
+                        YdmBlitUtil.fullBlit(ms, layer.getMainImageResourceLocation(), x, y, width, height);
                     };
                     
                     YdmBlitUtil.advancedMaskedBlit(ms, x, y, width, height, mask, renderer, layer.type.invertedRendering);

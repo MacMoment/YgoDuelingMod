@@ -64,9 +64,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
         super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
         
         ScreenUtil.white();
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE);
-        blit(ms, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
     }
     
     public Component getRoleDescription(PlayerRole role)

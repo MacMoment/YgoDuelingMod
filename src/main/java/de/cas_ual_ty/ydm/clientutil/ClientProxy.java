@@ -549,9 +549,7 @@ public class ClientProxy implements ISidedProxy
         
         // card texture
         
-        // TODO: 1.21.11 - Use new rendering pipeline
-        // RenderSystem.setShaderTexture(0, set.getInfoImageResourceLocation());
-        YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+        YdmBlitUtil.fullBlit(ms, set.getInfoImageResourceLocation(), x, margin, imageSize, imageSize);
         
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;
@@ -602,9 +600,7 @@ public class ClientProxy implements ISidedProxy
         
         // card texture
         
-        // TODO: 1.21.11 - Use new rendering pipeline
-        // RenderSystem.setShaderTexture(0, sleeves.getMainRL(ClientProxy.activeCardInfoImageSize));
-        YdmBlitUtil.fullBlit(ms, x, margin, imageSize, imageSize);
+        YdmBlitUtil.fullBlit(ms, sleeves.getMainRL(ClientProxy.activeCardInfoImageSize), x, margin, imageSize, imageSize);
         
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;

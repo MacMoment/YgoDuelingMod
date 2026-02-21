@@ -61,9 +61,7 @@ public class InteractionWidget extends Button
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
         
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, icon.sourceFile);
-        YdmBlitUtil.blit(ms, x + (width - iconWidth) / 2, y + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
+        YdmBlitUtil.blit(ms, icon.sourceFile, x + (width - iconWidth) / 2, y + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
         
         if(isHoveredOrFocused() && active)
         {

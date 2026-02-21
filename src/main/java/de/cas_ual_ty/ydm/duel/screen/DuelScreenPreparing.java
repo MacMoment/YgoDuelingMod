@@ -284,10 +284,8 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
                 int guiLeft = (width - xSize) / 2;
                 int guiTop = topPos + 6 + 5 + font.lineHeight;
                 
-                // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                // RenderSystem.setShaderTexture(0, DuelContainerScreen.DECK_BACKGROUND_GUI_TEXTURE);
-                YdmBlitUtil.blit(ms, guiLeft, guiTop, xSize, ySize, 0, 0, xSize, ySize, 512, 256);
-                YdmBlitUtil.blit(ms, guiLeft, guiTop + ySize, xSize, 7, 0, 243, xSize, 7, 512, 256);
+                YdmBlitUtil.blit(ms, DuelContainerScreen.DECK_BACKGROUND_GUI_TEXTURE, guiLeft, guiTop, xSize, ySize, 0, 0, xSize, ySize, 512, 256);
+                YdmBlitUtil.blit(ms, DuelContainerScreen.DECK_BACKGROUND_GUI_TEXTURE, guiLeft, guiTop + ySize, xSize, 7, 0, 243, xSize, 7, 512, 256);
             }
         }
     }

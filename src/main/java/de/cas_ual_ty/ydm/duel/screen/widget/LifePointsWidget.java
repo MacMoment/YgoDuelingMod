@@ -52,11 +52,9 @@ public class LifePointsWidget extends AbstractWidget
         int h = height;
         
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, LifePointsWidget.DUEL_WIDGETS);
-        blit(ms, x, y, 0, 1 * 8, width, height);
-        blit(ms, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
-        blit(ms, x, y, 0, 2 * 8, width, height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 1 * 8, width, height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
+        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
         renderBg(ms, minecraft, mouseX, mouseY);
         
         x = this.x + width / 2;

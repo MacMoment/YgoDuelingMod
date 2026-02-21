@@ -68,8 +68,6 @@ public class ItemStackWidget extends AbstractWidget
                 BakedModel bakedmodel = itemRenderer.getModel(itemStack, null, null, 0); //FIXME 0 correct?
                 
                 minecraft.getTextureManager().getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
-                // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-                // RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
                 RenderSystem.enableBlend();
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -103,14 +101,12 @@ public class ItemStackWidget extends AbstractWidget
             }
         }
         
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, rl);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         
-        YdmBlitUtil.fullBlit(guiGraphics.pose(), x, y, width, height);
+        YdmBlitUtil.fullBlit(guiGraphics.pose(), rl, x, y, width, height);
     }
     
     @Override

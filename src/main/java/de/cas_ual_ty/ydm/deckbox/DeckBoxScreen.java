@@ -100,8 +100,6 @@ public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
     {
         ScreenUtil.white();
-        // TODO: 1.21.11 - Texture binding now handled by RenderType/GuiGraphics
-        // RenderSystem.setShaderTexture(0, DeckBoxScreen.DECK_BOX_GUI_TEXTURE);
-        YdmBlitUtil.blit(guiGraphics.pose(), leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
+        YdmBlitUtil.blit(guiGraphics.pose(), DeckBoxScreen.DECK_BOX_GUI_TEXTURE, leftPos, topPos, imageWidth, imageHeight, 0, 0, imageWidth, imageHeight, 512, 256);
     }
 }
