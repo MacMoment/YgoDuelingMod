@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.duel.screen.animation;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.YdmBlitUtil;
@@ -46,7 +46,7 @@ public class SpecialSummonAnimation extends Animation
         ms.pushPose();
         
         ms.translate(centerPosX, centerPosY, 0);
-        ms.mulPose(new Quaternion(0, 0, rotation, true));
+        ms.mulPose(Axis.ZP.rotationDegrees(rotation));
         
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1F, 1F, 1F, alpha);

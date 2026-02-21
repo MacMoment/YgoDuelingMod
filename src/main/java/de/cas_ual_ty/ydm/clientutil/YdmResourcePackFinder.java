@@ -1,13 +1,16 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.server.packs.PackResources;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 
+import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class YdmResourcePackFinder implements RepositorySource
 {
@@ -16,13 +19,38 @@ public class YdmResourcePackFinder implements RepositorySource
     }
     
     @Override
-    public void loadPacks(Consumer<Pack> infoConsumer, Pack.PackConstructor infoFactory)
+    public void loadPacks(Consumer<Pack> infoConsumer)
     {
-        infoConsumer.accept(Pack.create(YDM.MOD_ID, true, makePackSupplier(), infoFactory, Pack.Position.TOP, PackSource.DEFAULT));
-    }
-    
-    private Supplier<PackResources> makePackSupplier()
-    {
-        return () -> new YdmCardResourcePack();
+        PackLocationInfo locationInfo = new PackLocationInfo(
+                YDM.MOD_ID,
+                Component.literal(YDM.MOD_ID),
+                PackSource.DEFAULT,
+                Optional.empty()
+        );
+        PackSelectionConfig selectionConfig = new PackSelectionConfig(true, Pack.Position.TOP, false);
+        Pack pack = Pack.readMetaAndCreate(
+                locationInfo,
+                new Pack.ResourcesSupplier()
+                {
+                    @Override
+                    public net.minecraft.server.packs.PackResources openPrimary(PackLocationInfo info)
+                    {
+                        return new YdmCardResourcePack();
+                    }
+                    
+                    @Override
+                    public net.minecraft.server.packs.PackResources openFull(PackLocationInfo info, Pack.Metadata metadata)
+                    {
+                        return new YdmCardResourcePack();
+                    }
+                },
+                PackType.CLIENT_RESOURCES,
+                selectionConfig
+        );
+        
+        if(pack != null)
+        {
+            infoConsumer.accept(pack);
+        }
     }
 }

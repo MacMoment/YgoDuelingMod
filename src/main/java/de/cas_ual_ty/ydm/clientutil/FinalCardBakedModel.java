@@ -1,9 +1,8 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmDatabase;
 import de.cas_ual_ty.ydm.YdmItems;
@@ -13,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -21,11 +19,14 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,7 +140,7 @@ public class FinalCardBakedModel implements BakedModel
     }
     
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType t, PoseStack mat, boolean applyLeftHandTransform)
+    public BakedModel applyTransform(ItemDisplayContext t, PoseStack mat, boolean applyLeftHandTransform)
     {
         switch(t)
         {
@@ -158,7 +159,7 @@ public class FinalCardBakedModel implements BakedModel
                 mat.scale(0.5F, 0.5F, 0.5F);
                 break;
             case FIXED:
-                mat.mulPose(new Quaternion(Direction.UP.step(), 180F, true));
+                mat.mulPose(Axis.YP.rotationDegrees(180F));
                 break;
             default:
                 break;
@@ -209,7 +210,7 @@ public class FinalCardBakedModel implements BakedModel
     
     public static List<BakedQuad> convertTexture(Transformation t, TextureAtlasSprite sprite, float off, Direction direction, int color, int layerIdx, Identifier rl)
     {
-        ModelState modelState = new SimpleModelState(new Transformation(Vector3f.ZERO, Quaternion.ONE, new Vector3f(1F, 1F, 1F), Quaternion.ONE));
+        ModelState modelState = new SimpleModelState(new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1F, 1F, 1F), new Quaternionf()));
         
         List<BlockElement> unbaked = UnbakedGeometryHelper.createUnbakedItemElements(layerIdx, sprite);
         unbaked.forEach(e ->
@@ -223,8 +224,8 @@ public class FinalCardBakedModel implements BakedModel
             }
             
             float z = (e.from.z() + e.to.z()) * 0.5F;
-            e.from.setZ(z + off * 0.1F);
-            e.to.setZ(z + off * 0.1F);
+            e.from.z = z + off * 0.1F;
+            e.to.z = z + off * 0.1F;
         });
         
         return UnbakedGeometryHelper.bakeElements(unbaked, m -> sprite, modelState, rl);

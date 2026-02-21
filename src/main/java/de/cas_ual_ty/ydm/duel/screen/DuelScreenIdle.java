@@ -53,8 +53,7 @@ public class DuelScreenIdle<E extends DuelContainer> extends DuelContainerScreen
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
-        font.draw(ms, "Waiting for players...", 8.0F, 6.0F, 0x404040);
+        guiGraphics.drawString(font, "Waiting for players...", 8, 6, 0x404040);
     }
     
     @Override

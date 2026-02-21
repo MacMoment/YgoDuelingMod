@@ -344,7 +344,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         
         if(cardInfo != null)
         {
-            CardRenderUtil.renderCardInfo(ms, cardInfo.getCardHolder(), cardInfo.getIsToken(), (width - imageWidth) / 2);
+            CardRenderUtil.renderCardInfo(guiGraphics, cardInfo.getCardHolder(), cardInfo.getIsToken(), (width - imageWidth) / 2);
         }
     }
     

@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
+import com.mojang.math.Axis;
 import com.mojang.math.Transformation;
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmDatabase;
@@ -10,13 +10,13 @@ import de.cas_ual_ty.ydm.set.CardSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -125,7 +125,7 @@ public class FinalCardSetBakedModel implements BakedModel
     }
     
     @Override
-    public BakedModel applyTransform(ItemTransforms.TransformType t, PoseStack mat, boolean applyLeftHandTransform)
+    public BakedModel applyTransform(ItemDisplayContext t, PoseStack mat, boolean applyLeftHandTransform)
     {
         switch(t)
         {
@@ -144,7 +144,7 @@ public class FinalCardSetBakedModel implements BakedModel
                 mat.scale(0.5F, 0.5F, 0.5F);
                 break;
             case FIXED:
-                mat.mulPose(new Quaternion(Direction.UP.step(), 180F, true));
+                mat.mulPose(Axis.YP.rotationDegrees(180F));
                 break;
             default:
                 break;

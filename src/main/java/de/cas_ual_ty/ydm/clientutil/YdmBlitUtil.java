@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypes;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
 
@@ -180,7 +180,7 @@ public class YdmBlitUtil
         MeshData meshData = bufferbuilder.buildOrThrow();
         if(texture != null)
         {
-            RenderType.guiTextured(texture).draw(meshData);
+            RenderTypes.guiTextured(texture).draw(meshData);
         }
         else
         {
