@@ -20,20 +20,20 @@ public class InteractionWidget extends Button
     
     public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<InteractionWidget> onPress)
     {
-        super(x, y, width, height, title, (w) -> onPress.accept((InteractionWidget) w));
+        super(x, y, width, height, title, (w) -> onPress.accept((InteractionWidget) w), Button.DEFAULT_NARRATION);
         this.interaction = interaction;
         this.context = context;
     }
     
     public InteractionWidget(ZoneInteraction interaction, IDuelScreenContext context, int x, int y, int width, int height, Consumer<InteractionWidget> onPress)
     {
-        super(x, y, width, height, interaction.icon.getLocal(), (w) -> onPress.accept((InteractionWidget) w));
+        super(x, y, width, height, interaction.icon.getLocal(), (w) -> onPress.accept((InteractionWidget) w), Button.DEFAULT_NARRATION);
         this.interaction = interaction;
         this.context = context;
     }
     
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
         ms.pushMatrix();
@@ -60,11 +60,11 @@ public class InteractionWidget extends Button
         
         
         
-        YdmBlitUtil.blit(ms, icon.sourceFile, x + (width - iconWidth) / 2, y + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
+        YdmBlitUtil.blit(ms, icon.sourceFile, getX() + (width - iconWidth) / 2, getY() + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
         
         if(isHoveredOrFocused() && active)
         {
-            ScreenUtil.renderHoverRect(ms, x, y, width, height);
+            ScreenUtil.renderHoverRect(ms, getX(), getY(), width, height);
             renderToolTip(guiGraphics, mouseX, mouseY);
         }
         

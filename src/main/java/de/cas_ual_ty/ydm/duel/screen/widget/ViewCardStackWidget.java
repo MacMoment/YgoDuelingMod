@@ -33,7 +33,7 @@ public class ViewCardStackWidget extends Button
     
     public ViewCardStackWidget(IDuelScreenContext context, int x, int y, int width, int height, Component title, Consumer<ViewCardStackWidget> onPress)
     {
-        super(x, y, width, height, title, (button) -> onPress.accept((ViewCardStackWidget) button));
+        super(x, y, width, height, title, (button) -> onPress.accept((ViewCardStackWidget) button), Button.DEFAULT_NARRATION);
         this.context = context;
         hoverCard = null;
         rows = 0;
@@ -109,7 +109,7 @@ public class ViewCardStackWidget extends Button
     }
     
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
@@ -130,7 +130,7 @@ public class ViewCardStackWidget extends Button
         }
         
         int j = getFGColor();
-        guiGraphics.drawCenteredString(fontrenderer, getMessage(), x, y, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, getMessage(), getX(), getY(), j | Mth.ceil(alpha * 255.0F) << 24);
     }
     
     @Nullable
@@ -147,8 +147,8 @@ public class ViewCardStackWidget extends Button
         {
             for(int j = 0; j < columns && index < cards.size(); ++j)
             {
-                x = this.x + j * cardsTextureSize;
-                y = this.y + i * cardsTextureSize;
+                x = this.getX() + j * cardsTextureSize;
+                y = this.getY() + i * cardsTextureSize;
                 
                 c = cards.get(index++);
                 

@@ -46,7 +46,7 @@ public class DisplayChatWidget extends AbstractWidget
         
         
         int color = getFGColor();
-        DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), x, y, width, height, color, (float) ClientProxy.duelChatSize);
+        DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), getX(), getY(), width, height, color, (float) ClientProxy.duelChatSize);
     }
     
     public DisplayChatWidget setTextSupplier(Supplier<List<Component>> textSupplier)

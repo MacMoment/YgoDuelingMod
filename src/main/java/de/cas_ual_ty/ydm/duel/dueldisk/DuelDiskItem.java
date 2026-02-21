@@ -5,7 +5,7 @@ import de.cas_ual_ty.ydm.duel.PlayerRole;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -182,7 +182,7 @@ public class DuelDiskItem extends Item
     public void setPlayer2UUID(ItemStack stack, UUID uuid)
     {
         CompoundTag tag = getTag(stack);
-        tag.put("duel_player2", NbtUtils.createUUID(uuid));
+        tag.put("duel_player2", new IntArrayTag(UUIDUtil.uuidToIntArray(uuid)));
         setTag(stack, tag);
     }
     
@@ -192,7 +192,7 @@ public class DuelDiskItem extends Item
         if(tag.contains("duel_player2", Tag.TAG_INT_ARRAY))
         {
             Tag t = tag.get("duel_player2");
-            if(t instanceof IntArrayTag) return NbtUtils.loadUUID((IntArrayTag) t);
+            if(t instanceof IntArrayTag) return UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());
         }
         return null;
     }
@@ -200,7 +200,7 @@ public class DuelDiskItem extends Item
     public void setDMUUID(ItemStack stack, UUID uuid)
     {
         CompoundTag tag = getTag(stack);
-        tag.put("duelmanager", NbtUtils.createUUID(uuid));
+        tag.put("duelmanager", new IntArrayTag(UUIDUtil.uuidToIntArray(uuid)));
         setTag(stack, tag);
     }
     
@@ -210,7 +210,7 @@ public class DuelDiskItem extends Item
         if(tag.contains("duelmanager", Tag.TAG_INT_ARRAY))
         {
             Tag t = tag.get("duelmanager");
-            if(t instanceof IntArrayTag) return NbtUtils.loadUUID((IntArrayTag) t);
+            if(t instanceof IntArrayTag) return UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());
         }
         return null;
     }
