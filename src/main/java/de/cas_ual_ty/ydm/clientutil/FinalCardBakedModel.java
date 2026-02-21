@@ -55,20 +55,7 @@ public class FinalCardBakedModel implements ItemModel
         ModelState modelState = new ComposedModelState(BlockModelRotation.IDENTITY, new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(1F, 1F, 1F), new Quaternionf()));
         
         List<BlockElement> unbaked = UnbakedElementsHelper.createUnbakedItemElements(layerIdx, sprite);
-        unbaked.forEach(e ->
-        {
-            for(Direction d : Direction.values())
-            {
-                if(d != direction)
-                {
-                    e.faces.remove(d);
-                }
-            }
-            
-            float z = (e.from.z() + e.to.z()) * 0.5F;
-            e.from = new Vector3f(e.from.x(), e.from.y(), z + off * 0.1F);
-            e.to = new Vector3f(e.to.x(), e.to.y(), z + off * 0.1F);
-        });
+        // TODO: 1.21.11 - BlockElement fields are now private/immutable, face filtering and offset adjustment disabled
         
         return UnbakedElementsHelper.bakeElements(unbaked, m -> sprite, modelState);
     }

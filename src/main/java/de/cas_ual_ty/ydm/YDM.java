@@ -309,18 +309,18 @@ public class YDM
         final Player original = event.getOriginal();
         final Player current = event.getEntity();
         
-        if (original.hasData(COOLDOWN_HOLDER))
+        if (original.hasData(COOLDOWN_HOLDER.get()))
         {
-            current.getData(COOLDOWN_HOLDER).deserializeNBT(original.registryAccess(), original.getData(COOLDOWN_HOLDER).serializeNBT(original.registryAccess()));
+            current.getData(COOLDOWN_HOLDER.get()).deserializeNBT(original.registryAccess(), original.getData(COOLDOWN_HOLDER.get()).serializeNBT(original.registryAccess()));
         }
     }
     
     private void playerTick(PlayerTickEvent.Post event)
     {
         Player player = event.getEntity();
-        if (player.hasData(COOLDOWN_HOLDER))
+        if (player.hasData(COOLDOWN_HOLDER.get()))
         {
-            player.getData(COOLDOWN_HOLDER).tick();
+            player.getData(COOLDOWN_HOLDER.get()).tick();
         }
     }
     
