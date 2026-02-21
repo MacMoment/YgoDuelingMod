@@ -6,7 +6,7 @@ import de.cas_ual_ty.ydm.duel.dueldisk.DuelEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.fml.DistExecutor;
 
 public abstract class DuelMessageHeader
 {

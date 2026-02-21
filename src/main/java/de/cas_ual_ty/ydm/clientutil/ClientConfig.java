@@ -1,9 +1,9 @@
 package de.cas_ual_ty.ydm.clientutil;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class ClientConfig
 {
@@ -24,7 +24,7 @@ public class ClientConfig
     public final IntValue attackAnimationLength;
     public final IntValue announcementAnimationLength;
     
-    public ClientConfig(ForgeConfigSpec.Builder builder)
+    public ClientConfig(ModConfigSpec.Builder builder)
     {
         builder.push("client");
         

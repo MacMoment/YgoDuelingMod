@@ -13,8 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -598,7 +598,7 @@ public class DuelManager
         }
         
         FindDecksEvent e = new FindDecksEvent(player, this);
-        MinecraftForge.EVENT_BUS.post(e);
+        NeoForge.EVENT_BUS.post(e);
         e.decksList.add(DeckSource.EMPTY_DECK.get()); // empty deck
         return e.decksList;
     }

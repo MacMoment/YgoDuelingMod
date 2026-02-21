@@ -3,7 +3,6 @@ package de.cas_ual_ty.ydm.card;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public enum CardSleevesType
 {
@@ -83,7 +82,7 @@ public enum CardSleevesType
     
     public Item getItem()
     {
-        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(YDM.MOD_ID, getResourceName()));
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(new ResourceLocation(YDM.MOD_ID, getResourceName()));
     }
     
     public byte getIndex()

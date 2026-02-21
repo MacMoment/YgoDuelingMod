@@ -32,13 +32,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientProxy implements ISidedProxy
 {
-    public static ForgeConfigSpec clientConfigSpec;
+    public static ModConfigSpec clientConfigSpec;
     public static ClientConfig clientConfig;
     
     public static int activeCardInfoImageSize;
@@ -115,7 +115,7 @@ public class ClientProxy implements ISidedProxy
         ClientProxy.itemsUseSetImagesActive = false;
         ClientProxy.itemsUseSetImagesFailed = false;
         
-        Pair<ClientConfig, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+        Pair<ClientConfig, ModConfigSpec> client = new ModConfigSpec.Builder().configure(ClientConfig::new);
         ClientProxy.clientConfig = client.getLeft();
         ClientProxy.clientConfigSpec = client.getRight();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientProxy.clientConfigSpec);
