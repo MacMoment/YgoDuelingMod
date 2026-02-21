@@ -94,6 +94,7 @@ public class ClientProxy implements ISidedProxy
         bus.addListener(this::modelBake);
         bus.addListener(this::modConfig);
         bus.addListener(this::registerMenuScreens);
+        bus.addListener(this::addPackFinders);
     }
     
     @Override
@@ -116,11 +117,6 @@ public class ClientProxy implements ISidedProxy
         ClientProxy.clientConfig = client.getLeft();
         ClientProxy.clientConfigSpec = client.getRight();
         ModList.get().getModContainerById(YDM.MOD_ID).ifPresent(c -> c.registerConfig(ModConfig.Type.CLIENT, ClientProxy.clientConfigSpec));
-        
-        if(ClientProxy.getMinecraft() != null)
-        {
-            ClientProxy.getMinecraft().getResourcePackRepository().addPackFinder(new YdmResourcePackFinder());
-        }
     }
     
     @Override
@@ -321,6 +317,14 @@ public class ClientProxy implements ISidedProxy
         event.register(YdmContainerTypes.CARD_SET.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
         event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
         event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (container, inv, title) -> new CIIScreen<>((CIIContainer) container, inv, title));
+    }
+    
+    private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)
+    {
+        if(event.getPackType() == net.minecraft.server.packs.PackType.CLIENT_RESOURCES)
+        {
+            event.addRepositorySource(new YdmResourcePackFinder());
+        }
     }
     
     // TextureStitchEvent removed in NeoForge 1.21 - texture stitching is no longer needed

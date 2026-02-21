@@ -224,8 +224,8 @@ public class FinalCardBakedModel implements BakedModel
             }
             
             float z = (e.from.z() + e.to.z()) * 0.5F;
-            e.from.setZ(z + off * 0.1F);
-            e.to.setZ(z + off * 0.1F);
+            e.from.z = z + off * 0.1F;
+            e.to.z = z + off * 0.1F;
         });
         
         return UnbakedGeometryHelper.bakeElements(unbaked, m -> sprite, modelState, rl);
