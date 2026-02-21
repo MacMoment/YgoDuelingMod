@@ -101,10 +101,6 @@ public class DuelEntity extends Entity implements MenuProvider
     }
     
     @Override
-    {
-    
-    
-    @Override
     public AbstractContainerMenu createMenu(int id, Inventory playerInv, Player player)
     {
         return new DuelEntityContainer(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), id, playerInv, getId(), false);
