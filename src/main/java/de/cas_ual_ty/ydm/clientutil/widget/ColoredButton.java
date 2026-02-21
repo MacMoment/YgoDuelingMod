@@ -18,24 +18,28 @@ public class ColoredButton extends Button
     
     public ColoredButton(int x, int y, int width, int height, Component title, OnPress pressedAction)
     {
-        super(x, y, width, height, title, pressedAction);
+        super(x, y, width, height, title, pressedAction, Button.DEFAULT_NARRATION);
         offset = 0;
     }
     
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
-        // In 1.21.11, getYImage is removed; compute texture row from hover/active state
-        int i = isActive() ? (isHoveredOrFocused() ? 2 : 1) : 0;
-        guiGraphics.blit(ColoredButton.RESOURCE, x, y, 0, offset + i * 20, width / 2, height / 2);
-        guiGraphics.blit(ColoredButton.RESOURCE, x + width / 2, y, 200 - width / 2, offset + i * 20, width / 2, height / 2);
-        guiGraphics.blit(ColoredButton.RESOURCE, x, y + height / 2, 0, offset + (i + 1) * 20 - height / 2, width / 2, height / 2);
-        guiGraphics.blit(ColoredButton.RESOURCE, x + width / 2, y + height / 2, 200 - width / 2, offset + (i + 1) * 20 - height / 2, width / 2, height / 2);
+        int bgColor;
+        if(offset == 0)
+        {
+            bgColor = isActive() ? (isHoveredOrFocused() ? 0xA08080FF : 0xA06060CC) : 0xA0404099;
+        }
+        else
+        {
+            bgColor = isActive() ? (isHoveredOrFocused() ? 0xA0FF8080 : 0xA0CC6060) : 0xA0994040;
+        }
+        guiGraphics.fill(getX(), getY(), getX() + width, getY() + height, bgColor);
         
         int j = getFGColor();
-        guiGraphics.drawCenteredString(fontrenderer, getMessage(), x + width / 2, y + (height - 8) / 2, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, getMessage(), getX() + width / 2, getY() + (height - 8) / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
         if(isHoveredOrFocused())
         {

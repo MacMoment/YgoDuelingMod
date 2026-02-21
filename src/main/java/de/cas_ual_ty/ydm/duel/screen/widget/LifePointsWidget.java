@@ -46,8 +46,8 @@ public class LifePointsWidget extends AbstractWidget
         float relativeLP = Math.min(1F, lp / (float) maxLP);
         
         final int margin = 1;
-        int x = this.x;
-        int y = this.y;
+        int x = this.getX();
+        int y = this.getY();
         int w = width;
         int h = height;
         
@@ -57,17 +57,17 @@ public class LifePointsWidget extends AbstractWidget
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
         // renderBg removed in 1.21.11; LP bar is fully rendered by the blit calls above
         
-        x = this.x + width / 2;
-        y = this.y + height / 2;
+        x = this.getX() + width / 2;
+        y = this.getY() + height / 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.scale(0.5F, 0.5F);
         
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
-        ms.popPose();
+        ms.popMatrix();
         
         if(isHoveredOrFocused())
         {

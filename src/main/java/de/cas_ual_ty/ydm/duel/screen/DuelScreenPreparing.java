@@ -394,12 +394,12 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     public void renderCardInfoForeground(GuiGraphics guiGraphics, CardHolder c, int width)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.translate((float)(-leftPos), (float)(-topPos));
         CardRenderUtil.renderCardInfo(guiGraphics, c, width);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     protected void prevDeckClicked()

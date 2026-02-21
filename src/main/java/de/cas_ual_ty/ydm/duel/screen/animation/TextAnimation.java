@@ -39,7 +39,7 @@ public class TextAnimation extends Animation
         // [0, 1]
         float alpha = (float) (Math.cos(cosTime1));
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.translate((float)(centerPosX), (float)(centerPosY - f.lineHeight / 2));
         
@@ -54,6 +54,6 @@ public class TextAnimation extends Animation
         
         ScreenUtil.white();
         
-        ms.popPose();
+        ms.popMatrix();
     }
 }

@@ -46,7 +46,7 @@ public class DisplayChatWidget extends AbstractWidget
         
         
         int color = getFGColor();
-        DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), x, y, width, height, color, (float) ClientProxy.duelChatSize);
+        DisplayChatWidget.drawLines(guiGraphics, fontrenderer, textSupplier.get(), getX(), getY(), width, height, color, (float) ClientProxy.duelChatSize);
     }
     
     public DisplayChatWidget setTextSupplier(Supplier<List<Component>> textSupplier)
@@ -60,7 +60,7 @@ public class DisplayChatWidget extends AbstractWidget
         Matrix3x2fStack ms = guiGraphics.pose();
         final float upScale = 1F / downScale;
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.scale(downScale, downScale);
         
@@ -100,7 +100,7 @@ public class DisplayChatWidget extends AbstractWidget
             }
         }
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     @Override

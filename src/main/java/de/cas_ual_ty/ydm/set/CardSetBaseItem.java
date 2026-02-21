@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
@@ -34,7 +35,7 @@ public abstract class CardSetBaseItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
         CardSet set = getCardSet(itemStack);
         tooltip.clear();
@@ -81,7 +82,7 @@ public abstract class CardSetBaseItem extends Item
     
     public void viewSetContents(Level world, Player player, ItemStack itemStack)
     {
-        if(!world.isClientSide)
+        if(!world.isClientSide())
         {
             CardSet set = getCardSet(itemStack);
             TreeSet<CardHolder> cardsSet = set.getAllCardEntries();

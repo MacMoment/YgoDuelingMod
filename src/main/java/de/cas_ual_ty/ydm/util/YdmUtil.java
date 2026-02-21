@@ -144,8 +144,8 @@ public class YdmUtil
             ServerLevel world = (ServerLevel) winner.level();
             MinecraftServer server = world.getServer();
             
-            CooldownHolder cdWinner = winner.getData(YDM.COOLDOWN_HOLDER);
-            CooldownHolder cdLoser = loser.getData(YDM.COOLDOWN_HOLDER);
+            CooldownHolder cdWinner = winner.getData(YDM.COOLDOWN_HOLDER.get());
+            CooldownHolder cdLoser = loser.getData(YDM.COOLDOWN_HOLDER.get());
             
             List<? extends String> commands;
             
@@ -210,8 +210,8 @@ public class YdmUtil
             ServerLevel world = (ServerLevel) player1.level();
             MinecraftServer server = world.getServer();
             
-            CooldownHolder cd1 = player1.getData(YDM.COOLDOWN_HOLDER);
-            CooldownHolder cd2 = player2.getData(YDM.COOLDOWN_HOLDER);
+            CooldownHolder cd1 = player1.getData(YDM.COOLDOWN_HOLDER.get());
+            CooldownHolder cd2 = player2.getData(YDM.COOLDOWN_HOLDER.get());
             
             List<? extends String> commands;
             

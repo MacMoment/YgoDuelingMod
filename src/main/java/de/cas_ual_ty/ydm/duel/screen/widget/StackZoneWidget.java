@@ -24,7 +24,7 @@ public class StackZoneWidget extends ZoneWidget
     }
     
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
@@ -35,7 +35,7 @@ public class StackZoneWidget extends ZoneWidget
         
         
         
-        renderZoneSelectRect(ms, zone, x, y, width, height);
+        renderZoneSelectRect(ms, zone, getX(), getY(), width, height);
         
         hoverCard = renderCards(ms, mouseX, mouseY);
         
@@ -45,11 +45,11 @@ public class StackZoneWidget extends ZoneWidget
         {
             // see font renderer, top static Vector3f
             // white is translated in front by that
-            ms.pushPose();
+            ms.pushMatrix();
             guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
-                    x + width / 2, y + height / 2 - fontrenderer.lineHeight / 2,
+                    getX() + width / 2, getY() + height / 2 - fontrenderer.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
-            ms.popPose();
+            ms.popMatrix();
         }
         
         if(active)
@@ -58,7 +58,7 @@ public class StackZoneWidget extends ZoneWidget
             {
                 if(zone.getCardsAmount() == 0)
                 {
-                    ScreenUtil.renderHoverRect(ms, x, y, width, height);
+                    ScreenUtil.renderHoverRect(ms, getX(), getY(), width, height);
                 }
                 
                 renderToolTip(guiGraphics, mouseX, mouseY);
@@ -66,7 +66,7 @@ public class StackZoneWidget extends ZoneWidget
         }
         else
         {
-            ScreenUtil.renderDisabledRect(ms, x, y, width, height);
+            ScreenUtil.renderDisabledRect(ms, getX(), getY(), width, height);
         }
     }
     

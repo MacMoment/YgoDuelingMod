@@ -119,7 +119,7 @@ public class MoveAnimation extends Animation
             rotation -= 360;
         }
         
-        ms.pushPose();
+        ms.pushMatrix();
         
         ms.translate((float)(posX), (float)(posY));
         ms.rotate((float)Math.toRadians(rotation));
@@ -127,7 +127,7 @@ public class MoveAnimation extends Animation
         // we always render the card position straight and manually rotate it, thats why we use fullBlit here
         CardRenderUtil.renderDuelCardAdvanced(guiGraphics, sleeves, mouseX, mouseY, -cardWidth / 2, -cardHeight / 2, cardWidth, cardHeight, duelCard, cardPosition, YdmBlitUtil::fullBlit);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public static float getRotationForPositionAndView(boolean isOpponentView, CardPosition position)

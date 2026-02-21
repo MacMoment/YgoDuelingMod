@@ -25,7 +25,7 @@ public class CardSetItem extends CardSetBaseItem
         {
             unseal(stack, player, hand);
             
-            if(!world.isClientSide)
+            if(!world.isClientSide())
             {
                 return player.getItemInHand(hand).getItem().use(world, player, hand);
             }
@@ -43,7 +43,7 @@ public class CardSetItem extends CardSetBaseItem
         {
             itemStack.shrink(1);
             
-            if(!player.level().isClientSide)
+            if(!player.level().isClientSide())
             {
                 player.getInventory().placeItemBackInInventory(itemStack);
             }

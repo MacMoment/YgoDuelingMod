@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
@@ -21,7 +22,7 @@ public class CardItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
         CardHolder holder = getCardHolder(itemStack);
         tooltip.clear();
@@ -40,7 +41,7 @@ public class CardItem extends Item
     {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         CardHolder cardHolder = getCardHolder(itemStack);
-        if(cardHolder != null && pPlayer.level().isClientSide)
+        if(cardHolder != null && pPlayer.level().isClientSide())
         {
             YDM.proxy.openCardInspectScreen(cardHolder);
             return InteractionResult.SUCCESS;

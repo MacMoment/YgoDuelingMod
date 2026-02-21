@@ -29,7 +29,7 @@ public class DuelEntity extends Entity implements MenuProvider
     public DuelEntity(EntityType<?> pType, Level level)
     {
         super(pType, level);
-        duelManager = new DuelManager(level.isClientSide, this::createHeader);
+        duelManager = new DuelManager(level.isClientSide(), this::createHeader);
     }
     
     public DuelMessageHeader createHeader()
@@ -45,7 +45,7 @@ public class DuelEntity extends Entity implements MenuProvider
     {
         super.tick();
         
-        if(!level.isClientSide)
+        if(!level.isClientSide())
         {
             if(!hasEverStarted)
             {

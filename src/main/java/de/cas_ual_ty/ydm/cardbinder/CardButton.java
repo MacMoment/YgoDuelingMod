@@ -28,14 +28,14 @@ public class CardButton extends AbstractButton
     }
     
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         CardHolder card = getCard();
         if(card != null)
         {
             ScreenUtil.white();
             CardRenderUtil.bindMainResourceLocation(card);
-            YdmBlitUtil.fullBlit(guiGraphics.pose(), x + 1, y + 1, 16, 16);
+            YdmBlitUtil.fullBlit(guiGraphics.pose(), getX() + 1, getY() + 1, 16, 16);
             
             if(isHoveredOrFocused())
             {
@@ -47,8 +47,8 @@ public class CardButton extends AbstractButton
     protected void drawHover(GuiGraphics guiGraphics)
     {
         
-        int x = this.x + 1;
-        int y = this.y + 1;
+        int x = getX() + 1;
+        int y = getY() + 1;
         
         int slotColor = -2130706433; // From ContainerScreen::slotColor
         guiGraphics.fillGradient(x, y, x + 16, y + 16, slotColor, slotColor);

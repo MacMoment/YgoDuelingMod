@@ -311,13 +311,13 @@ public class ClientProxy implements ISidedProxy
     {
         event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
         event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-        // Cast MenuType to base type to resolve generic type inference
-        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase::new);
-        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase::new);
+        // Use explicit lambdas to resolve generic type inference with RegisterMenuScreensEvent
+        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
+        event.register((net.minecraft.world.inventory.MenuType<DuelContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
         event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET.get(), CIIScreen::new);
-        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen::new);
-        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen::new);
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.CARD_SET_CONTENTS.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
+        event.register((net.minecraft.world.inventory.MenuType<CIIContainer>)(net.minecraft.world.inventory.MenuType<?>)YdmContainerTypes.SIMPLE_BINDER.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
     }
     
     private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)
@@ -566,7 +566,7 @@ public class ClientProxy implements ISidedProxy
         
         int maxWidth = width - margin * 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ScreenUtil.white();
         
         int x = margin;
@@ -596,7 +596,7 @@ public class ClientProxy implements ISidedProxy
         
         ScreenUtil.drawSplitString(guiGraphics, fontRenderer, list, margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     private void renderSleevesInfo(GuiGraphics guiGraphics, CardSleevesType sleeves)
@@ -618,7 +618,7 @@ public class ClientProxy implements ISidedProxy
         
         int maxWidth = width - margin * 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ScreenUtil.white();
         
         int x = margin;
@@ -646,7 +646,7 @@ public class ClientProxy implements ISidedProxy
         
         ScreenUtil.drawSplitString(guiGraphics, fontRenderer, ImmutableList.of(Component.translatable("item.ydm." + sleeves.getResourceName())), margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
-        ms.popPose();
+        ms.popMatrix();
     }
     
     public static int maxMessages = 50; //TODO make configurable

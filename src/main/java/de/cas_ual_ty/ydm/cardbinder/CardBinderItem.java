@@ -5,7 +5,7 @@ import de.cas_ual_ty.ydm.YdmContainerTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class CardBinderItem extends Item implements MenuProvider
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
     {
         super.appendHoverText(stack, context, tooltip, flagIn);
         
@@ -133,7 +134,7 @@ public class CardBinderItem extends Item implements MenuProvider
     {
         UUID uuid;
         
-        UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER) ? itemStack.getData(YDM.UUID_HOLDER) : UUIDHolder.NULL_HOLDER;
+        UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER.get()) ? itemStack.getData(YDM.UUID_HOLDER.get()) : UUIDHolder.NULL_HOLDER;
         
         CompoundTag tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if(tag.contains(CardBinderItem.MANAGER_UUID_KEY_OLD, Tag.TAG_INT_ARRAY))
@@ -141,7 +142,7 @@ public class CardBinderItem extends Item implements MenuProvider
             Tag t = tag.get(CardBinderItem.MANAGER_UUID_KEY_OLD);
             if(t instanceof IntArrayTag)
             {
-                uuid = NbtUtils.loadUUID((IntArrayTag) t);
+                uuid = UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());
             }
             else
             {
@@ -161,13 +162,13 @@ public class CardBinderItem extends Item implements MenuProvider
     
     public void setUUID(ItemStack itemStack, UUID uuid)
     {
-        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
+        itemStack.getData(YDM.UUID_HOLDER.get()).setUUID(uuid);
     }
     
     public void setUUIDAndUpdateManager(ItemStack itemStack, UUID uuid)
     {
         CardBinderCardsManager manager = getInventoryManager(itemStack);
-        itemStack.getData(YDM.UUID_HOLDER).setUUID(uuid);
+        itemStack.getData(YDM.UUID_HOLDER.get()).setUUID(uuid);
         MANAGER_MAP.remove(manager.getUUID());
         manager.setUUID(uuid);
         MANAGER_MAP.put(uuid, manager);

@@ -51,30 +51,30 @@ public class LPTextFieldWidget extends EditBox
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Matrix3x2fStack ms = guiGraphics.pose();
-        x *= 2;
-        y *= 2;
+        setX(getX() * 2);
+        setY(getY() * 2);
         width *= 2;
         height *= 2;
         
-        x += 1;
-        y += 1;
+        setX(getX() + 1);
+        setY(getY() + 1);
         width -= 2;
         height -= 2;
         
-        ms.pushPose();
+        ms.pushMatrix();
         ms.scale(0.5F, 0.5F);
         
         super.renderWidget(guiGraphics, mouseX * 2, mouseY * 2, partialTicks);
         
-        ms.popPose();
+        ms.popMatrix();
         
-        x -= 1;
-        y -= 1;
+        setX(getX() - 1);
+        setY(getY() - 1);
         width += 2;
         height += 2;
         
-        x /= 2;
-        y /= 2;
+        setX(getX() / 2);
+        setY(getY() / 2);
         width /= 2;
         height /= 2;
         
