@@ -71,7 +71,7 @@ public class SimpleBinderItem extends Item
     
     public YDMItemHandler getItemHandler(ItemStack itemStack)
     {
-        return itemStack.getData(YDM.CARD_ITEM_INVENTORY.get());
+        return itemStack.getData(YDM.CARD_ITEM_INVENTORY);
     }
     
     public CompoundTag getNBT(ItemStack itemStack)

@@ -11,7 +11,11 @@ import de.cas_ual_ty.ydm.duel.playfield.DuelCard;
 import de.cas_ual_ty.ydm.duel.playfield.ZoneOwner;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -24,13 +28,13 @@ public class DuelMessageUtility
 {
     public static void encodeHeader(DuelMessageHeader header, FriendlyByteBuf buf)
     {
-        buf.writeRegistryIdUnsafe(YDM.duelMessageHeaderRegistry, header.type);
+        buf.writeUtf(YDM.duelMessageHeaderRegistry.getKey(header.type).toString());
         header.writeToBuf(buf);
     }
     
     public static DuelMessageHeader decodeHeader(FriendlyByteBuf buf)
     {
-        DuelMessageHeader header = buf.readRegistryIdUnsafe(YDM.duelMessageHeaderRegistry).createHeader();
+        DuelMessageHeader header = YDM.duelMessageHeaderRegistry.getValue(Identifier.parse(buf.readUtf())).createHeader();
         header.readFromBuf(buf);
         return header;
     }
@@ -87,12 +91,12 @@ public class DuelMessageUtility
     
     public static void encodeActionType(ActionType type, FriendlyByteBuf buf)
     {
-        buf.writeRegistryIdUnsafe(YDM.actionTypeRegistry, type);
+        buf.writeUtf(YDM.actionTypeRegistry.getKey(type).toString());
     }
     
     public static ActionType decodeActionType(FriendlyByteBuf buf)
     {
-        return buf.readRegistryIdUnsafe(YDM.actionTypeRegistry);
+        return YDM.actionTypeRegistry.getValue(Identifier.parse(buf.readUtf()));
     }
     
     public static void encodeDuelState(DuelState duelState, FriendlyByteBuf buf)
@@ -196,26 +200,26 @@ public class DuelMessageUtility
     
     public static void encodeDuelChatMessage(DuelChatMessage message, FriendlyByteBuf buf)
     {
-        buf.writeComponent(message.message);
-        buf.writeComponent(message.playerName);
+        ComponentSerialization.STREAM_CODEC.encode((RegistryFriendlyByteBuf) buf, message.message);
+        ComponentSerialization.STREAM_CODEC.encode((RegistryFriendlyByteBuf) buf, message.playerName);
         DuelMessageUtility.encodePlayerRole(message.sourceRole, buf);
         buf.writeBoolean(message.isAnnouncement);
     }
     
     public static DuelChatMessage decodeDuelChatMessage(FriendlyByteBuf buf)
     {
-        return new DuelChatMessage(buf.readComponent(), buf.readComponent(), DuelMessageUtility.decodePlayerRole(buf), buf.readBoolean());
+        return new DuelChatMessage(ComponentSerialization.STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf), ComponentSerialization.STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf), DuelMessageUtility.decodePlayerRole(buf), buf.readBoolean());
     }
     
     public static void encodeDeckSourceParams(DeckSource deck, FriendlyByteBuf buf)
     {
-        buf.writeItem(deck.source);
-        buf.writeComponent(deck.name);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) buf, deck.source);
+        ComponentSerialization.STREAM_CODEC.encode((RegistryFriendlyByteBuf) buf, deck.name);
     }
     
     public static DeckSource decodeDeckSourceParams(FriendlyByteBuf buf)
     {
-        return new DeckSource(null, buf.readItem(), buf.readComponent());
+        return new DeckSource(null, ItemStack.OPTIONAL_STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf), ComponentSerialization.STREAM_CODEC.decode((RegistryFriendlyByteBuf) buf));
     }
     
     public static void encodePhase(DuelPhase phase, FriendlyByteBuf buf)

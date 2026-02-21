@@ -122,7 +122,7 @@ public class ViewCardStackWidget extends Button
         
         if(!cards.isEmpty())
         {
-            hoverCard = renderCards(ms, mouseX, mouseY);
+            hoverCard = renderCards(guiGraphics, mouseX, mouseY);
         }
         else
         {
@@ -134,8 +134,9 @@ public class ViewCardStackWidget extends Button
     }
     
     @Nullable
-    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         DuelCard hoveredCard = null;
         int hoverX = 0, hoverY = 0;
         
@@ -152,7 +153,7 @@ public class ViewCardStackWidget extends Button
                 
                 c = cards.get(index++);
                 
-                if(drawCard(ms, c, x, y, cardsTextureSize, cardsTextureSize, mouseX, mouseY))
+                if(drawCard(guiGraphics, c, x, y, cardsTextureSize, cardsTextureSize, mouseX, mouseY))
                 {
                     hoverX = x;
                     hoverY = y;
@@ -181,8 +182,9 @@ public class ViewCardStackWidget extends Button
         }
     }
     
-    protected boolean drawCard(Matrix3x2fStack ms, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY)
+    protected boolean drawCard(GuiGraphics guiGraphics, DuelCard duelCard, int renderX, int renderY, int renderWidth, int renderHeight, int mouseX, int mouseY)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         if(context.getClickedCard() == duelCard)
         {
             if(context.getOpponentClickedCard() == duelCard)
@@ -206,7 +208,7 @@ public class ViewCardStackWidget extends Button
             }
         }
         
-        CardRenderUtil.renderDuelCardCentered(ms, context.getClickedZone() != null ? context.getClickedZone().getSleeves() : CardSleevesType.CARD_BACK, mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, forceFaceUp);
+        CardRenderUtil.renderDuelCardCentered(guiGraphics, context.getClickedZone() != null ? context.getClickedZone().getSleeves() : CardSleevesType.CARD_BACK, mouseX, mouseY, renderX, renderY, renderWidth, renderHeight, duelCard, forceFaceUp);
         
         return isHoveredOrFocused() && mouseX >= renderX && mouseX < renderX + renderWidth && mouseY >= renderY && mouseY < renderY + renderHeight;
     }

@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 public abstract class DuelMessageHeader
 {
@@ -77,7 +77,7 @@ public abstract class DuelMessageHeader
             DuelTileEntity te0 = (DuelTileEntity) player.level().getBlockEntity(pos);
             DuelManager dm = te0.duelManager;
             
-            return FMLLoader.dist() == Dist.CLIENT
+            return FMLEnvironment.getDist() == Dist.CLIENT
                     ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
                     : () -> dm;
         }
@@ -116,7 +116,7 @@ public abstract class DuelMessageHeader
             DuelEntity e = (DuelEntity) player.level().getEntity(entityId);
             DuelManager dm = e.duelManager;
             
-            return FMLLoader.dist() == Dist.CLIENT
+            return FMLEnvironment.getDist() == Dist.CLIENT
                     ? new de.cas_ual_ty.ydm.duel.network.ClientDuelManagerProvider(dm)
                     : () -> dm;
         }

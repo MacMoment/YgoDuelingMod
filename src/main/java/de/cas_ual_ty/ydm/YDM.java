@@ -37,7 +37,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.NeoForge;
@@ -108,7 +108,7 @@ public class YDM
     {
         YDM.instance = this;
         
-        if (FMLLoader.dist() == Dist.CLIENT) {
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
             YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
         } else {
             YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();

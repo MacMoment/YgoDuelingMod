@@ -288,7 +288,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
         addRenderableWidget(cardStackNameWidget = new TextWidget(x, y, w, buttonHeight, this::getShownZoneName));
         y += offset;
         
-        addRenderableWidget(scrollUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::scrollButtonClicked));
+        addRenderableWidget(scrollUpButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::scrollButtonClicked).bounds(x, y, w, buttonHeight).build());
         y += offset;
         
         int columns = chatWidth / cardsSize;
@@ -297,7 +297,7 @@ public class DuelScreenDueling<E extends DuelContainer> extends DuelContainerScr
                 .setRowsAndColumns(cardsSize, rows, columns));
         y += chatHeight + margin;
         
-        addRenderableWidget(scrollDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::scrollButtonClicked));
+        addRenderableWidget(scrollDownButton = Button.builder(Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::scrollButtonClicked).bounds(x, y, w, buttonHeight).build());
         y += offset;
     }
     
