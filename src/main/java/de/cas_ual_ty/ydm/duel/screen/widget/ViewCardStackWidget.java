@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -115,10 +115,10 @@ public class ViewCardStackWidget extends Button
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
         
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
+        
+        
+        
         
         if(!cards.isEmpty())
         {
@@ -130,7 +130,7 @@ public class ViewCardStackWidget extends Button
         }
         
         int j = getFGColor();
-        Screen.drawCenteredString(ms, fontrenderer, getMessage(), x, y, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, getMessage(), x, y, j | Mth.ceil(alpha * 255.0F) << 24);
     }
     
     @Nullable

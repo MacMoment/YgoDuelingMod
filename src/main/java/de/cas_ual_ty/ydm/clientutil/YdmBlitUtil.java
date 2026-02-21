@@ -16,10 +16,11 @@ public class YdmBlitUtil
     /**
      * Convert the current 2D GUI matrix stack to a 4x4 matrix for vertex buffers.
      * Embeds the 2D affine transform into the top-left 2x2 with the translation in column 3.
+     * Note: new Matrix4f() initializes to identity (m22=1, m33=1), so Z/W dimensions are correct.
      */
     private static Matrix4f toMat4(Matrix3x2fStack ms)
     {
-        Matrix4f m = new Matrix4f();
+        Matrix4f m = new Matrix4f(); // identity: m22=1, m33=1, others=0
         m.m00(ms.m00).m01(ms.m01);
         m.m10(ms.m10).m11(ms.m11);
         m.m30(ms.m20).m31(ms.m21);

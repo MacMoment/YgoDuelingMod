@@ -412,9 +412,9 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         setActiveDeckWrapper(activeDeckWrapperIdx + 1);
     }
     
-    protected void chooseDeckTooltip(AbstractWidget w, Matrix3x2fStack ms, int mouseX, int mouseY)
+    protected void chooseDeckTooltip(AbstractWidget w, GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        renderTooltip(ms, Component.translatable("container.ydm.duel.choose_deck"), mouseX, mouseY);
+        renderTooltip(guiGraphics, Component.translatable("container.ydm.duel.choose_deck"), mouseX, mouseY);
     }
     
     public DeckWrapper getActiveDeckWrapper()

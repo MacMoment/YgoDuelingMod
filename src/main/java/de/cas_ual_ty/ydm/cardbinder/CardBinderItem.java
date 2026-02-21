@@ -4,6 +4,9 @@ import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.YdmContainerTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -133,9 +136,17 @@ public class CardBinderItem extends Item implements MenuProvider
         UUIDHolder holder = itemStack.hasData(YDM.UUID_HOLDER) ? itemStack.getData(YDM.UUID_HOLDER) : UUIDHolder.NULL_HOLDER;
         
         CompoundTag tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        if(tag.contains(CardBinderItem.MANAGER_UUID_KEY_OLD))
+        if(tag.contains(CardBinderItem.MANAGER_UUID_KEY_OLD, Tag.TAG_INT_ARRAY))
         {
-            uuid = tag.getUUID(CardBinderItem.MANAGER_UUID_KEY_OLD);
+            Tag t = tag.get(CardBinderItem.MANAGER_UUID_KEY_OLD);
+            if(t instanceof IntArrayTag)
+            {
+                uuid = NbtUtils.loadUUID((IntArrayTag) t);
+            }
+            else
+            {
+                uuid = holder.getUUID();
+            }
             holder.setUUID(uuid);
             tag.remove(MANAGER_UUID_KEY_OLD);
             itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));

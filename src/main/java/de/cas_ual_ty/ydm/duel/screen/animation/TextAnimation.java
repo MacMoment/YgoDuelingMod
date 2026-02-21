@@ -6,7 +6,7 @@ import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -43,15 +43,15 @@ public class TextAnimation extends Animation
         
         ms.translate((float)(centerPosX), (float)(centerPosY - f.lineHeight / 2));
         
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        
+        
+        
         
         int j = 16777215; //See TextWidget
-        Screen.drawCenteredString(ms, f, message, 0, 0, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(f, message, 0, 0, j | Mth.ceil(alpha * 255.0F) << 24);
         
-        RenderSystem.disableBlend();
+        
         ScreenUtil.white();
         
         ms.popPose();

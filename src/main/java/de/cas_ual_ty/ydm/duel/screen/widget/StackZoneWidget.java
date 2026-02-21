@@ -8,7 +8,7 @@ import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -46,7 +46,7 @@ public class StackZoneWidget extends ZoneWidget
             // see font renderer, top static Vector3f
             // white is translated in front by that
             ms.pushPose();
-            Screen.drawCenteredString(ms, fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
+            guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(zone.getCardsAmount())),
                     x + width / 2, y + height / 2 - fontrenderer.lineHeight / 2,
                     16777215 | Mth.ceil(alpha * 255.0F) << 24);
             ms.popPose();

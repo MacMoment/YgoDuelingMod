@@ -56,9 +56,9 @@ public class InteractionWidget extends Button
         }
         
         ScreenUtil.white();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        
+        
         
         YdmBlitUtil.blit(ms, icon.sourceFile, x + (width - iconWidth) / 2, y + (height - iconHeight) / 2, iconWidth, iconHeight, icon.iconX, icon.iconY, icon.iconWidth, icon.iconHeight, icon.fileSize, icon.fileSize);
         

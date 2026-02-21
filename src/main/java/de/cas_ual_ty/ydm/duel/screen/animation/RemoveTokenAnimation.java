@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.duel.screen.animation;
 
 
-import org.lwjgl.opengl.GL11;
+
 
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
@@ -44,13 +44,13 @@ public class RemoveTokenAnimation extends Animation
         
         ms.translate((float)(centerPosX), (float)(centerPosY));
         
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
-        RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ZERO, GL11.GL_ONE);
+        
+        
+        
         
         YdmBlitUtil.fullBlit(ms, getTexture(), -halfSize, -halfSize, size, size);
         
-        RenderSystem.disableBlend();
+        
         
         ms.popPose();
     }

@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.cardbinder;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import de.cas_ual_ty.ydm.card.CardHolder;
 import de.cas_ual_ty.ydm.clientutil.CardRenderUtil;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
@@ -46,14 +46,14 @@ public class CardButton extends AbstractButton
     
     protected void drawHover(GuiGraphics guiGraphics)
     {
-        RenderSystem.disableDepthTest();
+        
         int x = this.x + 1;
         int y = this.y + 1;
-        RenderSystem.colorMask(true, true, true, false);
+        
         int slotColor = -2130706433; // From ContainerScreen::slotColor
         guiGraphics.fillGradient(x, y, x + 16, y + 16, slotColor, slotColor);
-        RenderSystem.colorMask(true, true, true, true);
-        RenderSystem.enableDepthTest();
+        
+        
     }
     
     @Override
@@ -68,7 +68,7 @@ public class CardButton extends AbstractButton
     }
     
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput)
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput)
     {
     
     }

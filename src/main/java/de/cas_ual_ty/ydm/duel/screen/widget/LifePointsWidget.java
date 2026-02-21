@@ -9,7 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -38,9 +38,9 @@ public class LifePointsWidget extends AbstractWidget
         Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        
+        
         
         int lp = lpGetter.get();
         float relativeLP = Math.min(1F, lp / (float) maxLP);
@@ -51,11 +51,11 @@ public class LifePointsWidget extends AbstractWidget
         int w = width;
         int h = height;
         
-        RenderSystem.setShaderColor(1F, 1F, 1F, alpha);
+        
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 1 * 8, width, height);
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
         guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
-        renderBg(ms, minecraft, mouseX, mouseY);
+        // renderBg removed in 1.21.11; LP bar is fully rendered by the blit calls above
         
         x = this.x + width / 2;
         y = this.y + height / 2;
@@ -65,7 +65,7 @@ public class LifePointsWidget extends AbstractWidget
         ms.scale(0.5F, 0.5F);
         
         int j = getFGColor();
-        Screen.drawCenteredString(ms, fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
+        guiGraphics.drawCenteredString(fontrenderer, Component.literal(String.valueOf(lp)), x * 2, y * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         
         ms.popPose();
         
@@ -76,7 +76,7 @@ public class LifePointsWidget extends AbstractWidget
     }
     
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput)
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput)
     {
     
     }

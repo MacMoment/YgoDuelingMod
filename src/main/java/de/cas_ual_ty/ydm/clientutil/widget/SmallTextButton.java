@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.clientutil.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,18 +22,18 @@ public class SmallTextButton extends Button
     {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-        int i = getYImage(isHoveredOrFocused());
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+        
+        int i = isActive() ? (isHoveredOrFocused() ? 2 : 1) : 0;
+        
+        
+        
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y, 0, 46 + i * 20, width / 2, height / 2);
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y, 200 - width / 2, 46 + i * 20, width / 2, height / 2);
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y + height / 2, 0, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
         guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y + height / 2, 200 - width / 2, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
         
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().scale(0.5F, 0.5F, 1F);
+        guiGraphics.pose().scale(0.5F, 0.5F);
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, getMessage(), (x + width / 2) * 2, (y + height / 2) * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         guiGraphics.pose().popPose();

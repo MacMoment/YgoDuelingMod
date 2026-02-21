@@ -104,7 +104,7 @@ public class DisplayChatWidget extends AbstractWidget
     }
     
     @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput)
+    public void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput)
     {
     
     }
