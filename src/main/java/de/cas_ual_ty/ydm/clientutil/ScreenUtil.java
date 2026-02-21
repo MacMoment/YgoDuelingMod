@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import org.joml.Matrix4f;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderTypes;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
