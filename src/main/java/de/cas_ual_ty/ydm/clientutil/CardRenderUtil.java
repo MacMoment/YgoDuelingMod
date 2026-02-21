@@ -1,7 +1,7 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.joml.Matrix3x2fStack;
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.client.gui.GuiGraphics;
 import de.cas_ual_ty.ydm.YdmDatabase;
@@ -65,7 +65,7 @@ public class CardRenderUtil
         
         int maxWidth = width - margin * 2;
         
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         ms.pushPose();
         ScreenUtil.white();
         
@@ -91,7 +91,7 @@ public class CardRenderUtil
         // need to multiply x2 because we are scaling the text to x0.5
         maxWidth *= 2;
         margin *= 2;
-        ms.scale(f, f, f);
+        ms.scale(f, f);
         
         // card description text
         
@@ -166,7 +166,7 @@ public class CardRenderUtil
     
     public static void renderInfoCardWithRarity(GuiGraphics guiGraphics, int mouseX, int mouseY, float x, float y, float width, float height, CardHolder card)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft mc = ClientProxy.getMinecraft();
         
         // bind the texture depending on faceup or facedown
@@ -213,7 +213,7 @@ public class CardRenderUtil
     
     public static void renderDuelCardAdvanced(GuiGraphics guiGraphics, CardSleevesType back, int mouseX, int mouseY, float x, float y, float width, float height, DuelCard card, CardPosition position, YdmBlitUtil.FullBlitMethod blitMethod)
     {
-        PoseStack ms = guiGraphics.pose();
+        Matrix3x2fStack ms = guiGraphics.pose();
         Minecraft mc = ClientProxy.getMinecraft();
         
         // bind the texture depending on faceup or facedown

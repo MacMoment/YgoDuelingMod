@@ -82,7 +82,7 @@ public enum CardSleevesType
     
     public Item getItem()
     {
-        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(YDM.MOD_ID, getResourceName()));
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(YDM.MOD_ID, getResourceName()));
     }
     
     public byte getIndex()

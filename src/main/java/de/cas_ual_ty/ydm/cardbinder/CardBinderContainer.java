@@ -161,7 +161,7 @@ public class CardBinderContainer extends AbstractContainerMenu
     
     protected void updateHoldingItemStack(ItemStack itemStack)
     {
-        player.getInventory().setPickedItem(itemStack);
+        setCarried(itemStack);
     }
     
     protected CardHolder extractCard(int index)
