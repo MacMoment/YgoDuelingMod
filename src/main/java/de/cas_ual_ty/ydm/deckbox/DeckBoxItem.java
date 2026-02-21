@@ -28,7 +28,7 @@ public class DeckBoxItem extends Item implements MenuProvider
     
     public YDMItemHandler getItemHandler(ItemStack itemStack)
     {
-        return itemStack.getData(YDM.CARD_ITEM_INVENTORY);
+        return YDMItemHandler.fromItemStack(itemStack);
     }
     
     @Override

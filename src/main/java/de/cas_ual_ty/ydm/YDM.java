@@ -23,13 +23,15 @@ import de.cas_ual_ty.ydm.util.CooldownHolder;
 import de.cas_ual_ty.ydm.util.ISidedProxy;
 import de.cas_ual_ty.ydm.util.YDMItemHandler;
 import de.cas_ual_ty.ydm.util.YdmIOUtil;
-import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import com.mojang.serialization.Codec;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -84,11 +86,14 @@ public class YDM
     public static File raritiesFolder;
     public static File bindersFolder;
     
-    // Data Attachments (replaces old Capability system)
+    // Data Attachments (for entities only - ItemStack uses DataComponents)
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MOD_ID);
-    public static final Supplier<AttachmentType<UUIDHolder>> UUID_HOLDER = ATTACHMENT_TYPES.register("uuid_holder", () -> AttachmentType.builder(() -> new UUIDHolder(() -> new CompoundTag())).build());
-    public static final Supplier<AttachmentType<YDMItemHandler>> CARD_ITEM_INVENTORY = ATTACHMENT_TYPES.register("card_item_inventory", () -> AttachmentType.builder(() -> new YDMItemHandler(0)).build());
     public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.builder(CooldownHolder::new).build());
+    
+    // Data Components (for ItemStack data, replaces old ItemStack attachments)
+    private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MOD_ID);
+    public static final Supplier<DataComponentType<CompoundTag>> CARD_INVENTORY_DATA = DATA_COMPONENT_TYPES.register("card_inventory", () -> DataComponentType.<CompoundTag>builder().persistent(CompoundTag.CODEC).build());
+    public static final Supplier<DataComponentType<String>> UUID_DATA = DATA_COMPONENT_TYPES.register("uuid_data", () -> DataComponentType.<String>builder().persistent(Codec.STRING).build());
     
     // Custom Registry Keys
     public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_icons"));
@@ -133,6 +138,7 @@ public class YDM
         YdmEntityTypes.register(modBus);
         YdmTileEntityTypes.register(modBus);
         ATTACHMENT_TYPES.register(modBus);
+        DATA_COMPONENT_TYPES.register(modBus);
         ActionIcons.register(modBus);
         ZoneTypes.register(modBus);
         ActionTypes.register(modBus);
