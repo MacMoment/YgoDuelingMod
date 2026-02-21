@@ -2,9 +2,9 @@ package de.cas_ual_ty.ydm.cardinventory;
 
 import de.cas_ual_ty.ydm.util.JsonKeys;
 import de.cas_ual_ty.ydm.util.YdmUtil;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 
 import java.util.UUID;
@@ -44,7 +44,7 @@ public abstract class UUIDCardsManager extends JsonCardsManager
             Tag t = nbt.get(JsonKeys.UUID);
             if(t instanceof IntArrayTag)
             {
-                uuid = NbtUtils.loadUUID((IntArrayTag) t);
+                uuid = UUIDUtil.uuidFromIntArray(((IntArrayTag) t).getAsIntArray());
             }
         }
     }
@@ -54,7 +54,7 @@ public abstract class UUIDCardsManager extends JsonCardsManager
     {
         if(getUUID() != null)
         {
-            nbt.put(JsonKeys.UUID, NbtUtils.createUUID(getUUID()));
+            nbt.put(JsonKeys.UUID, new IntArrayTag(UUIDUtil.uuidToIntArray(getUUID())));
         }
     }
 }
