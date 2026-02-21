@@ -104,7 +104,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
                     }
                     
                     //renderTooltip
-                    guiGraphics.renderTooltip(font, tooltip.stream().map(Component::getVisualOrderText).toList(), mouseX, mouseY);
+                    guiGraphics.setTooltipForNextFrame(font, tooltip.stream().map(Component::getVisualOrderText).toList(), mouseX, mouseY);
                 }
                 
                 break;

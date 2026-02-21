@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix3x2fStack;
@@ -36,7 +35,7 @@ public class ScreenUtil
         bufferbuilder.addVertex(m, x + w, y + h, 0F).setColor(r, g, b, a); // BR
         bufferbuilder.addVertex(m, x + w, y, 0F).setColor(r, g, b, a); // TR
         bufferbuilder.addVertex(m, x, y, 0F).setColor(r, g, b, a); // TL
-        RenderTypes.gui().draw(bufferbuilder.buildOrThrow());
+        RenderType.gui().draw(bufferbuilder.buildOrThrow());
     }
 
     public static void drawRect(GuiGraphics guiGraphics, float x, float y, float w, float h, float r, float g, float b, float a)
