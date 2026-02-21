@@ -37,7 +37,7 @@ public class StackZoneWidget extends ZoneWidget
         
         renderZoneSelectRect(ms, zone, getX(), getY(), width, height);
         
-        hoverCard = renderCards(ms, mouseX, mouseY);
+        hoverCard = renderCards(guiGraphics, mouseX, mouseY);
         
         
         

@@ -167,7 +167,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     {
         guiGraphics.pose().pushMatrix();
         
-        super.renderTooltip(guiGraphics, tooltips, mouseX, mouseY);
+        guiGraphics.renderTooltip(font, tooltips, mouseX, mouseY);
         guiGraphics.pose().popMatrix();
     }
     
@@ -175,7 +175,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     {
         guiGraphics.pose().pushMatrix();
         
-        guiGraphics.renderTooltip(font, text, mouseX, mouseY);
+        guiGraphics.renderTooltip(font, List.of(text.getVisualOrderText()), mouseX, mouseY);
         guiGraphics.pose().popMatrix();
     }
     

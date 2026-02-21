@@ -390,13 +390,13 @@ public class ClientProxy implements ISidedProxy
         // 16 is default texture; no need to do anything special in that case
         if(ClientProxy.activeCardItemImageSize != 16)
         {
-            var blancCardModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
+            var blancCardModel = itemModels.get(Identifier.parse(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
             if(blancCardModel != null)
             {
                 itemModels.put(YdmItems.BLANC_CARD.getId(), blancCardModel);
             }
             
-            var cardBackModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
+            var cardBackModel = itemModels.get(Identifier.parse(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize));
             if(cardBackModel != null)
             {
                 itemModels.put(YdmItems.CARD_BACK.getId(), cardBackModel);
@@ -409,7 +409,7 @@ public class ClientProxy implements ISidedProxy
                     var sleevesModel = itemModels.get(sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize));
                     if(sleevesModel != null)
                     {
-                        itemModels.put(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name), sleevesModel);
+                        itemModels.put(Identifier.parse(YDM.MOD_ID + ":sleeves_" + sleeves.name), sleevesModel);
                     }
                 }
             }
@@ -417,7 +417,7 @@ public class ClientProxy implements ISidedProxy
         
         if(ClientProxy.activeSetItemImageSize != 16)
         {
-            var blancSetModel = itemModels.get(Identifier.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize));
+            var blancSetModel = itemModels.get(Identifier.parse(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize));
             if(blancSetModel != null)
             {
                 itemModels.put(YdmItems.BLANC_SET.getId(), blancSetModel);

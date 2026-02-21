@@ -6,6 +6,7 @@ import de.cas_ual_ty.ydm.duel.playfield.DuelCard;
 import de.cas_ual_ty.ydm.duel.playfield.Zone;
 import de.cas_ual_ty.ydm.duel.screen.DuelScreenDueling;
 import de.cas_ual_ty.ydm.duel.screen.IDuelScreenContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nullable;
@@ -20,15 +21,16 @@ public class MonsterZoneWidget extends ZoneWidget
     
     @Override
     @Nullable
-    public DuelCard renderCards(Matrix3x2fStack ms, int mouseX, int mouseY)
+    public DuelCard renderCards(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        Matrix3x2fStack ms = guiGraphics.pose();
         if(zone.getCardsAmount() <= 0)
         {
             return null;
         }
         else if(zone.getCardsAmount() == 1)
         {
-            return super.renderCards(ms, mouseX, mouseY);
+            return super.renderCards(guiGraphics, mouseX, mouseY);
         }
         
         final int cardsWidth = DuelScreenDueling.CARDS_WIDTH * height / DuelScreenDueling.CARDS_HEIGHT;
@@ -37,16 +39,16 @@ public class MonsterZoneWidget extends ZoneWidget
         final int cardsTextureSize = cardsHeight;
         
         DuelCard hoveredCard = null;
-        float hoverX = x;
-        float hoverY = y;
+        float hoverX = getX();
+        float hoverY = getY();
         float hoverWidth = cardsWidth;
         float hoverHeight = cardsHeight;
         
         boolean isOwner = zone.getOwner() == context.getZoneOwner();
         boolean isOpponentView = zone.getOwner() != context.getView();
         
-        final int renderX = x;
-        final int renderY = y;
+        final int renderX = getX();
+        final int renderY = getY();
         final int renderWidth = cardsTextureSize;
         final int renderHeight = cardsTextureSize;
         
@@ -64,7 +66,7 @@ public class MonsterZoneWidget extends ZoneWidget
             DuelCard c = zone.getCardUnsafe(topCardIndex); // we get the 2nd card
             int newHoverX = renderX + offset / 2; // and put it in the middle
             
-            if(drawCard(ms, c, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
+            if(drawCard(guiGraphics, c, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
             {
                 hoveredCard = c;
                 hoverX = newHoverX;
@@ -74,7 +76,7 @@ public class MonsterZoneWidget extends ZoneWidget
         {
             float margin = cardsWidth - (cardsAmount * cardsWidth - width) / (float) (cardsAmount - 1);
             
-            float hoverXBase = x;
+            float hoverXBase = getX();
             
             boolean renderLeftToRight = !isOpponentView;
             
@@ -99,7 +101,7 @@ public class MonsterZoneWidget extends ZoneWidget
                 // and the card is sideways
                 // adjust the hover rect
                 // and also render it centered again
-                if(drawCard(ms, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
+                if(drawCard(guiGraphics, c, newRenderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, hoverY, hoverWidth, hoverHeight))
                 {
                     hoveredCard = c;
                     hoverX = newHoverX;
@@ -116,7 +118,7 @@ public class MonsterZoneWidget extends ZoneWidget
             float newHoverWidth = cardsHeight;
             float newHoverHeight = cardsWidth;
             
-            if(drawCard(ms, c, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, newHoverY, newHoverWidth, newHoverHeight))
+            if(drawCard(guiGraphics, c, renderX, renderY, renderWidth, renderHeight, mouseX, mouseY, newHoverX, newHoverY, newHoverWidth, newHoverHeight))
             {
                 hoveredCard = c;
                 hoverX = newHoverX;
