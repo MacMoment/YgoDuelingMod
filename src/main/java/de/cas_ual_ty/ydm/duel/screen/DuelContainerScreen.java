@@ -1,6 +1,6 @@
 package de.cas_ual_ty.ydm.duel.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import de.cas_ual_ty.ydm.YDM;
 import de.cas_ual_ty.ydm.clientutil.ClientProxy;
 import de.cas_ual_ty.ydm.clientutil.ScreenUtil;
