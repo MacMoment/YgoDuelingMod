@@ -33,15 +33,11 @@ public class SmallTextWidget extends AbstractWidget
     {
         Minecraft minecraft = Minecraft.getInstance();
         Font fontrenderer = minecraft.font;
-        // In 1.21.11, getYImage is removed; compute texture row from hover/active state
-        int i = isActive() ? (isHoveredOrFocused() ? 2 : 1) : 0;
-        guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y, 0, 46 + i * 20, width / 2, height / 2);
-        guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y, 200 - width / 2, 46 + i * 20, width / 2, height / 2);
-        guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x, y + height / 2, 0, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
-        guiGraphics.blit(AbstractWidget.WIDGETS_LOCATION, x + width / 2, y + height / 2, 200 - width / 2, 46 + (i + 1) * 20 - height / 2, width / 2, height / 2);
+        int bgColor = isActive() ? (isHoveredOrFocused() ? 0xA0808080 : 0xA0606060) : 0xA0404040;
+        guiGraphics.fill(getX(), getY(), getX() + width, getY() + height, bgColor);
         
-        int x = this.x + width / 2;
-        int y = this.y + height / 2;
+        int x = getX() + width / 2;
+        int y = getY() + height / 2;
         
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().scale(0.5F, 0.5F);
