@@ -1,9 +1,10 @@
 package de.cas_ual_ty.ydm.clientutil;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 
@@ -141,36 +142,30 @@ public class YdmBlitUtil
     }
 
     // --- Masked blit ---
-    // Note: In 1.21.11 RenderSystem blend methods were removed; using GlStateManager directly.
-    // The visual mask effect requires direct GL blend control.
+    // Note: In 1.21.11 GlStateManager and RenderSystem blend methods were removed;
+    // using direct LWJGL OpenGL calls for blend control.
 
     public static void advancedMaskedBlit(Matrix3x2fStack ms, float renderX, float renderY, float renderWidth, float renderHeight, Runnable maskBinderAndDrawer, Runnable textureBinderAndDrawer, boolean inverted)
     {
         ScreenUtil.white();
-        GlStateManager._enableBlend();
+        GL11.glEnable(GL11.GL_BLEND);
 
         // Draw mask to set framebuffer alpha values
-        GlStateManager._blendFuncSeparate(
-            GlStateManager.SourceFactor.ZERO.value, GlStateManager.DestFactor.ONE.value,
-            GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ZERO.value);
+        GL14.glBlendFuncSeparate(GL11.GL_ZERO, GL11.GL_ONE, GL11.GL_SRC_ALPHA, GL11.GL_ZERO);
         maskBinderAndDrawer.run();
 
         if(!inverted)
         {
-            GlStateManager._blendFuncSeparate(
-                GlStateManager.SourceFactor.ONE_MINUS_DST_ALPHA.value, GlStateManager.DestFactor.DST_COLOR.value,
-                GlStateManager.SourceFactor.DST_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_DST_ALPHA.value);
+            GL14.glBlendFuncSeparate(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_COLOR, GL11.GL_DST_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
         }
         else
         {
-            GlStateManager._blendFuncSeparate(
-                GlStateManager.SourceFactor.DST_ALPHA.value, GlStateManager.DestFactor.DST_COLOR.value,
-                GlStateManager.SourceFactor.ONE_MINUS_DST_ALPHA.value, GlStateManager.DestFactor.DST_ALPHA.value);
+            GL14.glBlendFuncSeparate(GL11.GL_DST_ALPHA, GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
         }
 
         textureBinderAndDrawer.run();
 
-        GlStateManager._disableBlend();
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     // --- Inner blit using 1.21.11 rendering pipeline ---
@@ -194,7 +189,7 @@ public class YdmBlitUtil
         }
         else
         {
-            BufferUploader.drawWithShader(meshData);
+            RenderType.gui().draw(meshData);
         }
     }
 
