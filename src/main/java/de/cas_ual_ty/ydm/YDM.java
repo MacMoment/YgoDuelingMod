@@ -25,6 +25,7 @@ import de.cas_ual_ty.ydm.util.YDMItemHandler;
 import de.cas_ual_ty.ydm.util.YdmIOUtil;
 import de.cas_ual_ty.ydm.cardbinder.UUIDHolder;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
@@ -85,9 +86,9 @@ public class YDM
     
     // Data Attachments (replaces old Capability system)
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MOD_ID);
-    public static final Supplier<AttachmentType<UUIDHolder>> UUID_HOLDER = ATTACHMENT_TYPES.register("uuid_holder", () -> AttachmentType.serializable(UUIDHolder::new).build());
-    public static final Supplier<AttachmentType<YDMItemHandler>> CARD_ITEM_INVENTORY = ATTACHMENT_TYPES.register("card_item_inventory", () -> AttachmentType.serializable(() -> new YDMItemHandler(0)).build());
-    public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.serializable(CooldownHolder::new).build());
+    public static final Supplier<AttachmentType<UUIDHolder>> UUID_HOLDER = ATTACHMENT_TYPES.register("uuid_holder", () -> AttachmentType.builder(() -> new UUIDHolder(() -> new CompoundTag())).build());
+    public static final Supplier<AttachmentType<YDMItemHandler>> CARD_ITEM_INVENTORY = ATTACHMENT_TYPES.register("card_item_inventory", () -> AttachmentType.builder(() -> new YDMItemHandler(0)).build());
+    public static final Supplier<AttachmentType<CooldownHolder>> COOLDOWN_HOLDER = ATTACHMENT_TYPES.register("cooldown_holder", () -> AttachmentType.builder(CooldownHolder::new).build());
     
     // Custom Registry Keys
     public static final ResourceKey<Registry<ActionIcon>> ACTION_ICON_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_icons"));
@@ -95,10 +96,10 @@ public class YDM
     public static final ResourceKey<Registry<ActionType>> ACTION_TYPE_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "action_types"));
     public static final ResourceKey<Registry<DuelMessageHeaderType>> DUEL_MESSAGE_HEADER_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(MOD_ID, "duel_message_headers"));
     
-    public static Supplier<Registry<ActionIcon>> actionIconRegistry;
-    public static Supplier<Registry<ZoneType>> zoneTypeRegistry;
-    public static Supplier<Registry<ActionType>> actionTypeRegistry;
-    public static Supplier<Registry<DuelMessageHeaderType>> duelMessageHeaderRegistry;
+    public static Registry<ActionIcon> actionIconRegistry;
+    public static Registry<ZoneType> zoneTypeRegistry;
+    public static Registry<ActionType> actionTypeRegistry;
+    public static Registry<DuelMessageHeaderType> duelMessageHeaderRegistry;
     
     public static volatile boolean continueTasks = true;
     public static volatile boolean forceTaskStop = false;
@@ -107,7 +108,7 @@ public class YDM
     {
         YDM.instance = this;
         
-        if (FMLLoader.getDist() == Dist.CLIENT) {
+        if (FMLLoader.dist() == Dist.CLIENT) {
             YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
         } else {
             YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();
@@ -311,7 +312,7 @@ public class YDM
         
         if (original.hasData(COOLDOWN_HOLDER.get()))
         {
-            current.getData(COOLDOWN_HOLDER.get()).deserializeNBT(original.registryAccess(), original.getData(COOLDOWN_HOLDER.get()).serializeNBT(original.registryAccess()));
+            current.getData(COOLDOWN_HOLDER.get()).deserializeNBT(original.getData(COOLDOWN_HOLDER.get()).serializeNBT());
         }
     }
     

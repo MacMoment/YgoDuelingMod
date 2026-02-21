@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
 
 public class DuelBlock extends HorizontalDirectionalBlock implements EntityBlock
 {
@@ -27,6 +28,12 @@ public class DuelBlock extends HorizontalDirectionalBlock implements EntityBlock
     {
         super(properties);
         this.shape = shape;
+    }
+    
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec()
+    {
+        throw new UnsupportedOperationException("DuelBlock does not support codec serialization");
     }
     
     @Override

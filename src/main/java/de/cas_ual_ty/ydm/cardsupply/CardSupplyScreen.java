@@ -16,12 +16,15 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 
 public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContainer>
 {
@@ -100,7 +103,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
                     }
                     
                     //renderTooltip
-                    renderComponentTooltip(guiGraphics, tooltip, mouseX, mouseY);
+                    guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
                 }
                 
                 break;
@@ -111,7 +114,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y)
     {
-        guiGraphics.blit(CardSupplyScreen.CARD_SUPPLY_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CardSupplyScreen.CARD_SUPPLY_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
     }
     
     @Override
@@ -122,23 +125,23 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean keyPressed(KeyEvent event)
     {
         if(textField != null && textField.isFocused())
         {
-            if(keyCode == GLFW.GLFW_KEY_ENTER)
+            if(event.key() == GLFW.GLFW_KEY_ENTER)
             {
                 applyName();
                 return true;
             }
             else
             {
-                return textField.keyPressed(keyCode, scanCode, modifiers);
+                return textField.keyPressed(event);
             }
         }
         else
         {
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
     }
     
@@ -198,7 +201,7 @@ public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContaine
     {
         if(button.getCard() != null && button.getCard().getCard() != null)
         {
-            PacketDistributor.sendToServer(new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
+            ClientPacketDistributor.sendToServer(new CardSupplyMessages.RequestCard(button.getCard().getCard(), button.getCard().getImageIndex()));
         }
     }
     

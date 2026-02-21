@@ -17,10 +17,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class SimpleBinderItem extends Item
 {
@@ -33,9 +33,9 @@ public class SimpleBinderItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
-        super.appendHoverText(itemStack, context, tooltip, flagIn);
+        super.appendHoverText(itemStack, ctx, display, tooltipAdder, flag);
         //        tooltip.add(new Component(this.getTranslationKey() + ".desc").modifyStyle((s) -> s.applyFormatting(ChatFormatting.RED)));
     }
     

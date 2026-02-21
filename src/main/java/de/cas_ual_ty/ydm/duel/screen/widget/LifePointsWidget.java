@@ -13,6 +13,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.minecraft.client.renderer.RenderPipelines;
 
 import java.util.function.Supplier;
 
@@ -52,9 +53,9 @@ public class LifePointsWidget extends AbstractWidget
         int h = height;
         
         
-        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 1 * 8, width, height);
-        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 0, Mth.ceil(width * relativeLP), height);
-        guiGraphics.blit(LifePointsWidget.DUEL_WIDGETS, x, y, 0, 2 * 8, width, height);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LifePointsWidget.DUEL_WIDGETS, x, y, 0.0F, 8.0F, width, height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LifePointsWidget.DUEL_WIDGETS, x, y, 0.0F, 0.0F, Mth.ceil(width * relativeLP), height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LifePointsWidget.DUEL_WIDGETS, x, y, 0.0F, 16.0F, width, height, 256, 256);
         // renderBg removed in 1.21.11; LP bar is fully rendered by the blit calls above
         
         x = this.getX() + width / 2;

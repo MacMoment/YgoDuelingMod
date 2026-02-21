@@ -24,13 +24,13 @@ public class DuelMessageUtility
 {
     public static void encodeHeader(DuelMessageHeader header, FriendlyByteBuf buf)
     {
-        buf.writeRegistryIdUnsafe(YDM.duelMessageHeaderRegistry.get(), header.type);
+        buf.writeRegistryIdUnsafe(YDM.duelMessageHeaderRegistry, header.type);
         header.writeToBuf(buf);
     }
     
     public static DuelMessageHeader decodeHeader(FriendlyByteBuf buf)
     {
-        DuelMessageHeader header = buf.readRegistryIdUnsafe(YDM.duelMessageHeaderRegistry.get()).createHeader();
+        DuelMessageHeader header = buf.readRegistryIdUnsafe(YDM.duelMessageHeaderRegistry).createHeader();
         header.readFromBuf(buf);
         return header;
     }
@@ -87,12 +87,12 @@ public class DuelMessageUtility
     
     public static void encodeActionType(ActionType type, FriendlyByteBuf buf)
     {
-        buf.writeRegistryIdUnsafe(YDM.actionTypeRegistry.get(), type);
+        buf.writeRegistryIdUnsafe(YDM.actionTypeRegistry, type);
     }
     
     public static ActionType decodeActionType(FriendlyByteBuf buf)
     {
-        return buf.readRegistryIdUnsafe(YDM.actionTypeRegistry.get());
+        return buf.readRegistryIdUnsafe(YDM.actionTypeRegistry);
     }
     
     public static void encodeDuelState(DuelState duelState, FriendlyByteBuf buf)

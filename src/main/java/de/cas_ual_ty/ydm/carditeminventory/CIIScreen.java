@@ -11,7 +11,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
@@ -25,7 +28,6 @@ public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T
     public CIIScreen(T container, Inventory playerInventory, Component title)
     {
         super(container, playerInventory, title);
-        passEvents = false;
         //int i = 222;
         //int j = 114;
         inventoryRows = 6;
@@ -45,7 +47,6 @@ public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
@@ -64,30 +65,30 @@ public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T
         ScreenUtil.white();
         int i = (width - imageWidth) / 2;
         int j = (height - imageHeight) / 2;
-        guiGraphics.blit(CIIScreen.CHEST_GUI_TEXTURE, i, j, 0, 0, imageWidth, inventoryRows * 18 + 17);
-        guiGraphics.blit(CIIScreen.CHEST_GUI_TEXTURE, i, j + inventoryRows * 18 + 17, 0, 126, imageWidth, 96);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CIIScreen.CHEST_GUI_TEXTURE, i, j, 0.0F, 0.0F, imageWidth, inventoryRows * 18 + 17, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, CIIScreen.CHEST_GUI_TEXTURE, i, j + inventoryRows * 18 + 17, 0.0F, 126.0F, imageWidth, 96, 256, 256);
     }
     
     protected void onButtonClicked(Button button)
     {
         if(button == prevButton)
         {
-            PacketDistributor.sendToServer(new CIIMessages.ChangePage(false));
+            ClientPacketDistributor.sendToServer(new CIIMessages.ChangePage(false));
         }
         else if(button == nextButton)
         {
-            PacketDistributor.sendToServer(new CIIMessages.ChangePage(true));
+            ClientPacketDistributor.sendToServer(new CIIMessages.ChangePage(true));
         }
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean keyPressed(KeyEvent event)
     {
-        if(keyCode <= 57 && keyCode >= 49)
+        if(event.key() >= 49 && event.key() <= 57)
         {
             return false;
         }
         
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 }

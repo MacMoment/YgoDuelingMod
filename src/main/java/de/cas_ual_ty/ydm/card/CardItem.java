@@ -8,11 +8,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class CardItem extends Item
 {
@@ -22,11 +22,12 @@ public class CardItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
         CardHolder holder = getCardHolder(itemStack);
-        tooltip.clear();
-        holder.addInformation(tooltip);
+        java.util.List<Component> list = new java.util.ArrayList<>();
+        holder.addInformation(list);
+        list.forEach(tooltipAdder);
     }
     
     @Override

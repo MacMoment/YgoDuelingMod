@@ -25,10 +25,5 @@ public class SmallTextButton extends Button
         int j = getFGColor();
         guiGraphics.drawCenteredString(fontrenderer, getMessage(), (getX() + width / 2) * 2, (getY() + height / 2) * 2 - fontrenderer.lineHeight / 2, j | Mth.ceil(alpha * 255.0F) << 24);
         guiGraphics.pose().popMatrix();
-        
-        if(isHoveredOrFocused())
-        {
-            renderToolTip(guiGraphics, mouseX, mouseY);
-        }
     }
 }

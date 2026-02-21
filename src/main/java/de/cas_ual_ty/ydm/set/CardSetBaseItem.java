@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,8 +23,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
@@ -35,11 +36,12 @@ public abstract class CardSetBaseItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
         CardSet set = getCardSet(itemStack);
-        tooltip.clear();
-        set.addItemInformation(tooltip);
+        java.util.List<Component> list = new java.util.ArrayList<>();
+        set.addItemInformation(list);
+        list.forEach(tooltipAdder);
     }
     
     @Override
@@ -51,7 +53,7 @@ public abstract class CardSetBaseItem extends Item
     
     public CardSet getCardSet(ItemStack itemStack)
     {
-        String code = getNBT(itemStack).getString(JsonKeys.CODE);
+        String code = getNBT(itemStack).getString(JsonKeys.CODE).orElse("");
         
         if(code.isEmpty())
         {

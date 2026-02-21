@@ -70,7 +70,7 @@ public class YdmCommand
             if(!itemStack.isEmpty())
             {
                 CardBinderCardsManager m = YdmItems.CARD_BINDER.get().getInventoryManager(itemStack);
-                context.getSource().sendSuccess(Component.literal("Binder UUID: " + m.getUUID()), true);
+                context.getSource().sendSuccess(() -> Component.literal("Binder UUID: " + m.getUUID()), true);
             }
         }
         
@@ -87,7 +87,7 @@ public class YdmCommand
             {
                 YdmItems.CARD_BINDER.get().setUUIDAndUpdateManager(itemStack, uuid);
                 
-                context.getSource().sendSuccess(Component.literal("Set Binder UUID to: " + uuid.toString()), true);
+                context.getSource().sendSuccess(() -> Component.literal("Set Binder UUID to: " + uuid.toString()), true);
             }
         }
         
@@ -114,13 +114,13 @@ public class YdmCommand
                     
                     if(!m.isLoaded())
                     {
-                        context.getSource().sendSuccess(Component.literal("Loading Binder..."), true);
+                        context.getSource().sendSuccess(() -> Component.literal("Loading Binder..."), true);
                         m.loadRunnable().run();
                     }
                     
                     // --- Filling ---
                     
-                    context.getSource().sendSuccess(Component.literal("Filling Binder..."), true);
+                    context.getSource().sendSuccess(() -> Component.literal("Filling Binder..."), true);
                     
                     List<CardHolder> list = m.forceGetList();
                     
@@ -134,14 +134,14 @@ public class YdmCommand
                     
                     // --- Saving ---
                     
-                    context.getSource().sendSuccess(Component.literal("Saving Binder..."), true);
+                    context.getSource().sendSuccess(() -> Component.literal("Saving Binder..."), true);
                     m.safeRunnable().run();
                     
                     // --- Done ---
                     
                     m.setIdle();
                     
-                    context.getSource().sendSuccess(Component.literal("Done! Binder can now be opened!"), true);
+                    context.getSource().sendSuccess(() -> Component.literal("Done! Binder can now be opened!"), true);
                 }
             }
             

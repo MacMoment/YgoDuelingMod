@@ -3,11 +3,10 @@ package de.cas_ual_ty.ydm.card;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class CardSleevesItem extends Item
 {
@@ -20,19 +19,13 @@ public class CardSleevesItem extends Item
     }
     
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
-        super.appendHoverText(stack, context, tooltip, flagIn);
+        super.appendHoverText(stack, ctx, display, tooltipAdder, flag);
         
         if(sleeves.isPatreonReward)
         {
-            tooltip.add(Component.literal(sleeves.patronName + "'s Patreon Sleeves"));
+            tooltipAdder.accept(Component.literal(sleeves.patronName + "'s Patreon Sleeves"));
         }
-    }
-    
-    @Override
-    public Rarity getRarity(ItemStack stack)
-    {
-        return sleeves.isPatreonReward ? Rarity.RARE : Rarity.COMMON;
     }
 }

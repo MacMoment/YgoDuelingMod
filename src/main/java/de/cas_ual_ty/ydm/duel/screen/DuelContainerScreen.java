@@ -24,7 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -32,6 +32,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 
 public abstract class DuelContainerScreen<E extends DuelContainer> extends SwitchableContainerScreen<E>
 {
@@ -95,7 +99,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     
     public final void reInit()
     {
-        init(minecraft, width, height);
+        init(width, height);
     }
     
     @Override
@@ -104,7 +108,7 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         ScreenUtil.renderDisabledRect(guiGraphics, 0, 0, width, height);
         
         ScreenUtil.white();
-        guiGraphics.blit(DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, DuelContainerScreen.DUEL_BACKGROUND_GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
     }
     
     @Override
@@ -128,38 +132,37 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
     }
     
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick)
     {
-        if(textFieldWidget != null && textFieldWidget.isFocused() && !textFieldWidget.isMouseOver(mouseX, mouseY))
+        if(textFieldWidget != null && textFieldWidget.isFocused() && !textFieldWidget.isMouseOver(event.x(), event.y()))
         {
-            textFieldWidget.setFocus(false);
+            textFieldWidget.setFocused(false);
         }
         
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean keyPressed(KeyEvent event)
     {
         if(textFieldWidget != null && textFieldWidget.isFocused())
         {
-            if(keyCode == GLFW.GLFW_KEY_ENTER)
+            if(event.key() == GLFW.GLFW_KEY_ENTER)
             {
                 sendChat();
                 return true;
             }
             else
             {
-                return textFieldWidget.keyPressed(keyCode, scanCode, modifiers);
+                return textFieldWidget.keyPressed(event);
             }
         }
         else
         {
-            return super.keyPressed(keyCode, scanCode, modifiers);
+            return super.keyPressed(event);
         }
     }
     
-    @Override
     public void renderTooltip(GuiGraphics guiGraphics, List<? extends FormattedCharSequence> tooltips, int mouseX, int mouseY)
     {
         guiGraphics.pose().pushMatrix();
@@ -223,13 +226,13 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         addRenderableWidget(worldChatButton = new Button(x + halfW - extraOff, y, halfW + extraOff, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.world_chat"), (b) -> switchChat()));
         y += offset;
         
-        addRenderableWidget(chatUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::chatScrollButtonClicked, this::chatScrollButtonHovered));
+        addRenderableWidget(chatUpButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.up_arrow"), this::chatScrollButtonClicked, Button.DEFAULT_NARRATION));
         y += offset;
         
         addRenderableWidget(chatWidget = new DisplayChatWidget(x, y - (chatHeight % font.lineHeight) / 2, chatWidth, chatHeight, Component.empty()));
         y += chatHeight + margin;
         
-        addRenderableWidget(chatDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::chatScrollButtonClicked, this::chatScrollButtonHovered));
+        addRenderableWidget(chatDownButton = new Button(x, y, w, buttonHeight, Component.translatable("container." + YDM.MOD_ID + ".duel.down_arrow"), this::chatScrollButtonClicked, Button.DEFAULT_NARRATION));
         y += offset;
         
         addRenderableWidget(textFieldWidget = new EditBox(font, x + 1, y + 1, w - 2, buttonHeight - 2, Component.empty()));
@@ -280,11 +283,11 @@ public abstract class DuelContainerScreen<E extends DuelContainer> extends Switc
         {
             if(duelChat)
             {
-                PacketDistributor.sendToServer(new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
+                ClientPacketDistributor.sendToServer(new DuelMessages.SendMessageToServer(getHeader(), Component.literal(text)));
             }
             else
             {
-                minecraft.player.chatSigned(text, null);
+                minecraft.player.connection.chat(text);
             }
         }
         

@@ -55,7 +55,7 @@ public class UUIDHolder implements IUUIDHolder, INBTSerializable<StringTag>
     @Override
     public void deserializeNBT(StringTag nbt)
     {
-        String uuid = nbt.getAsString();
+        String uuid = nbt.value();
         
         if(uuid.isEmpty())
         {
@@ -63,7 +63,7 @@ public class UUIDHolder implements IUUIDHolder, INBTSerializable<StringTag>
         }
         else
         {
-            this.uuid = UUID.fromString(nbt.getAsString());
+            this.uuid = UUID.fromString(nbt.value());
         }
     }
     

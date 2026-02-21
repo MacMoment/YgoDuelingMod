@@ -16,11 +16,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipContext;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class OpenedCardSetItem extends CardSetBaseItem
 {
@@ -30,10 +31,10 @@ public class OpenedCardSetItem extends CardSetBaseItem
     }
     
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag)
     {
-        super.appendHoverText(itemStack, context, tooltip, flagIn);
-        tooltip.add(Component.translatable(getDescriptionId() + ".desc").withStyle((s) -> s.applyFormat(ChatFormatting.RED)));
+        super.appendHoverText(itemStack, ctx, display, tooltipAdder, flag);
+        tooltipAdder.accept(Component.translatable(getDescriptionId() + ".desc").withStyle((s) -> s.applyFormat(ChatFormatting.RED)));
     }
     
     @Override
@@ -67,7 +68,7 @@ public class OpenedCardSetItem extends CardSetBaseItem
     
     public int getSize(ItemStack itemStack)
     {
-        return getNBT(itemStack).getInt("size");
+        return getNBT(itemStack).getInt("size").orElse(0);
     }
     
     public YDMItemHandler getItemHandler(ItemStack itemStack)
@@ -79,7 +80,12 @@ public class OpenedCardSetItem extends CardSetBaseItem
     {
         ItemStack itemStack = new ItemStack(this);
         setCardSet(itemStack, set);
-        getItemHandler(itemStack).deserializeNBT(itemHandler.serializeNBT());
+        YDMItemHandler dest = getItemHandler(itemStack);
+        dest.setSize(itemHandler.getSlots());
+        for(int i = 0; i < itemHandler.getSlots(); i++)
+        {
+            dest.setStackInSlot(i, itemHandler.getStackInSlot(i));
+        }
         return itemStack;
     }
     

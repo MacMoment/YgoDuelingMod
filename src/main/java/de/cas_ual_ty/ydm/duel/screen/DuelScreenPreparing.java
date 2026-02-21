@@ -22,7 +22,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -431,12 +431,12 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     
     protected void chooseDeckClicked()
     {
-        PacketDistributor.sendToServer(new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
+        ClientPacketDistributor.sendToServer(new DuelMessages.ChooseDeck(getHeader(), getActiveDeckWrapper().index));
     }
     
     public void requestDeck(int index)
     {
-        PacketDistributor.sendToServer(new DuelMessages.RequestDeck(getHeader(), index));
+        ClientPacketDistributor.sendToServer(new DuelMessages.RequestDeck(getHeader(), index));
     }
     
     protected static class DeckWrapper
