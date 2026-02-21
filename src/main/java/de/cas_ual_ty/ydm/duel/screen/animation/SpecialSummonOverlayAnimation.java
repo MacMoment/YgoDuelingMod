@@ -13,6 +13,6 @@ public class SpecialSummonOverlayAnimation extends SpecialSummonAnimation
     @Override
     public ResourceLocation getTexture()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/gui/action_animations/special_summon_overlay.png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon_overlay.png");
     }
 }

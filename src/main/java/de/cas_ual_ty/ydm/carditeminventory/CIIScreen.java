@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CIIScreen<T extends CIIContainer> extends AbstractContainerScreen<T>
 {
-    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation CHEST_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath("textures/gui/container/generic_54.png");
     
     private final int inventoryRows;
     

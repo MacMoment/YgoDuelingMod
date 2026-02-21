@@ -60,6 +60,6 @@ public class SpecialSummonAnimation extends Animation
     
     public ResourceLocation getTexture()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/special_summon.png");
     }
 }

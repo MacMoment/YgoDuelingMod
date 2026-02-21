@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 public class LifePointsWidget extends AbstractWidget
 {
-    public static final ResourceLocation DUEL_WIDGETS = new ResourceLocation(YDM.MOD_ID, "textures/gui/duel_widgets.png");
+    public static final ResourceLocation DUEL_WIDGETS = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png");
     
     public Supplier<Integer> lpGetter;
     public int maxLP;

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 public class ColoredTextWidget extends AbstractWidget
 {
-    public static final ResourceLocation RESOURCE = new ResourceLocation(YDM.MOD_ID, "textures/gui/colored_button.png");
+    public static final ResourceLocation RESOURCE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
     
     public Supplier<Component> msgGetter;
     public ITooltip tooltip;

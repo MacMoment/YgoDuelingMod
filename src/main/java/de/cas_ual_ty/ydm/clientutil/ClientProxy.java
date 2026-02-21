@@ -36,7 +36,6 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -421,8 +420,8 @@ public class ClientProxy implements ISidedProxy
         if(ClientProxy.activeCardItemImageSize != 16)
         {
             
-            event.register(new ModelResourceLocation(new ResourceLocation(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory"));
-            event.register(new ModelResourceLocation(new ResourceLocation(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory"));
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
@@ -437,7 +436,7 @@ public class ClientProxy implements ISidedProxy
         
         if(ClientProxy.activeSetItemImageSize != 16)
         {
-            event.register(new ModelResourceLocation(new ResourceLocation(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize), "inventory"));
         }
     }
     
@@ -451,18 +450,18 @@ public class ClientProxy implements ISidedProxy
             event.getModels().put(new ModelResourceLocation(YdmItems.BLANC_CARD.getId(), "inventory"),
                     event.getModelManager().getModel(
                             new ModelResourceLocation(
-                                    new ResourceLocation(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory")));
+                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_CARD.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory")));
             
             event.getModels().put(new ModelResourceLocation(YdmItems.CARD_BACK.getId(), "inventory"),
                     event.getModelManager().getModel(
                             new ModelResourceLocation(
-                                    new ResourceLocation(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory")));
+                                    ResourceLocation.fromNamespaceAndPath(YdmItems.CARD_BACK.getId().toString() + "_" + ClientProxy.activeCardItemImageSize), "inventory")));
             
             for(CardSleevesType sleeves : CardSleevesType.VALUES)
             {
                 if(!sleeves.isCardBack())
                 {
-                    event.getModels().put(new ModelResourceLocation(new ResourceLocation(YDM.MOD_ID, "sleeves_" + sleeves.name), "inventory"),
+                    event.getModels().put(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "sleeves_" + sleeves.name), "inventory"),
                             event.getModelManager().getModel(
                                     new ModelResourceLocation(
                                             sleeves.getItemModelRL(ClientProxy.activeCardItemImageSize), "inventory")));
@@ -475,7 +474,7 @@ public class ClientProxy implements ISidedProxy
             event.getModels().put(new ModelResourceLocation(YdmItems.BLANC_SET.getId(), "inventory"),
                     event.getModelManager().getModel(
                             new ModelResourceLocation(
-                                    new ResourceLocation(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize), "inventory")));
+                                    ResourceLocation.fromNamespaceAndPath(YdmItems.BLANC_SET.getId().toString() + "_" + ClientProxy.activeSetItemImageSize), "inventory")));
         }
         
         ModelResourceLocation key = new ModelResourceLocation(YdmItems.CARD.getId(), "inventory");

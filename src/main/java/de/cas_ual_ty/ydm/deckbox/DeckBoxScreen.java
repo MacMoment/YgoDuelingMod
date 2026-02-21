@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.Slot;
 
 public class DeckBoxScreen extends AbstractContainerScreen<DeckBoxContainer>
 {
-    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/deck_box.png");
+    public static final ResourceLocation DECK_BOX_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/deck_box.png");
     
     public DeckBoxScreen(DeckBoxContainer screenContainer, Inventory inv, Component titleIn)
     {

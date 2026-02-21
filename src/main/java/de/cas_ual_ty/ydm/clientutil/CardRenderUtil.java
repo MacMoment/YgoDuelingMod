@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CardRenderUtil
 {
-    public static final ResourceLocation MASK_RL = new ResourceLocation(YDM.MOD_ID, "textures/gui/rarity_mask.png");
+    public static final ResourceLocation MASK_RL = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/rarity_mask.png");
     
     private static LimitedTextureBinder infoTextureBinder;
     private static LimitedTextureBinder mainTextureBinder;
@@ -141,27 +141,27 @@ public class CardRenderUtil
     
     public static ResourceLocation getInfoCardBack()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
     public static ResourceLocation getMainCardBack()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + YdmItems.CARD_BACK.getId().getPath() + ".png");
     }
     
     public static ResourceLocation getInfoTokenOverlay()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
     public static ResourceLocation getMainTokenOverlay()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardMainImageSize + "/" + "token_overlay" + ".png");
     }
     
     public static ResourceLocation getRarityOverlay()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + ClientProxy.activeCardInfoImageSize + "/" + "token_overlay" + ".png");
     }
     
     public static void renderInfoCardWithRarity(PoseStack ms, int mouseX, int mouseY, float x, float y, float width, float height, CardHolder card)

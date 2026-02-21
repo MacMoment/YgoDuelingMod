@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 
 public class ColoredButton extends Button
 {
-    public static final ResourceLocation RESOURCE = new ResourceLocation(YDM.MOD_ID, "textures/gui/colored_button.png");
+    public static final ResourceLocation RESOURCE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/colored_button.png");
     
     public int offset;
     

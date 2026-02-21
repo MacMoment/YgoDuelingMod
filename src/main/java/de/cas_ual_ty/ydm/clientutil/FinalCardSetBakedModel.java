@@ -159,7 +159,7 @@ public class FinalCardSetBakedModel implements BakedModel
     {
         if(setList == null)
         {
-            ResourceLocation rl = new ResourceLocation(YDM.MOD_ID, "item/" + YDM.proxy.addSetItemTag("blanc_set"));
+            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YDM.proxy.addSetItemTag("blanc_set"));
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             setList = new ArrayList<>(0);
             setList.addAll(FinalCardBakedModel.convertTexture(Transformation.identity(), sprite, 0.5F, Direction.SOUTH, 0xFFFFFFFF, 1, rl));
@@ -173,7 +173,7 @@ public class FinalCardSetBakedModel implements BakedModel
     {
         if(openedList == null)
         {
-            ResourceLocation rl = new ResourceLocation(YDM.MOD_ID, "item/" + YdmItems.OPENED_SET.getId().getPath());
+            ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + YdmItems.OPENED_SET.getId().getPath());
             TextureAtlasSprite sprite = textureGetter.apply(rl);
             openedList = new ArrayList<>(0);
             openedList.addAll(FinalCardBakedModel.convertTexture(Transformation.identity(), sprite, 0.5F + 2 * distance, Direction.SOUTH, 0xFFFFFFFF, 1, rl));

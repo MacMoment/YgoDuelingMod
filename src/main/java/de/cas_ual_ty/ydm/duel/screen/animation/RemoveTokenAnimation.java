@@ -56,6 +56,6 @@ public class RemoveTokenAnimation extends Animation
     
     public ResourceLocation getTexture()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/gui/action_animations/remove_token.png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/action_animations/remove_token.png");
     }
 }

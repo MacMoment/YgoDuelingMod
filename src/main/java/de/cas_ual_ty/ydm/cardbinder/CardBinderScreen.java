@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CardBinderScreen extends AbstractContainerScreen<CardBinderContainer>
 {
-    private static final ResourceLocation CARD_BINDER_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/card_binder.png");
+    private static final ResourceLocation CARD_BINDER_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/card_binder.png");
     
     // https://www.glfw.org/docs/latest/group__keys.html
     private static final int LEFT_SHIFT = 340;
@@ -73,7 +73,7 @@ public class CardBinderScreen extends AbstractContainerScreen<CardBinderContaine
         addRenderableWidget(nextButton = new ImprovedButton(leftPos + imageWidth - 12 - 8 - 27, topPos + 4, 12, 12, Component.translatable("generic.ydm.right_arrow"), this::onButtonClicked));
         
         addRenderableWidget(reloadButton = new TextureButton(leftPos + imageWidth - 12 - 8 - 27, topPos + imageHeight - 96, 12, 12, Component.empty(), this::onButtonClicked)
-                .setTexture(new ResourceLocation(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
+                .setTexture(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/duel_widgets.png"), 64, 0, 16, 16));
         addRenderableWidget(cardSearch = new EditBox(font, leftPos + imageWidth - 12 - 8 - 27 - 82, topPos + imageHeight - 96, 80, 12, Component.empty()));
     }
     

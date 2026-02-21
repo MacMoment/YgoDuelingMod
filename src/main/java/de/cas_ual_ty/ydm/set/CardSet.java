@@ -243,12 +243,12 @@ public class CardSet
     
     public ResourceLocation getInfoImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + YDM.proxy.getSetInfoReplacementImage(this) + ".png");
     }
     
     public ResourceLocation getItemImageResourceLocation()
     {
-        return new ResourceLocation(YDM.MOD_ID, "item/" + getItemImageName());
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "item/" + getItemImageName());
     }
     
     public boolean getIsHardcoded()

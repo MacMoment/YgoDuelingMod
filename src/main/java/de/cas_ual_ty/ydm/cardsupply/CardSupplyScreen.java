@@ -25,7 +25,7 @@ import java.util.List;
 
 public class CardSupplyScreen extends AbstractContainerScreen<CardSupplyContainer>
 {
-    private static final ResourceLocation CARD_SUPPLY_GUI_TEXTURE = new ResourceLocation(YDM.MOD_ID, "textures/gui/card_supply.png");
+    private static final ResourceLocation CARD_SUPPLY_GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/gui/card_supply.png");
     
     public static final int ROWS = 6;
     public static final int COLUMNS = 9;

@@ -149,7 +149,7 @@ public class YdmCardResourcePack extends FilePackResources
             {
                 for(File f : listFiles)
                 {
-                    list.add(new ResourceLocation(YDM.MOD_ID, f.getName().replace(this.filter.getRequiredSuffix(), "")));
+                    list.add(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, f.getName().replace(this.filter.getRequiredSuffix(), "")));
                 }
             }
         }

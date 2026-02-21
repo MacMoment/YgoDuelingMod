@@ -53,7 +53,7 @@ public enum CardSleevesType
     
     public ResourceLocation getMainRL(int size)
     {
-        return new ResourceLocation(YDM.MOD_ID, "textures/item/" + size + "/" + getResourceName() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, "textures/item/" + size + "/" + getResourceName() + ".png");
     }
     
     public ResourceLocation getItemModelRL(int size)
@@ -64,7 +64,7 @@ public enum CardSleevesType
         }
         else
         {
-            return new ResourceLocation(YDM.MOD_ID, getResourceName() + "_" + size);
+            return ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, getResourceName() + "_" + size);
         }
     }
     
@@ -82,7 +82,7 @@ public enum CardSleevesType
     
     public Item getItem()
     {
-        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(new ResourceLocation(YDM.MOD_ID, getResourceName()));
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(YDM.MOD_ID, getResourceName()));
     }
     
     public byte getIndex()
