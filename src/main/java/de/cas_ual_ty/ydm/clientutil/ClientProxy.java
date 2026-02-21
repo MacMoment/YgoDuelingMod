@@ -458,7 +458,7 @@ public class ClientProxy implements ISidedProxy
                 
                 if(itemStack.getItem() == YdmItems.CARD.get())
                 {
-                    CardRenderUtil.renderCardInfo(ms, YdmItems.CARD.get().getCardHolder(itemStack), containerScreen);
+                    CardRenderUtil.renderCardInfo(guiGraphics, YdmItems.CARD.get().getCardHolder(itemStack), containerScreen);
                 }
                 else if(itemStack.getItem() == YdmItems.SET.get())
                 {
@@ -491,7 +491,7 @@ public class ClientProxy implements ISidedProxy
             
             if(player.getMainHandItem().getItem() == YdmItems.CARD.get())
             {
-                CardRenderUtil.renderCardInfo(ms, YdmItems.CARD.get().getCardHolder(player.getMainHandItem()));
+                CardRenderUtil.renderCardInfo(guiGraphics, YdmItems.CARD.get().getCardHolder(player.getMainHandItem()));
             }
             else if(player.getMainHandItem().getItem() == YdmItems.SET.get())
             {
@@ -507,7 +507,7 @@ public class ClientProxy implements ISidedProxy
             }
             else if(player.getOffhandItem().getItem() == YdmItems.CARD.get())
             {
-                CardRenderUtil.renderCardInfo(ms, YdmItems.CARD.get().getCardHolder(player.getOffhandItem()));
+                CardRenderUtil.renderCardInfo(guiGraphics, YdmItems.CARD.get().getCardHolder(player.getOffhandItem()));
             }
             else if(player.getOffhandItem().getItem() == YdmItems.SET.get())
             {

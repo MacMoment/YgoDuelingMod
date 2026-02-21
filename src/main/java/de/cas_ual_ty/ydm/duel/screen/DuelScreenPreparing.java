@@ -91,8 +91,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
-        PoseStack ms = guiGraphics.pose();
-        font.draw(ms, "Choose your decks...", 8.0F, 6.0F, 0x404040);
+        guiGraphics.drawString(font, "Choose your decks...", 8, 6, 0x404040);
         
         PlayerRole role = getPlayerRole();
         
@@ -100,14 +99,14 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         {
             if(renderDeckChoosing())
             {
-                drawActiveDeckForeground(ms, mouseX, mouseY);
+                drawActiveDeckForeground(guiGraphics, mouseX, mouseY);
             }
             else
             {
                 String text = "Waiting for other player...";
                 int width = font.width(text);
                 int height = font.lineHeight;
-                font.draw(ms, text, (imageWidth - width) / 2F, (this.height - height) / 2F, 0x404040);
+                guiGraphics.drawString(font, text, (imageWidth - width) / 2, (this.height - height) / 2, 0x404040);
             }
         }
         else
@@ -115,7 +114,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
             String text = "Waiting for players...";
             int width = font.width(text);
             int height = font.lineHeight;
-            font.draw(ms, text, (imageWidth - width) / 2F, (imageHeight - height) / 2F, 0x404040);
+            guiGraphics.drawString(font, text, (imageWidth - width) / 2, (imageHeight - height) / 2, 0x404040);
         }
     }
     
@@ -131,8 +130,9 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         }
     }
     
-    protected void drawActiveDeckForeground(PoseStack ms, int mouseX, int mouseY)
+    protected void drawActiveDeckForeground(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
+        PoseStack ms = guiGraphics.pose();
         DeckWrapper h = getActiveDeckWrapper();
         
         if(h != DeckWrapper.DUMMY)
@@ -155,15 +155,15 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
                 
                 // main deck
                 //drawString
-                font.draw(ms, Component.translatable("container.ydm.deck_box.main").append(" " + d.getMainDeckSize() + "/" + DeckHolder.MAIN_DECK_SIZE), guiLeft + 8F, guiTop + 6F, 0x404040);
+                guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.main").append(" " + d.getMainDeckSize() + "/" + DeckHolder.MAIN_DECK_SIZE), guiLeft + 8, guiTop + 6, 0x404040);
                 
                 // extra deck
                 //drawString
-                font.draw(ms, Component.translatable("container.ydm.deck_box.extra").append(" " + d.getExtraDeckSize() + "/" + DeckHolder.EXTRA_DECK_SIZE), guiLeft + 8F, guiTop + 92F, 0x404040);
+                guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.extra").append(" " + d.getExtraDeckSize() + "/" + DeckHolder.EXTRA_DECK_SIZE), guiLeft + 8, guiTop + 92, 0x404040);
                 
                 // side deck
                 //drawString
-                font.draw(ms, Component.translatable("container.ydm.deck_box.side").append(" " + d.getSideDeckSize() + "/" + DeckHolder.SIDE_DECK_SIZE), guiLeft + 8F, guiTop + 124F, 0x404040);
+                guiGraphics.drawString(font, Component.translatable("container.ydm.deck_box.side").append(" " + d.getSideDeckSize() + "/" + DeckHolder.SIDE_DECK_SIZE), guiLeft + 8, guiTop + 124, 0x404040);
                 
                 int size = 18;
                 CardHolder c;
@@ -196,7 +196,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
                             if(mouseX >= offX && mouseX < offX + size && mouseY >= offY && mouseY < offY + size)
                             {
                                 ScreenUtil.renderHoverRect(ms, guiLeft + offX, guiTop + offY, 16, 16);
-                                renderCardInfoForeground(ms, c, actualGuiLeft);
+                                renderCardInfoForeground(guiGraphics, c, actualGuiLeft);
                             }
                         }
                         
@@ -232,7 +232,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
                         if(mouseX >= offX && mouseX < offX + size && mouseY >= offY && mouseY < offY + size)
                         {
                             ScreenUtil.renderHoverRect(ms, guiLeft + offX, guiTop + offY, 16, 16);
-                            renderCardInfoForeground(ms, c, actualGuiLeft);
+                            renderCardInfoForeground(guiGraphics, c, actualGuiLeft);
                         }
                     }
                     
@@ -259,7 +259,7 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
                         if(mouseX >= offX && mouseX < offX + size && mouseY >= offY && mouseY < offY + size)
                         {
                             ScreenUtil.renderHoverRect(ms, guiLeft + offX, guiTop + offY, 16, 16);
-                            renderCardInfoForeground(ms, c, actualGuiLeft);
+                            renderCardInfoForeground(guiGraphics, c, actualGuiLeft);
                         }
                     }
                     
@@ -386,17 +386,18 @@ public class DuelScreenPreparing<E extends DuelContainer> extends DuelContainerS
         return getPlayerRole() == PlayerRole.PLAYER1 ? getDuelManager().player1Deck == null : (getPlayerRole() == PlayerRole.PLAYER2 ? getDuelManager().player2Deck == null : false);
     }
     
-    public void renderCardInfoForeground(PoseStack ms, CardHolder c)
+    public void renderCardInfoForeground(GuiGraphics guiGraphics, CardHolder c)
     {
-        renderCardInfoForeground(ms, c, leftPos);
+        renderCardInfoForeground(guiGraphics, c, leftPos);
     }
     
-    public void renderCardInfoForeground(PoseStack ms, CardHolder c, int width)
+    public void renderCardInfoForeground(GuiGraphics guiGraphics, CardHolder c, int width)
     {
+        PoseStack ms = guiGraphics.pose();
         ms.pushPose();
         
         ms.translate(-leftPos, -topPos, 0D);
-        CardRenderUtil.renderCardInfo(ms, c, width);
+        CardRenderUtil.renderCardInfo(guiGraphics, c, width);
         
         ms.popPose();
     }
