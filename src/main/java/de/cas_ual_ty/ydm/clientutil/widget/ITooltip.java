@@ -1,9 +1,9 @@
 package de.cas_ual_ty.ydm.clientutil.widget;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 
 public interface ITooltip
 {
-    void onTooltip(Widget widget, GuiGraphics guiGraphics, int mouseX, int mouseY);
+    void onTooltip(Renderable widget, GuiGraphics guiGraphics, int mouseX, int mouseY);
 }

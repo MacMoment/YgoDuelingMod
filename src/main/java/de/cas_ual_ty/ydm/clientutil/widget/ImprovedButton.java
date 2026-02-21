@@ -16,11 +16,6 @@ public class ImprovedButton extends Button
         super(x, y, width, height, title, pressedAction);
     }
     
-    public ImprovedButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip)
-    {
-        super(x, y, width, height, title, pressedAction, onTooltip);
-    }
-    
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {

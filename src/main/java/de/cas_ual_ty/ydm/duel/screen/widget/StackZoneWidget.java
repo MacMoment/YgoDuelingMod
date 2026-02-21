@@ -18,9 +18,9 @@ public class StackZoneWidget extends ZoneWidget
 {
     // this does not render counters
     
-    public StackZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress, OnTooltip onTooltip)
+    public StackZoneWidget(Zone zone, IDuelScreenContext context, int width, int height, Component title, Consumer<ZoneWidget> onPress)
     {
-        super(zone, context, width, height, title, onPress, onTooltip);
+        super(zone, context, width, height, title, onPress);
     }
     
     @Override

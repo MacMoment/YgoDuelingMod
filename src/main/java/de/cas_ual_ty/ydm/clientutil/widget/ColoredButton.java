@@ -23,12 +23,6 @@ public class ColoredButton extends Button
         offset = 0;
     }
     
-    public ColoredButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip)
-    {
-        super(x, y, width, height, title, pressedAction, onTooltip);
-        offset = 0;
-    }
-    
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
