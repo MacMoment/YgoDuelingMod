@@ -24,6 +24,7 @@ import de.cas_ual_ty.ydm.util.YdmIOUtil;
 import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -448,7 +449,8 @@ public class ClientProxy implements ISidedProxy
             if(containerScreen.getSlotUnderMouse() != null && !containerScreen.getSlotUnderMouse().getItem().isEmpty())
             {
                 ItemStack itemStack = containerScreen.getSlotUnderMouse().getItem();
-                PoseStack ms = event.getGuiGraphics().pose();
+                GuiGraphics guiGraphics = event.getGuiGraphics();
+                PoseStack ms = guiGraphics.pose();
                 
                 if(itemStack.getItem() == YdmItems.CARD.get())
                 {
@@ -456,15 +458,15 @@ public class ClientProxy implements ISidedProxy
                 }
                 else if(itemStack.getItem() == YdmItems.SET.get())
                 {
-                    renderSetInfo(ms, YdmItems.SET.get().getCardSet(itemStack), containerScreen.getGuiLeft());
+                    renderSetInfo(guiGraphics, YdmItems.SET.get().getCardSet(itemStack), containerScreen.getGuiLeft());
                 }
                 else if(itemStack.getItem() == YdmItems.OPENED_SET.get())
                 {
-                    renderSetInfo(ms, YdmItems.OPENED_SET.get().getCardSet(itemStack), containerScreen.getGuiLeft());
+                    renderSetInfo(guiGraphics, YdmItems.OPENED_SET.get().getCardSet(itemStack), containerScreen.getGuiLeft());
                 }
                 else if(itemStack.getItem() instanceof CardSleevesItem)
                 {
-                    renderSleevesInfo(ms, ((CardSleevesItem) itemStack.getItem()).sleeves, containerScreen.getGuiLeft());
+                    renderSleevesInfo(guiGraphics, ((CardSleevesItem) itemStack.getItem()).sleeves, containerScreen.getGuiLeft());
                 }
             }
         }
@@ -480,7 +482,8 @@ public class ClientProxy implements ISidedProxy
         if(getClientPlayer() != null && ClientProxy.getMinecraft().screen == null)
         {
             Player player = getClientPlayer();
-            PoseStack ms = event.getGuiGraphics().pose();
+            GuiGraphics guiGraphics = event.getGuiGraphics();
+            PoseStack ms = guiGraphics.pose();
             
             if(player.getMainHandItem().getItem() == YdmItems.CARD.get())
             {
@@ -488,15 +491,15 @@ public class ClientProxy implements ISidedProxy
             }
             else if(player.getMainHandItem().getItem() == YdmItems.SET.get())
             {
-                renderSetInfo(ms, YdmItems.SET.get().getCardSet(player.getMainHandItem()));
+                renderSetInfo(guiGraphics, YdmItems.SET.get().getCardSet(player.getMainHandItem()));
             }
             else if(player.getMainHandItem().getItem() == YdmItems.OPENED_SET.get())
             {
-                renderSetInfo(ms, YdmItems.OPENED_SET.get().getCardSet(player.getMainHandItem()));
+                renderSetInfo(guiGraphics, YdmItems.OPENED_SET.get().getCardSet(player.getMainHandItem()));
             }
             else if(player.getMainHandItem().getItem() instanceof CardSleevesItem)
             {
-                renderSleevesInfo(ms, ((CardSleevesItem) player.getMainHandItem().getItem()).sleeves);
+                renderSleevesInfo(guiGraphics, ((CardSleevesItem) player.getMainHandItem().getItem()).sleeves);
             }
             else if(player.getOffhandItem().getItem() == YdmItems.CARD.get())
             {
@@ -504,31 +507,32 @@ public class ClientProxy implements ISidedProxy
             }
             else if(player.getOffhandItem().getItem() == YdmItems.SET.get())
             {
-                renderSetInfo(ms, YdmItems.SET.get().getCardSet(player.getOffhandItem()));
+                renderSetInfo(guiGraphics, YdmItems.SET.get().getCardSet(player.getOffhandItem()));
             }
             else if(player.getOffhandItem().getItem() == YdmItems.OPENED_SET.get())
             {
-                renderSetInfo(ms, YdmItems.OPENED_SET.get().getCardSet(player.getOffhandItem()));
+                renderSetInfo(guiGraphics, YdmItems.OPENED_SET.get().getCardSet(player.getOffhandItem()));
             }
             else if(player.getOffhandItem().getItem() instanceof CardSleevesItem)
             {
-                renderSleevesInfo(ms, ((CardSleevesItem) player.getMainHandItem().getItem()).sleeves);
+                renderSleevesInfo(guiGraphics, ((CardSleevesItem) player.getMainHandItem().getItem()).sleeves);
             }
         }
     }
     
-    private void renderSetInfo(PoseStack ms, CardSet set)
+    private void renderSetInfo(GuiGraphics guiGraphics, CardSet set)
     {
-        renderSetInfo(ms, set, 150);
+        renderSetInfo(guiGraphics, set, 150);
     }
     
-    private void renderSetInfo(PoseStack ms, CardSet set, int width)
+    private void renderSetInfo(GuiGraphics guiGraphics, CardSet set, int width)
     {
         if(set == null)
         {
             return;
         }
         
+        PoseStack ms = guiGraphics.pose();
         final float f = 0.5f;
         final int imageSize = 64;
         int margin = 2;
@@ -563,23 +567,24 @@ public class ClientProxy implements ISidedProxy
         List<Component> list = new LinkedList<>();
         set.addInformation(list);
         
-        ScreenUtil.drawSplitString(ms, fontRenderer, list, margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
+        ScreenUtil.drawSplitString(guiGraphics, fontRenderer, list, margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
         ms.popPose();
     }
     
-    private void renderSleevesInfo(PoseStack ms, CardSleevesType sleeves)
+    private void renderSleevesInfo(GuiGraphics guiGraphics, CardSleevesType sleeves)
     {
-        renderSleevesInfo(ms, sleeves, 150);
+        renderSleevesInfo(guiGraphics, sleeves, 150);
     }
     
-    private void renderSleevesInfo(PoseStack ms, CardSleevesType sleeves, int width)
+    private void renderSleevesInfo(GuiGraphics guiGraphics, CardSleevesType sleeves, int width)
     {
         if(sleeves == null)
         {
             return;
         }
         
+        PoseStack ms = guiGraphics.pose();
         final float f = 0.5f;
         final int imageSize = 64;
         int margin = 2;
@@ -612,7 +617,7 @@ public class ClientProxy implements ISidedProxy
         @SuppressWarnings("resource")
         Font fontRenderer = ClientProxy.getMinecraft().font;
         
-        ScreenUtil.drawSplitString(ms, fontRenderer, ImmutableList.of(Component.translatable("item.ydm." + sleeves.getResourceName())), margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
+        ScreenUtil.drawSplitString(guiGraphics, fontRenderer, ImmutableList.of(Component.translatable("item.ydm." + sleeves.getResourceName())), margin, imageSize * 2 + margin * 2, maxWidth, 0xFFFFFF);
         
         ms.popPose();
     }

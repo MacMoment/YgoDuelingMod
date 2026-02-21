@@ -27,7 +27,7 @@ public class DuelEntityRenderer extends EntityRenderer<Entity>
     }
     
     @Override
-    public Identifier getTextureLocation(Entity pEntity)
+    public Identifier getTextureIdentifier(Entity pEntity)
     {
         return null;
     }
