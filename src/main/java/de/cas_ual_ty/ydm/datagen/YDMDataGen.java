@@ -10,7 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.io.IOException;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = YDM.MOD_ID)
 public class YDMDataGen
 {
     @SubscribeEvent
