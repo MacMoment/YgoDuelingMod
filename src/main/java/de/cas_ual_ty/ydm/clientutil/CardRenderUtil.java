@@ -223,6 +223,15 @@ public class CardRenderUtil
         }
         else
         {
+            // Render card back or custom sleeves texture for facedown cards
+            if(back == null || back.isCardBack())
+            {
+                CardRenderUtil.bindMainResourceLocation(CardRenderUtil.getMainCardBack());
+            }
+            else
+            {
+                CardRenderUtil.bindMainResourceLocation(back.getMainRL(ClientProxy.activeCardMainImageSize));
+            }
         }
         
         blitMethod.fullBlit(ms, x, y, width, height);
