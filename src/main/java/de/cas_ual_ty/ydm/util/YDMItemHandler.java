@@ -29,10 +29,7 @@ public class YDMItemHandler extends ItemStackHandler
         super(stacks);
     }
     
-    private static RegistryAccess.Frozen getRegistryAccess()
-    {
-        return RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
-    }
+    private static final RegistryAccess.Frozen REGISTRY_ACCESS = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
     
     /**
      * Creates a YDMItemHandler backed by the given ItemStack's DataComponent.
@@ -47,14 +44,14 @@ public class YDMItemHandler extends ItemStackHandler
             protected void onContentsChanged(int slot)
             {
                 super.onContentsChanged(slot);
-                TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, getRegistryAccess());
+                TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, REGISTRY_ACCESS);
                 this.serialize(output);
                 itemStack.set(YDM.CARD_INVENTORY_DATA.get(), output.buildResult());
             }
         };
         if(!tag.isEmpty())
         {
-            ValueInput input = TagValueInput.create(ProblemReporter.DISCARDING, getRegistryAccess(), tag);
+            ValueInput input = TagValueInput.create(ProblemReporter.DISCARDING, REGISTRY_ACCESS, tag);
             handler.deserialize(input);
         }
         return handler;
