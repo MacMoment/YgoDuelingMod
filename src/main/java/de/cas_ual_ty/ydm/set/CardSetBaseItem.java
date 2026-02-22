@@ -99,7 +99,7 @@ public abstract class CardSetBaseItem extends Item
                     
                     for(int i = 0; i < cards.length; ++i)
                     {
-                        itemHandler.insertItem(i, YdmItems.CARD.get().createItemForCardHolder(cards[i]), false);
+                        itemHandler.setStackInSlot(i, YdmItems.CARD.get().createItemForCardHolder(cards[i]));
                     }
                     
                     return new CardSetContentsContainer(YdmContainerTypes.CARD_SET_CONTENTS.get(), id, playerInv, itemHandler);
