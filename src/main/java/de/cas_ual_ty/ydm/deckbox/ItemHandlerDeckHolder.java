@@ -3,7 +3,7 @@ package de.cas_ual_ty.ydm.deckbox;
 import de.cas_ual_ty.ydm.card.CardSleevesItem;
 import de.cas_ual_ty.ydm.card.ItemStackCardHolder;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 public class ItemHandlerDeckHolder extends DeckHolder
 {
@@ -11,7 +11,7 @@ public class ItemHandlerDeckHolder extends DeckHolder
     protected int extraDeckSize;
     protected int sideDeckSize;
     
-    public ItemHandlerDeckHolder(IItemHandler itemHandler)
+    public ItemHandlerDeckHolder(ItemStacksResourceHandler itemHandler)
     {
         super();
         
@@ -24,7 +24,8 @@ public class ItemHandlerDeckHolder extends DeckHolder
         
         for(int i = 0; i < DeckHolder.MAIN_DECK_SIZE; ++i)
         {
-            itemStack = itemHandler.getStackInSlot(index++);
+            itemStack = itemHandler.getResource(index).toStack(itemHandler.getAmountAsInt(index));
+            index++;
             
             if(!itemStack.isEmpty())
             {
@@ -39,7 +40,8 @@ public class ItemHandlerDeckHolder extends DeckHolder
         
         for(int i = 0; i < DeckHolder.EXTRA_DECK_SIZE; ++i)
         {
-            itemStack = itemHandler.getStackInSlot(index++);
+            itemStack = itemHandler.getResource(index).toStack(itemHandler.getAmountAsInt(index));
+            index++;
             
             if(!itemStack.isEmpty())
             {
@@ -54,7 +56,8 @@ public class ItemHandlerDeckHolder extends DeckHolder
         
         for(int i = 0; i < DeckHolder.SIDE_DECK_SIZE; ++i)
         {
-            itemStack = itemHandler.getStackInSlot(index++);
+            itemStack = itemHandler.getResource(index).toStack(itemHandler.getAmountAsInt(index));
+            index++;
             
             if(!itemStack.isEmpty())
             {
@@ -67,7 +70,7 @@ public class ItemHandlerDeckHolder extends DeckHolder
             }
         }
         
-        ItemStack sleevesStack = itemHandler.getStackInSlot(DeckHolder.SLEEVES_INDEX);
+        ItemStack sleevesStack = itemHandler.getResource(DeckHolder.SLEEVES_INDEX).toStack(itemHandler.getAmountAsInt(DeckHolder.SLEEVES_INDEX));
         
         if(sleevesStack.getItem() instanceof CardSleevesItem)
         {
