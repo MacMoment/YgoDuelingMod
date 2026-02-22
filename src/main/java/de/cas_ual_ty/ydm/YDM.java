@@ -134,6 +134,7 @@ public class YDM
         
         YdmBlocks.register(modBus);
         YdmItems.register(modBus);
+        YdmItemGroup.register(modBus);
         YdmContainerTypes.register(modBus);
         YdmEntityTypes.register(modBus);
         YdmTileEntityTypes.register(modBus);
