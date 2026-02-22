@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix3x2fStack;
@@ -14,6 +16,9 @@ import java.util.List;
 
 public class ScreenUtil
 {
+    private static final RenderType GUI_TYPE = RenderType.create("ydm_gui",
+        RenderSetup.builder(RenderPipelines.GUI).createRenderSetup());
+
     public static void drawLineRect(Matrix3x2fStack ms, float x, float y, float w, float h, float lineWidth, float r, float g, float b, float a)
     {
         ScreenUtil.drawRect(ms, x, y, w, lineWidth, r, g, b, a); //top
@@ -35,7 +40,7 @@ public class ScreenUtil
         bufferbuilder.addVertex(m, x + w, y + h, 0F).setColor(r, g, b, a); // BR
         bufferbuilder.addVertex(m, x + w, y, 0F).setColor(r, g, b, a); // TR
         bufferbuilder.addVertex(m, x, y, 0F).setColor(r, g, b, a); // TL
-        RenderTypes.gui().draw(bufferbuilder.buildOrThrow());
+        GUI_TYPE.draw(bufferbuilder.buildOrThrow());
     }
 
     public static void drawRect(GuiGraphics guiGraphics, float x, float y, float w, float h, float r, float g, float b, float a)

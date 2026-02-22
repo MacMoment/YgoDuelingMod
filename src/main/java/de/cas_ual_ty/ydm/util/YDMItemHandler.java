@@ -2,8 +2,14 @@ package de.cas_ual_ty.ydm.util;
 
 import de.cas_ual_ty.ydm.YDM;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class YDMItemHandler extends ItemStackHandler
@@ -23,6 +29,8 @@ public class YDMItemHandler extends ItemStackHandler
         super(stacks);
     }
     
+    private static final RegistryAccess.Frozen REGISTRY_ACCESS = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+    
     /**
      * Creates a YDMItemHandler backed by the given ItemStack's DataComponent.
      * Changes to the handler are automatically saved back to the ItemStack.
@@ -36,14 +44,15 @@ public class YDMItemHandler extends ItemStackHandler
             protected void onContentsChanged(int slot)
             {
                 super.onContentsChanged(slot);
-                CompoundTag newTag = new CompoundTag();
-                this.serialize(newTag);
-                itemStack.set(YDM.CARD_INVENTORY_DATA.get(), newTag);
+                TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, REGISTRY_ACCESS);
+                this.serialize(output);
+                itemStack.set(YDM.CARD_INVENTORY_DATA.get(), output.buildResult());
             }
         };
         if(!tag.isEmpty())
         {
-            handler.deserialize(tag);
+            ValueInput input = TagValueInput.create(ProblemReporter.DISCARDING, REGISTRY_ACCESS, tag);
+            handler.deserialize(input);
         }
         return handler;
     }
