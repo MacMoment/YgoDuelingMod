@@ -8,9 +8,11 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.IoSupplier;
 
 import javax.annotation.Nullable;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 public class YdmCardResourcePack extends AbstractPackResources
@@ -22,11 +24,16 @@ public class YdmCardResourcePack extends AbstractPackResources
         super(new PackLocationInfo(YDM.MOD_ID, net.minecraft.network.chat.Component.literal("YDM Images"), net.minecraft.server.packs.repository.PackSource.DEFAULT, java.util.Optional.empty()));
     }
     
+    private static final String PACK_META = "{\"pack\":{\"description\":\"YDM Images\",\"min_format\":88,\"max_format\":88}}";
+    
     @Nullable
     @Override
     public IoSupplier<InputStream> getRootResource(String... path)
     {
-        // pack.mcmeta and pack.png are handled by the modloader
+        if(path.length == 1 && "pack.mcmeta".equals(path[0]))
+        {
+            return () -> new ByteArrayInputStream(PACK_META.getBytes(StandardCharsets.UTF_8));
+        }
         return null;
     }
     
