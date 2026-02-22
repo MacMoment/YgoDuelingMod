@@ -194,15 +194,24 @@ public class YdmBlitUtil
         bufferbuilder.addVertex(matrix, posX2, posY1, posZ).setUv(topRightX, topRightY).setColor(1.0f, 1.0f, 1.0f, 1.0f);
         bufferbuilder.addVertex(matrix, posX1, posY1, posZ).setUv(topLeftX, topLeftY).setColor(1.0f, 1.0f, 1.0f, 1.0f);
         MeshData meshData = bufferbuilder.buildOrThrow();
-        if(texture != null)
+        Identifier activeTexture = texture != null ? texture : boundTexture;
+        if(activeTexture != null)
         {
-            GUI_TEXTURED_TYPE.apply(texture).draw(meshData);
+            GUI_TEXTURED_TYPE.apply(activeTexture).draw(meshData);
         }
         else
         {
             GUI_TYPE.draw(meshData);
         }
     }
+
+    /**
+     * Tracks the most recently bound texture, set by LimitedTextureBinder.bind().
+     * Used by no-texture blit methods to render the last bound texture.
+     * This mirrors the old RenderSystem.setShaderTexture() bind-then-draw pattern.
+     * Must only be accessed from the render thread (all GUI rendering is single-threaded).
+     */
+    public static Identifier boundTexture = null;
 
     public interface FullBlitMethod
     {

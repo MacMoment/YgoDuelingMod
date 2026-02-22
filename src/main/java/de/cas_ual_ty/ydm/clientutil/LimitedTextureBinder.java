@@ -22,6 +22,7 @@ public class LimitedTextureBinder
     
     public void bind(Identifier rl)
     {
+        YdmBlitUtil.boundTexture = rl;
         // if the list isnt full, just add the new rl
         if(list.size() >= size)
         {
