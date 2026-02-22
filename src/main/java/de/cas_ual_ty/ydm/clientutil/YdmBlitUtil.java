@@ -2,17 +2,27 @@ package de.cas_ual_ty.ydm.clientutil;
 
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
 public class YdmBlitUtil
 {
+    private static final RenderType GUI_TYPE = RenderType.create("ydm_blit_gui",
+        RenderSetup.builder(RenderPipelines.GUI).createRenderSetup());
+    private static final Function<Identifier, RenderType> GUI_TEXTURED_TYPE = Util.memoize(texture ->
+        RenderType.create("ydm_blit_gui_textured",
+            RenderSetup.builder(RenderPipelines.GUI_TEXTURED).withTexture("Sampler0", texture).createRenderSetup()));
+
     static float blitOffset = 0;
 
     /**
@@ -186,11 +196,11 @@ public class YdmBlitUtil
         MeshData meshData = bufferbuilder.buildOrThrow();
         if(texture != null)
         {
-            RenderTypes.guiTextured(texture).draw(meshData);
+            GUI_TEXTURED_TYPE.apply(texture).draw(meshData);
         }
         else
         {
-            RenderTypes.gui().draw(meshData);
+            GUI_TYPE.draw(meshData);
         }
     }
 
