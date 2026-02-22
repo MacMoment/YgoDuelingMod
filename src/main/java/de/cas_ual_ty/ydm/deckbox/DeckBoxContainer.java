@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class DeckBoxContainer extends AbstractContainerMenu
 {
@@ -59,7 +59,7 @@ public class DeckBoxContainer extends AbstractContainerMenu
             addSlot(new DeckBoxSlot(itemHandler, x + DeckHolder.SIDE_DECK_INDEX_START, 8 + x * 18, 136));
         }
         
-        addSlot(cardSleevesSlot = new SlotItemHandler(itemHandler, DeckHolder.SLEEVES_INDEX, 8 + 12 * 18, 168 + 0 * 18)
+        addSlot(cardSleevesSlot = new ResourceHandlerSlot(itemHandler, itemHandler::set, DeckHolder.SLEEVES_INDEX, 8 + 12 * 18, 168 + 0 * 18)
         {
             @Override
             public boolean mayPlace(ItemStack stack)

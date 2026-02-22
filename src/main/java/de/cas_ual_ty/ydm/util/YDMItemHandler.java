@@ -10,13 +10,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
-public class YDMItemHandler extends ItemStackHandler
+public class YDMItemHandler extends ItemStacksResourceHandler
 {
     public YDMItemHandler()
     {
-        super();
+        super(1);
     }
     
     public YDMItemHandler(int size)
@@ -27,6 +28,26 @@ public class YDMItemHandler extends ItemStackHandler
     public YDMItemHandler(NonNullList<ItemStack> stacks)
     {
         super(stacks);
+    }
+    
+    public int getSlots()
+    {
+        return size();
+    }
+    
+    public ItemStack getStackInSlot(int index)
+    {
+        return getResource(index).toStack(getAmountAsInt(index));
+    }
+    
+    public void setStackInSlot(int index, ItemStack stack)
+    {
+        set(index, ItemResource.of(stack), stack.getCount());
+    }
+    
+    public void setSize(int size)
+    {
+        setStacks(NonNullList.withSize(size, ItemStack.EMPTY));
     }
     
     private static final RegistryAccess.Frozen REGISTRY_ACCESS = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
@@ -41,9 +62,9 @@ public class YDMItemHandler extends ItemStackHandler
         YDMItemHandler handler = new YDMItemHandler(0)
         {
             @Override
-            protected void onContentsChanged(int slot)
+            protected void onContentsChanged(int index, ItemStack previousContents)
             {
-                super.onContentsChanged(slot);
+                super.onContentsChanged(index, previousContents);
                 TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, REGISTRY_ACCESS);
                 this.serialize(output);
                 itemStack.set(YDM.CARD_INVENTORY_DATA.get(), output.buildResult());

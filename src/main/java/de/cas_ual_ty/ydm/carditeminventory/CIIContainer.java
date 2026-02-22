@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
@@ -67,7 +67,7 @@ public class CIIContainer extends AbstractContainerMenu
                     continue;
                 }
                 
-                addSlot(new SlotItemHandler(itemHandler, itemIndex, 8 + k * 18, 18 + j * 18)
+                addSlot(new ResourceHandlerSlot(itemHandler, itemHandler::set, itemIndex, 8 + k * 18, 18 + j * 18)
                 {
                     @Override
                     public boolean mayPlace(@Nonnull ItemStack stack)
