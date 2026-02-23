@@ -41,9 +41,10 @@ public class YdmCardResourcePack extends AbstractPackResources
     public YdmCardResourcePack()
     {
         super(new PackLocationInfo(YDM.MOD_ID, Component.literal("YDM Images"), PackSource.DEFAULT, Optional.empty()));
+        var packVersion = SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES);
         this.packMeta = new PackMetadataSection(
                 Component.literal("YDM Images"),
-                new InclusiveRange<>(SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES))
+                new InclusiveRange<>(packVersion, packVersion)
         );
     }
     
@@ -151,6 +152,7 @@ public class YdmCardResourcePack extends AbstractPackResources
         catch(Exception e)
         {
             // Guard against any exception from ImageHandler (e.g., uninitialized folders)
+            YDM.log("Error resolving image file: " + filename + " - " + e.getMessage());
         }
         
         return null;
