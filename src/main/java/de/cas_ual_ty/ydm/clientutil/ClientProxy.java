@@ -323,12 +323,12 @@ public class ClientProxy implements ISidedProxy
         {
             event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
             event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-            event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase::new);
-            event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase::new);
+            event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
+            event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (menu, inv, title) -> new DuelScreenBase<>(menu, inv, title));
             event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-            event.register(YdmContainerTypes.CARD_SET.get(), CIIScreen::new);
-            event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen::new);
-            event.register(YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen::new);
+            event.register(YdmContainerTypes.CARD_SET.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
+            event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
+            event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (menu, inv, title) -> new CIIScreen<>(menu, inv, title));
         }
         catch(Throwable e)
         {
