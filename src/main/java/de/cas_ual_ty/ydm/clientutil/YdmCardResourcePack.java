@@ -67,7 +67,7 @@ public class YdmCardResourcePack extends AbstractPackResources
                 }
                 catch(FileNotFoundException e)
                 {
-                    return null;
+                    return new ByteArrayInputStream(new byte[0]);
                 }
             };
         }

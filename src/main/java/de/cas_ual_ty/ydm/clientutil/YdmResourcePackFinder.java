@@ -58,6 +58,7 @@ public class YdmResourcePackFinder implements RepositorySource
         catch(Exception e)
         {
             YDM.log("Failed to load YDM card resource pack: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

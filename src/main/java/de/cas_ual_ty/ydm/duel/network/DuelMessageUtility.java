@@ -28,7 +28,12 @@ public class DuelMessageUtility
 {
     public static void encodeHeader(DuelMessageHeader header, FriendlyByteBuf buf)
     {
-        buf.writeUtf(YDM.duelMessageHeaderRegistry.getKey(header.type).toString());
+        Identifier key = YDM.duelMessageHeaderRegistry.getKey(header.type);
+        if(key == null)
+        {
+            throw new IllegalStateException("Unregistered duel message header type: " + header.type);
+        }
+        buf.writeUtf(key.toString());
         header.writeToBuf(buf);
     }
     
@@ -97,7 +102,12 @@ public class DuelMessageUtility
     
     public static void encodeActionType(ActionType type, FriendlyByteBuf buf)
     {
-        buf.writeUtf(YDM.actionTypeRegistry.getKey(type).toString());
+        Identifier key = YDM.actionTypeRegistry.getKey(type);
+        if(key == null)
+        {
+            throw new IllegalStateException("Unregistered action type: " + type);
+        }
+        buf.writeUtf(key.toString());
     }
     
     public static ActionType decodeActionType(FriendlyByteBuf buf)
