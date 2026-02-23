@@ -27,7 +27,6 @@ import de.cas_ual_ty.ydm.util.YdmUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -306,27 +305,51 @@ public class ClientProxy implements ISidedProxy
     
     private void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
-        event.registerEntityRenderer(YdmEntityTypes.DUEL.get(), DuelEntityRenderer::new);
+        try
+        {
+            event.registerEntityRenderer(YdmEntityTypes.DUEL.get(), DuelEntityRenderer::new);
+        }
+        catch(Throwable e)
+        {
+            YDM.log("Failed to register entity renderers: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     @SuppressWarnings("unchecked")
     private void registerMenuScreens(RegisterMenuScreensEvent event)
     {
-        event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
-        event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-        event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), (MenuScreens.ScreenConstructor<DuelBlockContainer, DuelScreenBase<DuelBlockContainer>>) DuelScreenBase::new);
-        event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), (MenuScreens.ScreenConstructor<DuelEntityContainer, DuelScreenBase<DuelEntityContainer>>) DuelScreenBase::new);
-        event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-        event.register(YdmContainerTypes.CARD_SET.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
-        event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
-        event.register(YdmContainerTypes.SIMPLE_BINDER.get(), (MenuScreens.ScreenConstructor<CIIContainer, CIIScreen<CIIContainer>>) CIIScreen::new);
+        try
+        {
+            event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
+            event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
+            event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase::new);
+            event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase::new);
+            event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
+            event.register(YdmContainerTypes.CARD_SET.get(), CIIScreen::new);
+            event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen::new);
+            event.register(YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen::new);
+        }
+        catch(Throwable e)
+        {
+            YDM.log("Failed to register menu screens: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)
     {
-        if(event.getPackType() == net.minecraft.server.packs.PackType.CLIENT_RESOURCES)
+        try
         {
-            event.addRepositorySource(new YdmResourcePackFinder());
+            if(event.getPackType() == net.minecraft.server.packs.PackType.CLIENT_RESOURCES)
+            {
+                event.addRepositorySource(new YdmResourcePackFinder());
+            }
+        }
+        catch(Throwable e)
+        {
+            YDM.log("Failed to add pack finders: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -382,6 +405,19 @@ public class ClientProxy implements ISidedProxy
     // }
     
     private void modelBake(ModelEvent.ModifyBakingResult event)
+    {
+        try
+        {
+            modelBakeInner(event);
+        }
+        catch(Throwable e)
+        {
+            YDM.log("Failed to modify baking result: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void modelBakeInner(ModelEvent.ModifyBakingResult event)
     {
         YDM.log("Baking models (size: " + ClientProxy.activeCardItemImageSize + ") for " + YdmItems.BLANC_CARD.getId().toString() + " and " + YdmItems.CARD_BACK.getId().toString());
         

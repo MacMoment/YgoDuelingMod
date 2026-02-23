@@ -55,8 +55,11 @@ public class YdmResourcePackFinder implements RepositorySource
                 infoConsumer.accept(pack);
             }
         }
-        catch(Exception e)
+        catch(Throwable e)
         {
+            // Catch Throwable (not just Exception) to prevent NoClassDefFoundError,
+            // LinkageError, or any other error from cascading into NeoForge's event
+            // pipeline and disrupting other reload listener registration.
             YDM.log("Failed to load YDM card resource pack: " + e.getMessage());
             e.printStackTrace();
         }

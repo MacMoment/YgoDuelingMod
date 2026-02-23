@@ -1,11 +1,17 @@
 package de.cas_ual_ty.ydm.clientutil;
 
 import de.cas_ual_ty.ydm.YDM;
+import net.minecraft.SharedConstants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
+import net.minecraft.util.InclusiveRange;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
@@ -13,28 +19,53 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Custom resource pack that serves card/set/rarity images from disk.
+ *
+ * Overrides {@link #getMetadataSection} directly to return a proper
+ * {@link PackMetadataSection} object, bypassing the fragile JSON parsing
+ * path in {@link AbstractPackResources}. This matches the pattern used by
+ * NeoForge's own {@code EmptyPackResources} and ensures the pack metadata
+ * is always valid for the running Minecraft version, regardless of
+ * pack.mcmeta format changes across versions.
+ */
 public class YdmCardResourcePack extends AbstractPackResources
 {
     public static final String PATH_PREFIX = "textures/item/";
     
+    private final PackMetadataSection packMeta;
+    
     public YdmCardResourcePack()
     {
-        super(new PackLocationInfo(YDM.MOD_ID, net.minecraft.network.chat.Component.literal("YDM Images"), net.minecraft.server.packs.repository.PackSource.DEFAULT, java.util.Optional.empty()));
+        super(new PackLocationInfo(YDM.MOD_ID, Component.literal("YDM Images"), PackSource.DEFAULT, Optional.empty()));
+        var packVersion = SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES);
+        this.packMeta = new PackMetadataSection(
+                Component.literal("YDM Images"),
+                new InclusiveRange<>(packVersion, packVersion)
+        );
     }
     
-    private static final String PACK_META = "{\"pack\":{\"description\":\"YDM Images\",\"min_format\":88,\"max_format\":88}}";
+    @Nullable
+    @Override
+    public <T> T getMetadataSection(MetadataSectionType<T> type)
+    {
+        if(PackMetadataSection.CLIENT_TYPE.equals(type) || PackMetadataSection.SERVER_TYPE.equals(type))
+        {
+            @SuppressWarnings("unchecked")
+            T result = (T) this.packMeta;
+            return result;
+        }
+        return null;
+    }
     
     @Nullable
     @Override
     public IoSupplier<InputStream> getRootResource(String... path)
     {
-        if(path.length == 1 && "pack.mcmeta".equals(path[0]))
-        {
-            return () -> new ByteArrayInputStream(PACK_META.getBytes(StandardCharsets.UTF_8));
-        }
+        // Metadata is served via getMetadataSection(); no root resources needed
         return null;
     }
     
@@ -95,25 +126,33 @@ public class YdmCardResourcePack extends AbstractPackResources
     @Nullable
     private File getImageFile(String filename)
     {
-        File image = ImageHandler.getCardFile(filename);
-        
-        if(image != null && image.exists())
+        try
         {
-            return image;
+            File image = ImageHandler.getCardFile(filename);
+            
+            if(image != null && image.exists())
+            {
+                return image;
+            }
+            
+            image = ImageHandler.getSetFile(filename);
+            
+            if(image != null && image.exists())
+            {
+                return image;
+            }
+            
+            image = ImageHandler.getRarityFile(filename);
+            
+            if(image != null && image.exists())
+            {
+                return image;
+            }
         }
-        
-        image = ImageHandler.getSetFile(filename);
-        
-        if(image != null && image.exists())
+        catch(Exception e)
         {
-            return image;
-        }
-        
-        image = ImageHandler.getRarityFile(filename);
-        
-        if(image != null && image.exists())
-        {
-            return image;
+            // Guard against any exception from ImageHandler (e.g., uninitialized folders)
+            YDM.log("Error resolving image file: " + filename + " - " + e.getMessage());
         }
         
         return null;
