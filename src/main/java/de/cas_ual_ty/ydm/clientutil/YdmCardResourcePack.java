@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
@@ -58,7 +59,17 @@ public class YdmCardResourcePack extends AbstractPackResources
         
         if(image != null)
         {
-            return () -> new FileInputStream(image);
+            return () ->
+            {
+                try
+                {
+                    return new FileInputStream(image);
+                }
+                catch(FileNotFoundException e)
+                {
+                    return null;
+                }
+            };
         }
         
         return null;
@@ -86,21 +97,21 @@ public class YdmCardResourcePack extends AbstractPackResources
     {
         File image = ImageHandler.getCardFile(filename);
         
-        if(image.exists())
+        if(image != null && image.exists())
         {
             return image;
         }
         
         image = ImageHandler.getSetFile(filename);
         
-        if(image.exists())
+        if(image != null && image.exists())
         {
             return image;
         }
         
         image = ImageHandler.getRarityFile(filename);
         
-        if(image.exists())
+        if(image != null && image.exists())
         {
             return image;
         }

@@ -34,7 +34,13 @@ public class DuelMessageUtility
     
     public static DuelMessageHeader decodeHeader(FriendlyByteBuf buf)
     {
-        DuelMessageHeader header = YDM.duelMessageHeaderRegistry.getValue(Identifier.parse(buf.readUtf())).createHeader();
+        Identifier id = Identifier.parse(buf.readUtf());
+        DuelMessageHeaderType type = YDM.duelMessageHeaderRegistry.getValue(id);
+        if(type == null)
+        {
+            throw new IllegalStateException("Unknown duel message header type: " + id);
+        }
+        DuelMessageHeader header = type.createHeader();
         header.readFromBuf(buf);
         return header;
     }
@@ -96,7 +102,13 @@ public class DuelMessageUtility
     
     public static ActionType decodeActionType(FriendlyByteBuf buf)
     {
-        return YDM.actionTypeRegistry.getValue(Identifier.parse(buf.readUtf()));
+        Identifier id = Identifier.parse(buf.readUtf());
+        ActionType type = YDM.actionTypeRegistry.getValue(id);
+        if(type == null)
+        {
+            throw new IllegalStateException("Unknown action type: " + id);
+        }
+        return type;
     }
     
     public static void encodeDuelState(DuelState duelState, FriendlyByteBuf buf)

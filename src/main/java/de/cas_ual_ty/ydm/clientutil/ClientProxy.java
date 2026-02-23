@@ -544,7 +544,7 @@ public class ClientProxy implements ISidedProxy
             }
             else if(player.getOffhandItem().getItem() instanceof CardSleevesItem)
             {
-                renderSleevesInfo(guiGraphics, ((CardSleevesItem) player.getMainHandItem().getItem()).sleeves);
+                renderSleevesInfo(guiGraphics, ((CardSleevesItem) player.getOffhandItem().getItem()).sleeves);
             }
         }
     }
