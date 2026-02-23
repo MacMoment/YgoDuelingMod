@@ -54,11 +54,6 @@ public class DeckBoxContainer extends AbstractContainerMenu
             addSlot(new DeckBoxSlot(itemHandler, x + DeckHolder.SIDE_DECK_INDEX_START, 8 + x * 18, 136));
         }
         
-        for(int x = 0; x < DeckHolder.SIDE_DECK_SIZE; ++x)
-        {
-            addSlot(new DeckBoxSlot(itemHandler, x + DeckHolder.SIDE_DECK_INDEX_START, 8 + x * 18, 136));
-        }
-        
         addSlot(cardSleevesSlot = new ResourceHandlerSlot(itemHandler, itemHandler::set, DeckHolder.SLEEVES_INDEX, 8 + 12 * 18, 168 + 0 * 18)
         {
             @Override
