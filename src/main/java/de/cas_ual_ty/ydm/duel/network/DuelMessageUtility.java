@@ -28,13 +28,24 @@ public class DuelMessageUtility
 {
     public static void encodeHeader(DuelMessageHeader header, FriendlyByteBuf buf)
     {
-        buf.writeUtf(YDM.duelMessageHeaderRegistry.getKey(header.type).toString());
+        Identifier key = YDM.duelMessageHeaderRegistry.getKey(header.type);
+        if(key == null)
+        {
+            throw new IllegalStateException("Unregistered duel message header type: " + header.type);
+        }
+        buf.writeUtf(key.toString());
         header.writeToBuf(buf);
     }
     
     public static DuelMessageHeader decodeHeader(FriendlyByteBuf buf)
     {
-        DuelMessageHeader header = YDM.duelMessageHeaderRegistry.getValue(Identifier.parse(buf.readUtf())).createHeader();
+        Identifier id = Identifier.parse(buf.readUtf());
+        DuelMessageHeaderType type = YDM.duelMessageHeaderRegistry.getValue(id);
+        if(type == null)
+        {
+            throw new IllegalStateException("Unknown duel message header type: " + id);
+        }
+        DuelMessageHeader header = type.createHeader();
         header.readFromBuf(buf);
         return header;
     }
@@ -91,12 +102,23 @@ public class DuelMessageUtility
     
     public static void encodeActionType(ActionType type, FriendlyByteBuf buf)
     {
-        buf.writeUtf(YDM.actionTypeRegistry.getKey(type).toString());
+        Identifier key = YDM.actionTypeRegistry.getKey(type);
+        if(key == null)
+        {
+            throw new IllegalStateException("Unregistered action type: " + type);
+        }
+        buf.writeUtf(key.toString());
     }
     
     public static ActionType decodeActionType(FriendlyByteBuf buf)
     {
-        return YDM.actionTypeRegistry.getValue(Identifier.parse(buf.readUtf()));
+        Identifier id = Identifier.parse(buf.readUtf());
+        ActionType type = YDM.actionTypeRegistry.getValue(id);
+        if(type == null)
+        {
+            throw new IllegalStateException("Unknown action type: " + id);
+        }
+        return type;
     }
     
     public static void encodeDuelState(DuelState duelState, FriendlyByteBuf buf)
