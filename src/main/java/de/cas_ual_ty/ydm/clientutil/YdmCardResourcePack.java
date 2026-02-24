@@ -8,6 +8,7 @@ import net.minecraft.server.packs.AbstractPackResources;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionType;
+import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
@@ -88,11 +89,11 @@ public class YdmCardResourcePack extends AbstractPackResources
     {
         try
         {
-            int packVersion = SharedConstants.getCurrentVersion()
+            PackFormat packVersion = SharedConstants.getCurrentVersion()
                     .packVersion(PackType.CLIENT_RESOURCES);
             return new PackMetadataSection(
                     Component.literal("YDM Images"),
-                    new InclusiveRange<>(packVersion, packVersion)
+                    new InclusiveRange<>(packVersion)
             );
         }
         catch(Throwable t)
