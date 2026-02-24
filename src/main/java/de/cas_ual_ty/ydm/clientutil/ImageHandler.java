@@ -93,6 +93,12 @@ public class ImageHandler
     
     public static void prepareRarityImages(int imageSize)
     {
+        // Skip if folders not initialized
+        if(ClientProxy.rarityImagesFolder == null || ClientProxy.rawRarityImagesFolder == null)
+        {
+            return;
+        }
+        
         for(RarityEntry entry : YdmDatabase.RARITIES_LIST.getList())
         {
             for(RarityLayer l : entry.layers)
@@ -100,12 +106,12 @@ public class ImageHandler
                 File finished = getRarityFile(imageSize + "/" + l.texture + ".png");
                 File raw = getRawRarityImageFile(l.texture);
                 
-                if(finished.exists())
+                if(finished != null && finished.exists())
                 {
                     finished.delete();
                 }
                 
-                if(raw.exists())
+                if(raw != null && raw.exists() && finished != null)
                 {
                     try
                     {
@@ -147,7 +153,7 @@ public class ImageHandler
         return ImageHandler.getReplacementImage(ADJUSTED_IMAGE_LIST, imageName, imagePathName, s.getImageURL(), ImageHandler.SET_IN_PROGRESS, ImageHandler.SET_FAILED, imageSize, ImageHandler.getSetImageFile(imagePathName), ImageHandler.getRawSetImageFile(imageName));
     }
     
-    public static String getReplacementImage(ImageList list, String imageName, String imagePathName, String imageURL, String inProgress, String failed, int imageSize, File adjusted, File raw)
+    public static String getReplacementImage(ImageList list, String imageName, String imagePathName, String imageURL, String inProgress, String failed, int imageSize, @Nullable File adjusted, @Nullable File raw)
     {
         if(!list.isFinished(imagePathName))
         {
@@ -155,15 +161,15 @@ public class ImageHandler
             {
                 // not finished, not in progress
                 
-                if(adjusted.exists())
+                if(adjusted != null && adjusted.exists())
                 {
                     // image exists, so set ready and return
                     list.setImmediateFinished(imagePathName);
                     return imagePathName;
                 }
-                else if(list.isFailed(imagePathName))
+                else if(list.isFailed(imagePathName) || adjusted == null || raw == null)
                 {
-                    // image does not exist, check if failed already and return replacement
+                    // image does not exist, check if failed or folders not initialized
                     return ImageHandler.tagImage(failed, imageSize);
                 }
                 else
@@ -312,8 +318,14 @@ public class ImageHandler
         return task;
     }
     
-    public static void makeImageReady(String imageName, String imageURL, int imageSize, File adjusted, File raw)
+    public static void makeImageReady(String imageName, String imageURL, int imageSize, @Nullable File adjusted, @Nullable File raw)
     {
+        // Skip if either file is null (folders not initialized)
+        if(adjusted == null || raw == null)
+        {
+            return;
+        }
+        
         Task t = ImageHandler.makeMissingRawTask(imageName, imageURL, raw);
         if(t != null)
         {
@@ -419,8 +431,13 @@ public class ImageHandler
         }
     }
     
+    @Nullable
     public static File getRawCardImageFile(String imageName)
     {
+        if(ClientProxy.rawCardImagesFolder == null)
+        {
+            return null;
+        }
         File f = new File(ClientProxy.rawCardImagesFolder, imageName + ".png");
         
         // prefer png over jpg
@@ -434,8 +451,13 @@ public class ImageHandler
         }
     }
     
+    @Nullable
     public static File getRawSetImageFile(String imageName)
     {
+        if(ClientProxy.rawSetImagesFolder == null)
+        {
+            return null;
+        }
         File f = new File(ClientProxy.rawSetImagesFolder, imageName + ".png");
         
         // prefer png over jpg
@@ -449,8 +471,13 @@ public class ImageHandler
         }
     }
     
+    @Nullable
     public static File getRawRarityImageFile(String imageName)
     {
+        if(ClientProxy.rawRarityImagesFolder == null)
+        {
+            return null;
+        }
         File f = new File(ClientProxy.rawRarityImagesFolder, imageName + ".png");
         
         // prefer png over jpg
@@ -464,11 +491,13 @@ public class ImageHandler
         }
     }
     
+    @Nullable
     public static File getAdjustedCardImageFile(String imageName, int size)
     {
         return ImageHandler.getCardImageFile(ImageHandler.tagImage(imageName, size));
     }
     
+    @Nullable
     public static File getAdjustedSetImageFile(String imageName, int size)
     {
         return ImageHandler.getSetImageFile(ImageHandler.tagImage(imageName, size));
@@ -479,28 +508,45 @@ public class ImageHandler
         return size + "/" + imageName;
     }
     
+    @Nullable
     public static File getCardImageFile(String imagePathName)
     {
         return ImageHandler.getCardFile(imagePathName + ".png");
     }
     
+    @Nullable
     public static File getSetImageFile(String imagePathName)
     {
         return ImageHandler.getSetFile(imagePathName + ".png");
     }
     
+    @Nullable
     public static File getCardFile(String imagePathName)
     {
+        if(ClientProxy.cardImagesFolder == null)
+        {
+            return null;
+        }
         return new File(ClientProxy.cardImagesFolder, imagePathName);
     }
     
+    @Nullable
     public static File getSetFile(String imagePathName)
     {
+        if(ClientProxy.setImagesFolder == null)
+        {
+            return null;
+        }
         return new File(ClientProxy.setImagesFolder, imagePathName);
     }
     
+    @Nullable
     public static File getRarityFile(String imagePathName)
     {
+        if(ClientProxy.rarityImagesFolder == null)
+        {
+            return null;
+        }
         return new File(ClientProxy.rarityImagesFolder, imagePathName);
     }
     
@@ -508,11 +554,21 @@ public class ImageHandler
     {
         List<CardHolder> list = new LinkedList<>();
         
+        // Skip if folders not initialized
+        if(ClientProxy.cardImagesFolder == null)
+        {
+            return list;
+        }
+        
         YdmDatabase.forAllCardVariants((card, imageIndex) ->
         {
-            if(!card.getIsHardcoded() && !ImageHandler.getCardImageFile(card.getItemImageName(imageIndex)).exists())
+            if(!card.getIsHardcoded())
             {
-                list.add(new CardHolder(card, imageIndex, null, null));
+                File imageFile = ImageHandler.getCardImageFile(card.getItemImageName(imageIndex));
+                if(imageFile != null && !imageFile.exists())
+                {
+                    list.add(new CardHolder(card, imageIndex, null, null));
+                }
             }
         });
         
@@ -523,11 +579,21 @@ public class ImageHandler
     {
         List<CardSet> list = new LinkedList<>();
         
+        // Skip if folders not initialized
+        if(ClientProxy.setImagesFolder == null)
+        {
+            return list;
+        }
+        
         for(CardSet set : YdmDatabase.SETS_LIST)
         {
-            if(set.isIndependentAndItem() && !set.getIsHardcoded() && !ImageHandler.getSetImageFile(set.getItemImageName()).exists())
+            if(set.isIndependentAndItem() && !set.getIsHardcoded())
             {
-                list.add(set);
+                File imageFile = ImageHandler.getSetImageFile(set.getItemImageName());
+                if(imageFile != null && !imageFile.exists())
+                {
+                    list.add(set);
+                }
             }
         }
         
