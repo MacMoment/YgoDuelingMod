@@ -316,19 +316,18 @@ public class ClientProxy implements ISidedProxy
         }
     }
     
-    @SuppressWarnings("unchecked")
     private void registerMenuScreens(RegisterMenuScreensEvent event)
     {
         try
         {
             event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
             event.register(YdmContainerTypes.DECK_BOX.get(), DeckBoxScreen::new);
-            event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase::new);
-            event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase::new);
+            event.register(YdmContainerTypes.DUEL_BLOCK_CONTAINER.get(), DuelScreenBase<DuelBlockContainer>::new);
+            event.register(YdmContainerTypes.DUEL_ENTITY_CONTAINER.get(), DuelScreenBase<DuelEntityContainer>::new);
             event.register(YdmContainerTypes.CARD_SUPPLY.get(), CardSupplyScreen::new);
-            event.register(YdmContainerTypes.CARD_SET.get(), CIIScreen::new);
-            event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen::new);
-            event.register(YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen::new);
+            event.register(YdmContainerTypes.CARD_SET.get(), CIIScreen<CIIContainer>::new);
+            event.register(YdmContainerTypes.CARD_SET_CONTENTS.get(), CIIScreen<CIIContainer>::new);
+            event.register(YdmContainerTypes.SIMPLE_BINDER.get(), CIIScreen<CIIContainer>::new);
         }
         catch(Throwable e)
         {
