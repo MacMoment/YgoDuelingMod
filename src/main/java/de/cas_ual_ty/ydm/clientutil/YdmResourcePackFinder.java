@@ -8,12 +8,24 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Discovers and registers the YDM card image resource pack.
+ *
+ * <p>Every failure path is caught at the {@code Throwable} level to
+ * guarantee that a broken image pack can never prevent NeoForge's
+ * lifecycle events (especially {@code AddClientReloadListenersEvent})
+ * from being dispatched to other mods.</p>
+ */
 public class YdmResourcePackFinder implements RepositorySource
 {
+    private static final Logger LOGGER = LogManager.getLogger();
+    
     public YdmResourcePackFinder()
     {
     }
@@ -21,6 +33,11 @@ public class YdmResourcePackFinder implements RepositorySource
     @Override
     public void loadPacks(Consumer<Pack> infoConsumer)
     {
+        if(YDM.disabled)
+        {
+            return;
+        }
+        
         try
         {
             PackLocationInfo locationInfo = new PackLocationInfo(
@@ -54,14 +71,17 @@ public class YdmResourcePackFinder implements RepositorySource
             {
                 infoConsumer.accept(pack);
             }
+            else
+            {
+                LOGGER.warn("[{}] YDM card resource pack was not created (metadata invalid or missing) – card images will be unavailable", YDM.MOD_ID);
+            }
         }
         catch(Throwable e)
         {
             // Catch Throwable (not just Exception) to prevent NoClassDefFoundError,
-            // LinkageError, or any other error from cascading into NeoForge's event
-            // pipeline and disrupting other reload listener registration.
-            YDM.log("Failed to load YDM card resource pack: " + e.getMessage());
-            e.printStackTrace();
+            // LinkageError, NoSuchFieldError, or any other error from cascading into
+            // NeoForge's event pipeline and disrupting reload listener registration.
+            LOGGER.error("[{}] Failed to load YDM card resource pack – card images will be unavailable", YDM.MOD_ID, e);
         }
     }
 }

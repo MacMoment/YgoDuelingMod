@@ -100,6 +100,11 @@ public class ImageHandler
                 File finished = getRarityFile(imageSize + "/" + l.texture + ".png");
                 File raw = getRawRarityImageFile(l.texture);
                 
+                if(finished == null || raw == null)
+                {
+                    continue;
+                }
+                
                 if(finished.exists())
                 {
                     finished.delete();
@@ -489,18 +494,24 @@ public class ImageHandler
         return ImageHandler.getSetFile(imagePathName + ".png");
     }
     
+    @Nullable
     public static File getCardFile(String imagePathName)
     {
+        if(ClientProxy.cardImagesFolder == null) return null;
         return new File(ClientProxy.cardImagesFolder, imagePathName);
     }
     
+    @Nullable
     public static File getSetFile(String imagePathName)
     {
+        if(ClientProxy.setImagesFolder == null) return null;
         return new File(ClientProxy.setImagesFolder, imagePathName);
     }
     
+    @Nullable
     public static File getRarityFile(String imagePathName)
     {
+        if(ClientProxy.rarityImagesFolder == null) return null;
         return new File(ClientProxy.rarityImagesFolder, imagePathName);
     }
     
