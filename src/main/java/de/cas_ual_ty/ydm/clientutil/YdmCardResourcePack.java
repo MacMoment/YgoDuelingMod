@@ -175,6 +175,7 @@ public class YdmCardResourcePack extends AbstractPackResources
                     }
                     catch(Throwable e)
                     {
+                        LOGGER.debug("[{}] Failed to open image file {} – {}", YDM.MOD_ID, image, e.getMessage());
                         return new ByteArrayInputStream(new byte[0]);
                     }
                 };
