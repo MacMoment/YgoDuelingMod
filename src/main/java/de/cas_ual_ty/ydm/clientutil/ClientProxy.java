@@ -305,6 +305,7 @@ public class ClientProxy implements ISidedProxy
     
     private void entityRenderers(EntityRenderersEvent.RegisterRenderers event)
     {
+        if(YDM.disabled) return;
         try
         {
             event.registerEntityRenderer(YdmEntityTypes.DUEL.get(), DuelEntityRenderer::new);
@@ -318,6 +319,7 @@ public class ClientProxy implements ISidedProxy
     
     private void registerMenuScreens(RegisterMenuScreensEvent event)
     {
+        if(YDM.disabled) return;
         try
         {
             event.register(YdmContainerTypes.CARD_BINDER.get(), CardBinderScreen::new);
@@ -338,6 +340,7 @@ public class ClientProxy implements ISidedProxy
     
     private void addPackFinders(net.neoforged.neoforge.event.AddPackFindersEvent event)
     {
+        if(YDM.disabled) return;
         try
         {
             if(event.getPackType() == net.minecraft.server.packs.PackType.CLIENT_RESOURCES)
@@ -405,6 +408,7 @@ public class ClientProxy implements ISidedProxy
     
     private void modelBake(ModelEvent.ModifyBakingResult event)
     {
+        if(YDM.disabled) return;
         try
         {
             modelBakeInner(event);
@@ -482,6 +486,7 @@ public class ClientProxy implements ISidedProxy
     
     private void modConfig(ModConfigEvent event)
     {
+        if(YDM.disabled) return;
         if(event.getConfig().getSpec() == ClientProxy.clientConfigSpec)
         {
             YDM.log("Baking client config!");
@@ -506,6 +511,7 @@ public class ClientProxy implements ISidedProxy
     
     private void guiScreenDrawScreenPost(ScreenEvent.Render.Post event)
     {
+        if(YDM.disabled) return;
         if(event.getScreen() instanceof AbstractContainerScreen)
         {
             AbstractContainerScreen<?> containerScreen = (AbstractContainerScreen<?>) event.getScreen();
@@ -538,6 +544,7 @@ public class ClientProxy implements ISidedProxy
     
     private void renderGameOverlayPost(RenderGuiLayerEvent.Post event)
     {
+        if(YDM.disabled) return;
         if(!VanillaGuiLayers.HOTBAR.equals(event.getName()))
         {
             return;
@@ -691,6 +698,7 @@ public class ClientProxy implements ISidedProxy
     
     private void clientChatReceived(ClientChatReceivedEvent event)
     {
+        if(YDM.disabled) return;
         if(!event.isCanceled() && event.getMessage() != null && !event.getMessage().getString().isEmpty())
         {
             if(ClientProxy.chatMessages.size() >= ClientProxy.maxMessages)
