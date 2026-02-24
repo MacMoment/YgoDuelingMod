@@ -109,63 +109,91 @@ public class YDM
     public static volatile boolean continueTasks = true;
     public static volatile boolean forceTaskStop = false;
     
+    // When true, the mod encountered a fatal error during construction and all
+    // functionality is disabled.  This prevents uncaught exceptions from
+    // cascading through NeoForge's ModLoader, which would suppress lifecycle
+    // events (e.g. AddClientReloadListenersEvent) and ultimately cause an NPE
+    // in ModelManager.reload when it tries to access AnimationLoader's
+    // shared state.
+    public static volatile boolean disabled = false;
+    
     public YDM(IEventBus modBus, ModContainer modContainer)
     {
         YDM.instance = this;
         
-        if (FMLEnvironment.getDist() == Dist.CLIENT) {
-            YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
-        } else {
-            YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();
+        try
+        {
+            if (FMLEnvironment.getDist() == Dist.CLIENT) {
+                YDM.proxy = new de.cas_ual_ty.ydm.clientutil.ClientProxy();
+            } else {
+                YDM.proxy = new de.cas_ual_ty.ydm.serverutil.ServerProxy();
+            }
+            
+            YDM.random = new Random();
+            
+            Pair<CommonConfig, ModConfigSpec> common = new ModConfigSpec.Builder().configure(CommonConfig::new);
+            YDM.commonConfig = common.getLeft();
+            YDM.commonConfigSpec = common.getRight();
+            modContainer.registerConfig(ModConfig.Type.COMMON, YDM.commonConfigSpec);
+            
+            modBus.addListener(this::init);
+            modBus.addListener(this::modConfig);
+            modBus.addListener(this::newRegistry);
+            modBus.addListener(this::registerPayloads);
+            YDM.proxy.registerModEventListeners(modBus);
+            
+            YdmBlocks.register(modBus);
+            YdmItems.register(modBus);
+            YdmItemGroup.register(modBus);
+            YdmContainerTypes.register(modBus);
+            YdmEntityTypes.register(modBus);
+            YdmTileEntityTypes.register(modBus);
+            ATTACHMENT_TYPES.register(modBus);
+            DATA_COMPONENT_TYPES.register(modBus);
+            ActionIcons.register(modBus);
+            ZoneTypes.register(modBus);
+            ActionTypes.register(modBus);
+            DuelMessageHeaders.register(modBus);
+            
+            IEventBus forgeBus = NeoForge.EVENT_BUS;
+            forgeBus.addListener(this::playerClone);
+            forgeBus.addListener(this::playerTick);
+            forgeBus.addListener(this::registerCommands);
+            forgeBus.addListener(this::findDecks);
+            forgeBus.addListener(this::serverStopped);
+            YDM.proxy.registerForgeEventListeners(forgeBus);
+            
+            YDM.proxy.preInit();
+            initFolders();
         }
-        
-        YDM.random = new Random();
-        
-        Pair<CommonConfig, ModConfigSpec> common = new ModConfigSpec.Builder().configure(CommonConfig::new);
-        YDM.commonConfig = common.getLeft();
-        YDM.commonConfigSpec = common.getRight();
-        modContainer.registerConfig(ModConfig.Type.COMMON, YDM.commonConfigSpec);
-        
-        modBus.addListener(this::init);
-        modBus.addListener(this::modConfig);
-        modBus.addListener(this::newRegistry);
-        modBus.addListener(this::registerPayloads);
-        YDM.proxy.registerModEventListeners(modBus);
-        
-        YdmBlocks.register(modBus);
-        YdmItems.register(modBus);
-        YdmItemGroup.register(modBus);
-        YdmContainerTypes.register(modBus);
-        YdmEntityTypes.register(modBus);
-        YdmTileEntityTypes.register(modBus);
-        ATTACHMENT_TYPES.register(modBus);
-        DATA_COMPONENT_TYPES.register(modBus);
-        ActionIcons.register(modBus);
-        ZoneTypes.register(modBus);
-        ActionTypes.register(modBus);
-        DuelMessageHeaders.register(modBus);
-        
-        IEventBus forgeBus = NeoForge.EVENT_BUS;
-        forgeBus.addListener(this::playerClone);
-        forgeBus.addListener(this::playerTick);
-        forgeBus.addListener(this::registerCommands);
-        forgeBus.addListener(this::findDecks);
-        forgeBus.addListener(this::serverStopped);
-        YDM.proxy.registerForgeEventListeners(forgeBus);
-        
-        YDM.proxy.preInit();
-        initFolders();
+        catch(Throwable e)
+        {
+            LOGGER.error("[{}] Fatal error during mod construction – the mod will be disabled to prevent cascading game crashes.", MOD_ID, e);
+            YDM.disabled = true;
+        }
     }
     
     private void init(FMLCommonSetupEvent event)
     {
-        initFiles();
-        YDM.proxy.init();
-        WorkerManager.init();
+        if(YDM.disabled) return;
+        try
+        {
+            initFiles();
+            YDM.proxy.init();
+            WorkerManager.init();
+        }
+        catch(Throwable e)
+        {
+            LOGGER.error("[{}] Fatal error during common setup – the mod will be disabled.", MOD_ID, e);
+            YDM.disabled = true;
+        }
     }
     
     private void registerPayloads(RegisterPayloadHandlersEvent event)
     {
+        if(YDM.disabled) return;
+        try
+        {
         PayloadRegistrar registrar = event.registrar(MOD_ID);
         
         // Card Supply
@@ -289,6 +317,12 @@ public class YDM
         {
             ctx.enqueueWork(msg::handle);
         });
+        }
+        catch(Throwable e)
+        {
+            LOGGER.error("[{}] Fatal error during payload registration – the mod will be disabled.", MOD_ID, e);
+            YDM.disabled = true;
+        }
     }
     
     public void initFolders()
@@ -314,6 +348,7 @@ public class YDM
     
     private void playerClone(PlayerEvent.Clone event)
     {
+        if(YDM.disabled) return;
         final Player original = event.getOriginal();
         final Player current = event.getEntity();
         
@@ -325,6 +360,7 @@ public class YDM
     
     private void playerTick(PlayerTickEvent.Post event)
     {
+        if(YDM.disabled) return;
         Player player = event.getEntity();
         if (player.hasData(COOLDOWN_HOLDER))
         {
@@ -334,11 +370,13 @@ public class YDM
     
     private void registerCommands(RegisterCommandsEvent event)
     {
+        if(YDM.disabled) return;
         YdmCommand.registerCommand(event.getDispatcher());
     }
     
     private void modConfig(ModConfigEvent event)
     {
+        if(YDM.disabled) return;
         if(event.getConfig().getSpec() == YDM.commonConfigSpec)
         {
             YDM.log("Baking common config!");
@@ -348,6 +386,7 @@ public class YDM
     
     private void findDecks(FindDecksEvent event)
     {
+        if(YDM.disabled) return;
         Player player = event.getEntity();
         
         ItemStack itemStack;
@@ -382,6 +421,7 @@ public class YDM
     
     private void newRegistry(NewRegistryEvent event)
     {
+        if(YDM.disabled) return;
         YDM.actionIconRegistry = event.create(new RegistryBuilder<>(ACTION_ICON_KEY).sync(true).maxId(511));
         YDM.zoneTypeRegistry = event.create(new RegistryBuilder<>(ZONE_TYPE_KEY).sync(true).maxId(511));
         YDM.actionTypeRegistry = event.create(new RegistryBuilder<>(ACTION_TYPE_KEY).sync(true).maxId(511));
@@ -390,6 +430,7 @@ public class YDM
     
     private void serverStopped(ServerStoppedEvent event)
     {
+        if(YDM.disabled) return;
         synchronized(JsonCardsManager.LOADED_MANAGERS)
         {
             for(JsonCardsManager m : JsonCardsManager.LOADED_MANAGERS)
