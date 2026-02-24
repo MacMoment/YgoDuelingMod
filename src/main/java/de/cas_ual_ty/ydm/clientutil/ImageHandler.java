@@ -167,14 +167,9 @@ public class ImageHandler
                     list.setImmediateFinished(imagePathName);
                     return imagePathName;
                 }
-                else if(list.isFailed(imagePathName))
+                else if(list.isFailed(imagePathName) || adjusted == null || raw == null)
                 {
-                    // image does not exist, check if failed already and return replacement
-                    return ImageHandler.tagImage(failed, imageSize);
-                }
-                else if(adjusted == null || raw == null)
-                {
-                    // folders not initialized yet, return failed placeholder
+                    // image does not exist, check if failed or folders not initialized
                     return ImageHandler.tagImage(failed, imageSize);
                 }
                 else
