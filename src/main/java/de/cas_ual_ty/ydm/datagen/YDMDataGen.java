@@ -16,16 +16,25 @@ public class YDMDataGen
     @SubscribeEvent
     public static void gatherData(GatherDataEvent.Client event)
     {
+        if(YDM.disabled) return;
         try
         {
-            ImageHandler.createCustomSleevesImages(CardSleevesType.DUELING_MC, "png");
+            try
+            {
+                ImageHandler.createCustomSleevesImages(CardSleevesType.DUELING_MC, "png");
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+            
+            PackOutput packOutput = event.getGenerator().getPackOutput();
+            event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID));
         }
-        catch(IOException e)
+        catch(Throwable e)
         {
+            YDM.log("Error during data generation: " + e.getMessage());
             e.printStackTrace();
         }
-        
-        PackOutput packOutput = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID));
     }
 }

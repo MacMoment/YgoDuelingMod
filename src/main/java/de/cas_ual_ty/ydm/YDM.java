@@ -175,24 +175,17 @@ public class YDM
     
     private void init(FMLCommonSetupEvent event)
     {
-        if(YDM.disabled) return;
-        try
+        safeModEvent(() ->
         {
             initFiles();
             YDM.proxy.init();
             WorkerManager.init();
-        }
-        catch(Throwable e)
-        {
-            LOGGER.error("[{}] Fatal error during common setup – the mod will be disabled.", MOD_ID, e);
-            YDM.disabled = true;
-        }
+        }, "init");
     }
     
     private void registerPayloads(RegisterPayloadHandlersEvent event)
     {
-        if(YDM.disabled) return;
-        try
+        safeModEvent(() ->
         {
         PayloadRegistrar registrar = event.registrar(MOD_ID);
         
@@ -317,12 +310,7 @@ public class YDM
         {
             ctx.enqueueWork(msg::handle);
         });
-        }
-        catch(Throwable e)
-        {
-            LOGGER.error("[{}] Fatal error during payload registration – the mod will be disabled.", MOD_ID, e);
-            YDM.disabled = true;
-        }
+        }, "registerPayloads");
     }
     
     public void initFolders()
@@ -348,54 +336,72 @@ public class YDM
     
     private void playerClone(PlayerEvent.Clone event)
     {
-        if(YDM.disabled) return;
-        final Player original = event.getOriginal();
-        final Player current = event.getEntity();
-        
-        if (original.hasData(COOLDOWN_HOLDER))
+        safeGameEvent(() ->
         {
-            current.getData(COOLDOWN_HOLDER).deserializeNBT(original.getData(COOLDOWN_HOLDER).serializeNBT());
-        }
+            final Player original = event.getOriginal();
+            final Player current = event.getEntity();
+            
+            if (original.hasData(COOLDOWN_HOLDER))
+            {
+                current.getData(COOLDOWN_HOLDER).deserializeNBT(original.getData(COOLDOWN_HOLDER).serializeNBT());
+            }
+        }, "playerClone");
     }
     
     private void playerTick(PlayerTickEvent.Post event)
     {
-        if(YDM.disabled) return;
-        Player player = event.getEntity();
-        if (player.hasData(COOLDOWN_HOLDER))
+        safeGameEvent(() ->
         {
-            player.getData(COOLDOWN_HOLDER).tick();
-        }
+            Player player = event.getEntity();
+            if (player.hasData(COOLDOWN_HOLDER))
+            {
+                player.getData(COOLDOWN_HOLDER).tick();
+            }
+        }, "playerTick");
     }
     
     private void registerCommands(RegisterCommandsEvent event)
     {
-        if(YDM.disabled) return;
-        YdmCommand.registerCommand(event.getDispatcher());
+        safeGameEvent(() -> YdmCommand.registerCommand(event.getDispatcher()), "registerCommands");
     }
     
     private void modConfig(ModConfigEvent event)
     {
-        if(YDM.disabled) return;
-        if(event.getConfig().getSpec() == YDM.commonConfigSpec)
+        safeModEvent(() ->
         {
-            YDM.log("Baking common config!");
-            YDM.dbSourceUrl = YDM.commonConfig.dbSourceUrl.get();
-        }
+            if(event.getConfig().getSpec() == YDM.commonConfigSpec)
+            {
+                YDM.log("Baking common config!");
+                YDM.dbSourceUrl = YDM.commonConfig.dbSourceUrl.get();
+            }
+        }, "modConfig");
     }
     
     private void findDecks(FindDecksEvent event)
     {
-        if(YDM.disabled) return;
-        Player player = event.getEntity();
-        
-        ItemStack itemStack;
-        DeckHolder dh;
-        
-        for(int i = 0; i < player.getInventory().getContainerSize(); ++i)
+        safeGameEvent(() ->
         {
-            itemStack = player.getInventory().getItem(i);
+            Player player = event.getEntity();
             
+            ItemStack itemStack;
+            DeckHolder dh;
+            
+            for(int i = 0; i < player.getInventory().getContainerSize(); ++i)
+            {
+                itemStack = player.getInventory().getItem(i);
+                
+                if(itemStack.getItem() instanceof DeckBoxItem deckBoxItem)
+                {
+                    dh = new ItemHandlerDeckHolder(deckBoxItem.getItemHandler(itemStack));
+                    
+                    if(!dh.isEmpty())
+                    {
+                        event.addDeck(dh, itemStack);
+                    }
+                }
+            }
+            
+            itemStack = player.getOffhandItem();
             if(itemStack.getItem() instanceof DeckBoxItem deckBoxItem)
             {
                 dh = new ItemHandlerDeckHolder(deckBoxItem.getItemHandler(itemStack));
@@ -405,40 +411,77 @@ public class YDM
                     event.addDeck(dh, itemStack);
                 }
             }
-        }
-        
-        itemStack = player.getOffhandItem();
-        if(itemStack.getItem() instanceof DeckBoxItem deckBoxItem)
-        {
-            dh = new ItemHandlerDeckHolder(deckBoxItem.getItemHandler(itemStack));
-            
-            if(!dh.isEmpty())
-            {
-                event.addDeck(dh, itemStack);
-            }
-        }
+        }, "findDecks");
     }
     
     private void newRegistry(NewRegistryEvent event)
     {
-        if(YDM.disabled) return;
-        YDM.actionIconRegistry = event.create(new RegistryBuilder<>(ACTION_ICON_KEY).sync(true).maxId(511));
-        YDM.zoneTypeRegistry = event.create(new RegistryBuilder<>(ZONE_TYPE_KEY).sync(true).maxId(511));
-        YDM.actionTypeRegistry = event.create(new RegistryBuilder<>(ACTION_TYPE_KEY).sync(true).maxId(511));
-        YDM.duelMessageHeaderRegistry = event.create(new RegistryBuilder<>(DUEL_MESSAGE_HEADER_KEY).sync(true).maxId(63));
+        safeModEvent(() ->
+        {
+            YDM.actionIconRegistry = event.create(new RegistryBuilder<>(ACTION_ICON_KEY).sync(true).maxId(511));
+            YDM.zoneTypeRegistry = event.create(new RegistryBuilder<>(ZONE_TYPE_KEY).sync(true).maxId(511));
+            YDM.actionTypeRegistry = event.create(new RegistryBuilder<>(ACTION_TYPE_KEY).sync(true).maxId(511));
+            YDM.duelMessageHeaderRegistry = event.create(new RegistryBuilder<>(DUEL_MESSAGE_HEADER_KEY).sync(true).maxId(63));
+        }, "newRegistry");
     }
     
     private void serverStopped(ServerStoppedEvent event)
     {
-        if(YDM.disabled) return;
-        synchronized(JsonCardsManager.LOADED_MANAGERS)
+        safeGameEvent(() ->
         {
-            for(JsonCardsManager m : JsonCardsManager.LOADED_MANAGERS)
+            synchronized(JsonCardsManager.LOADED_MANAGERS)
             {
-                m.safe(() ->
+                for(JsonCardsManager m : JsonCardsManager.LOADED_MANAGERS)
                 {
-                });
+                    m.safe(() ->
+                    {
+                    });
+                }
             }
+        }, "serverStopped");
+    }
+    
+    /**
+     * Safely executes a mod-bus event handler.  If the handler throws, the
+     * mod is disabled to prevent cascading failures that would suppress
+     * NeoForge lifecycle events (e.g.&nbsp;{@code AddClientReloadListenersEvent})
+     * and ultimately cause an NPE in {@code ModelManager.reload}.
+     *
+     * @param handler the handler logic
+     * @param name    human-readable name used in the error log
+     */
+    public static void safeModEvent(Runnable handler, String name)
+    {
+        if(YDM.disabled) return;
+        try
+        {
+            handler.run();
+        }
+        catch(Throwable e)
+        {
+            LOGGER.error("[{}] Error in mod-bus handler '{}' – the mod will be disabled.", MOD_ID, name, e);
+            YDM.disabled = true;
+        }
+    }
+    
+    /**
+     * Safely executes a game-bus event handler.  Errors are logged but the
+     * mod is <b>not</b> disabled, because game-bus handlers fire after
+     * initialization and an isolated failure should not brick the session.
+     *
+     * @param handler the handler logic
+     * @param name    human-readable name used in the error log
+     */
+    public static void safeGameEvent(Runnable handler, String name)
+    {
+        if(YDM.disabled) return;
+        try
+        {
+            handler.run();
+        }
+        catch(Throwable e)
+        {
+            LOGGER.error("[{}] Error in game-bus handler '{}'.", MOD_ID, name, e);
         }
     }
     
