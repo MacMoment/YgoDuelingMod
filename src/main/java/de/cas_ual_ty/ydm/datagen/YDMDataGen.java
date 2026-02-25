@@ -16,16 +16,19 @@ public class YDMDataGen
     @SubscribeEvent
     public static void gatherData(GatherDataEvent.Client event)
     {
-        try
+        YDM.safeModEvent(() ->
         {
-            ImageHandler.createCustomSleevesImages(CardSleevesType.DUELING_MC, "png");
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        
-        PackOutput packOutput = event.getGenerator().getPackOutput();
-        event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID));
+            try
+            {
+                ImageHandler.createCustomSleevesImages(CardSleevesType.DUELING_MC, "png");
+            }
+            catch(IOException e)
+            {
+                YDM.log("Failed to create custom sleeves images: " + e.getMessage());
+            }
+            
+            PackOutput packOutput = event.getGenerator().getPackOutput();
+            event.getGenerator().addProvider(true, new YDMItemModels(packOutput, YDM.MOD_ID));
+        }, "gatherData");
     }
 }
