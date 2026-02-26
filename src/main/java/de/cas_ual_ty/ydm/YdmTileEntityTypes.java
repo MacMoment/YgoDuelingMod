@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class YdmTileEntityTypes
 {
     private static final DeferredRegister<BlockEntityType<?>> DEFERRED_REGISTER = DeferredRegister.create(net.minecraft.core.registries.Registries.BLOCK_ENTITY_TYPE, YDM.MOD_ID);
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DuelTileEntity>> DUEL = DEFERRED_REGISTER.register("duel", () -> BlockEntityType.Builder.of((pos, state) -> new DuelTileEntity(YdmTileEntityTypes.DUEL.get(), pos, state), YdmBlocks.DUEL_PLAYMAT.get(), YdmBlocks.DUEL_TABLE.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DuelTileEntity>> DUEL = DEFERRED_REGISTER.register("duel", () -> new BlockEntityType<>((pos, state) -> new DuelTileEntity(YdmTileEntityTypes.DUEL.get(), pos, state), false, YdmBlocks.DUEL_PLAYMAT.get(), YdmBlocks.DUEL_TABLE.get()));
     
     public static void register(IEventBus bus)
     {
