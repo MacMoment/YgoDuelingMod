@@ -1,14 +1,13 @@
 package de.cas_ual_ty.ydm.duel.playfield;
 
 import de.cas_ual_ty.ydm.YDM;
-import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ZoneTypes
 {
-    private static final DeferredRegister<ZoneType> DEFERRED_REGISTER = DeferredRegister.create(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "zone_types"), YDM.MOD_ID);
+    private static final DeferredRegister<ZoneType> DEFERRED_REGISTER = DeferredRegister.create(YDM.ZONE_TYPE_KEY, YDM.MOD_ID);
     
     public static final DeferredHolder<ZoneType, ZoneType> HAND = DEFERRED_REGISTER.register("hand", () -> new ZoneType().showFaceDownCardsToOwner());
     public static final DeferredHolder<ZoneType, ZoneType> DECK = DEFERRED_REGISTER.register("deck", () -> new ZoneType().secret().keepFocusedAfterInteraction().defaultCardPosition(CardPosition.FD));
