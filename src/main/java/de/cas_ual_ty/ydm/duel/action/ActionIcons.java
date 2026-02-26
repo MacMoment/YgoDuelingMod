@@ -8,7 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ActionIcons
 {
-    private static final DeferredRegister<ActionIcon> DEFERRED_REGISTER = DeferredRegister.create(Identifier.fromNamespaceAndPath(YDM.MOD_ID, "action_icons"), YDM.MOD_ID);
+    private static final DeferredRegister<ActionIcon> DEFERRED_REGISTER = DeferredRegister.create(YDM.ACTION_ICON_KEY, YDM.MOD_ID);
     
     public static final DeferredHolder<ActionIcon, ActionIcon> TO_TOP_OF_DECK_FD = DEFERRED_REGISTER.register("to_top_of_deck_fd", () -> ActionIcons.create("to_top_of_deck_fd"));
     public static final DeferredHolder<ActionIcon, ActionIcon> TO_BOTTOM_OF_DECK_FD = DEFERRED_REGISTER.register("to_bottom_of_deck_fd", () -> ActionIcons.create("to_bottom_of_deck_fd"));
